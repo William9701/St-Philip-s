@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Church Program</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    .modal-dialog {
+      max-width: 600px; /* Adjust as needed for image size */
+      margin: 5% auto;
+    }
+    .modal-content {
+      background-color: rgba(0, 0, 0, 0.8); /* Light black background */
+      border: none;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    }
+    .modal-header {
+      background-color: rgba(0, 0, 0, 0.9); /* Darker black for header */
+      border-bottom: none;
+      color: white;
+    }
+    .modal-body {
+      padding: 0;
+    }
+    .image-container {
+      text-align: center;
+    }
+    .church-program-page {
+      padding: 20px;
+    }
+    .image-container img {
+      max-width: 100%;
+      height: auto;
+    }
+    .church-program-list {
+      list-style: none;
+      padding: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Button to trigger modal -->
+  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#churchProgramModal" onclick="displayProgram()">
+    View Church Program
+  </button>
+
+  <!-- New button to trigger modal with different data -->
+  <a href="#" class="btn btn-secondary" data-toggle="modal" data-target="#prayerModal" onclick="displayPrayer()">
+    View Prayer
+  </a>
+
+  <!-- Modal for Church Program -->
+  <div class="modal fade" id="churchProgramModal" tabindex="-1" role="dialog" aria-labelledby="churchProgramModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="churchProgramModalLabel">Church Program</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div id="churchProgramPage" class="church-program-page">
+            <!-- Program content will be inserted here -->
+          </div> 
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" id="prevButton" disabled>Previous</button>
+            <button type="button" class="btn btn-primary" id="nextButton">Next</button>
+          </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal for Prayer -->
+  <div class="modal fade" id="prayerModal" tabindex="-1" role="dialog" aria-labelledby="prayerModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="prayerModalLabel">Prayer</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div id="prayerPage" class="church-program-page">
+            <!-- Prayer content will be inserted here -->
+          </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" id="prevButtonPrayer" disabled>Previous</button>
+            <button type="button" class="btn btn-primary" id="nextButtonPrayer">Next</button>
+          </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Script for handling page navigation -->
+  <script>
+    const prevButton = document.getElementById('prevButton');
+    const nextButton = document.getElementById('nextButton');
+    const churchProgramPage = document.getElementById('churchProgramPage');
+    let modelFotter = document.querySelector('.modal-footer');
+
+    let currentPage = 1;
+
+    // Sample church program data (replace with your actual data)
+    const churchProgramData = [
+      {
+        "image": "./images/sermon-1.png"
+      },
+      {
+        "program": [
+          { "time": "10:00 AM", "event": "Welcome and Announcements" },
+          { "time": "10:15 AM", "event": "Worship" },
+          { "time": "11:00 AM", "event": "Sermon" },
+          { "time": "11:45 AM", "event": "Offering" }
+        ]
+      },
+      {
+        "program": [
+          { "time": "7:00 PM", "event": "Prayer Meeting" },
+          { "time": "7:30 PM", "event": "Bible Study" }
+        ]
+      }
+    ];
+
+    // **New Data for the Special Event**
+    const specialEventData = [
+      {
+        "image": "./images/special-event.png"
+      },
+      {
+        "program": [
+          { "time": "6:00 PM", "event": "Dinner and Fellowship" },
+          { "time": "7:00 PM", "event": "Guest Speaker" },
+          { "time": "8:00 PM", "event": "Music and Entertainment" }
+        ]
+      }
+    ];
+
+    // **Separate data for Prayer**
+    const prayerData = [
+      {
+        'prayer': "God Guide and protect us from harm today"
+      }
+    ]
+
+    // Function to display the program based on currentPage
+    function displayProgramPage() {
+      const data = churchProgramData[currentPage - 1];
+      churchProgramPage.innerHTML = ''; // Clear previous content
+
+      if (data.image) {
+        churchProgramPage.innerHTML += `
+          <div class="image-container">
+            <img src="${data.image}" alt="Church Image" class="img-fluid">
+          </div>
+        `;
+      }
+
+      if (data.program) {
+        churchProgramPage.innerHTML += `
+          <ul class="church-program-list">
+            ${data.program.map(item => `<li>${item.time} - ${item.event}</li>`).join('')}
+          </ul>
+        `;
+      }
+
+      // Update button states based on current page
+      prevButton.disabled = currentPage === 1;
+      nextButton.disabled = currentPage === churchProgramData.length;
+    }
+
+    // **Function to display the special event**
+    function displayDifferentProgram() {
+      currentPage = 1; // Reset currentPage for the new data
+      displayProgramPage(specialEventData); // Use the new data
+    }
+
+    // **Update displayProgramPage to accept optional data**
+    function displayProgramPage(data = churchProgramData) {
+      const programData = data[currentPage - 1];
+      churchProgramPage.innerHTML = ''; // Clear previous content
+
+      if (programData.image) {
+        churchProgramPage.innerHTML += `
+          <div class="image-container">
+            <img src="${programData.image}" alt="Church Image" class="img-fluid">
+          </div>
+        `;
+      }
+
+      if (programData.program) {
+        churchProgramPage.innerHTML += `
+          <ul class="church-program-list">
+            ${programData.program.map(item => `<li>${item.time} - ${item.event}</li>`).join('')}
+          </ul>
+        `;
+      }
+
+      // **Display the prayer when the Prayer data is passed**
+      if (programData.prayer) {
+        modelFotter.style.display = 'none';
+        churchProgramPage.innerHTML += `
+          <p>${programData.prayer}</p>
+        `;
+      }
+
+      // Update button states based on current page
+      prevButton.disabled = currentPage === 1;
+      nextButton.disabled = currentPage === data.length;
+    }
+
+    // **Function to display the prayer**
+    function displayPrayer() {
+      currentPage = 1; // Reset currentPage for the new data
+      displayProgramPage(prayerData); // Use the prayerData
+    }
+
+    // **Create separate event listeners for the new buttons**
+    // Event listeners for buttons
+    nextButton.addEventListener('click', () => {
+      currentPage++;
+      displayProgramPage();
+    });
+
+    prevButton.addEventListener('click', () => {
+      currentPage--;
+      displayProgramPage();
+    });
+
+    // **Create separate event listeners for prayer buttons**
+    const prevButtonPrayer = document.getElementById('prevButtonPrayer');
+    const nextButtonPrayer = document.getElementById('nextButtonPrayer');
+
+    nextButtonPrayer.addEventListener('click', () => {
+      currentPage++;
+      displayProgramPage(prayerData);
+    });
+
+    prevButtonPrayer.addEventListener('click', () => {
+      currentPage--;
+      displayProgramPage(prayerData);
+    });
+
+
+    // Initial display
+    displayProgramPage();
+  </script>
+
+  <!-- Include Bootstrap JS and jQuery -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
