@@ -349,11 +349,57 @@ prevButton.addEventListener('click', () => {
 displayProgramPage();
 
 function displayPrayer() {
-	currentPage = 1; // Reset currentPage for the new data
-	displayProgramPage(prayerData); // Use the prayerData
-  }
+	const prayerPage = document.getElementById('prayerPage');
+	prayerPage.innerHTML = '';
+	prayerPage.innerHTML += `
+	<p>${prayerData[0].prayer}</p>
+	`;
+}
 
 
+const meditation = [
+	{
+		'Topic': "Working For The Master's Reward",
+		'Text': 'Luke 19: 11 - 26; 2Cor. 5:10',
+		'message': 'The Lord is my shepherd, I will not want anyone to disown me. I will not want anyone to turn away from me. I will not want anyone to turn away from me.'
+	}
+]
+
+
+function displayMeditation() {
+	const meditationPage = document.getElementById('meditationPage');
+	meditationPage.innerHTML = '';
+	meditationPage.innerHTML += `
+	<h2 style="color: aliceblue;">${meditation[0].Topic}</h2>
+	<h3 style="color: aliceblue;">${meditation[0].Text}</h3>
+	<p>${meditation[0].message}</p>
+	`;
+}
+
+const wedding = [
+	{
+		'topic': '',
+		'text': 'This is the Third time of Asking',
+		'message': ' I hereby publish the banns of marriage between <b>Oburo Anthony Chukwubuikem</b> and <b>Amatobi ifunanya Mercy</b>. if any one knows any reason why these persons should not marry each other he/she should declare it now. '
+	},
+	{
+		'topic': '',
+		'text': 'This is the Third time of Asking',
+		'message': ' I hereby publish the banns of marriage between <b>Odibei Adimabua James</b> and <b>Ezeigwe Amechi Mary</b>. if any one knows any reason why these persons should not marry each other he/she should declare it now. '
+	}
+]
+
+function displayWedding(){
+	const weddingPage = document.getElementById('weddingPage');
+	weddingPage.innerHTML = '';
+	wedding.forEach(weddingItem => {
+		weddingPage.innerHTML += `
+		<h2 style="color: aliceblue;">${weddingItem.topic}</h2>
+		<h3 style="color: aliceblue;">${weddingItem.text}</h3>
+		<p>${weddingItem.message}</p>
+		`;
+	})
+}
 document.addEventListener('DOMContentLoaded', function() {
     const options = {
         strings: ['following Jesus whereever he goes.', "Jesus Christ Said:", "16 For God so loved the world", "that he gave his only begotten Son", "that whosoever believeth in him should not perish, but have everlasting life."],

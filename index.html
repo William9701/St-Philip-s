@@ -39,11 +39,11 @@
 	          <li class="nav-item"><a href="#home-section" class="nav-link"><span>Home</span></a></li>
 	          <li class="nav-item"><a href="#about-section" class="nav-link"><span>About</span></a></li>
             <li class="nav-item"><a href="#services-section" class="nav-link"><span>Doctrine</span></a></li>
-	          <li class="nav-item"><a href="#sermons-section" class="nav-link"><span>Sermons</span></a></li>
+	          <li class="nav-item"><a href="#sermons-section" class="nav-link"><span>Bulletin</span></a></li>
 	          <li class="nav-item"><a href="#events-section" class="nav-link"><span>Events</span></a></li>
 	          <!-- <li class="nav-item"><a href="#causes-section" class="nav-link"><span>Causes</span></a></li>
 	          <li class="nav-item"><a href="#blog-section" class="nav-link"><span>Blog</span></a></li> -->
-	          <li class="nav-item"><a href="#pastor-section" class="nav-link"><span>Elders</span></a></li>
+	          <li class="nav-item"><a href="#pastor-section" class="nav-link"><span>Priests</span></a></li>
 	          <li class="nav-item"><a href="#contact-section" class="nav-link"><span>Contact</span></a></li>
             <li class="nav-item"><a href="#photo-section" class="nav-link"><span>Photos</span></a></li>
 	        </ul>
@@ -103,12 +103,16 @@
               	<li><span class="ion-ios-checkmark-circle mr-2"></span> Exercitation ullamco laboris</li>
               	<li><span class="ion-ios-checkmark-circle mr-2"></span> Lorem ipsum dolor sit</li>
               	<li><span class="ion-ios-checkmark-circle mr-2"></span> Sed do eiusmod tempor incididunt</li>
+				  
               </ul>
             </div>
-					</div>
     		</div>
+		</div>
+		
     	</div>
+		
     </section>
+	<a style="margin-left: 70%;" class="btn btn-primary" href="./history.html">Read More</a>
 
     <!-- <section class="ftco-counter" id="section-counter">
     	<div class="container-fluid px-0">
@@ -189,7 +193,7 @@
 				<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
-					<h5 class="modal-title" id="prayerModalLabel">Prayer</h5>
+					<h5 style="color: aliceblue;" class="modal-title" id="prayerModalLabel">Daily Prayer</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
@@ -199,10 +203,6 @@
 						<!-- Prayer content will be inserted here -->
 					</div>
 					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" id="prevButtonPrayer" disabled>Previous</button>
-						<button type="button" class="btn btn-primary" id="nextButtonPrayer">Next</button>
-					</div>
 				</div>
 				</div>
 			</div>
@@ -211,7 +211,7 @@
 
 
           <div class="col-md d-flex align-self-stretch ftco-animate">
-			<a href="#">
+			<a href="#"data-toggle="modal" data-target="#meditationModal" onclick="displayMeditation()">
             <div class="media block-6 services text-center d-block">
               <div class="icon"><span class="flaticon-bible"></span></div>
               <div class="media-body">
@@ -225,6 +225,29 @@
             </div>
 			</a>
           </div>
+
+		  <!-- Modal for Weekly Meditation -->
+			<div class="modal fade" id="meditationModal" tabindex="-1" role="dialog" aria-labelledby="meditationModalLabel" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+					<h5 style="color: aliceblue;" class="modal-title" id="meditationModalLabel">Weekly Meditation</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					</div>
+					<div class="modal-body">
+					<div id="meditationPage" class="church-program-page">
+						<!-- Prayer content will be inserted here -->
+					</div>
+					</div>
+				</div>
+				</div>
+			</div>
+
+
+
+
           <div class="col-md d-flex align-self-stretch ftco-animate">
 			<a href="">
             <div class="media block-6 services text-center d-block">
@@ -236,8 +259,11 @@
             </div>
 			</a>
           </div>
+
+
+
           <div class="col-md d-flex align-self-stretch ftco-animate">
-			<a href="#">
+			<a href="#" data-toggle="modal" data-target="#weddingModal" onclick="displayWedding()">
             <div class="media block-6 services text-center d-block">
               <div class="icon"><span class="flaticon-rings"></span></div>
               <div class="media-body">
@@ -247,8 +273,32 @@
             </div>
 			</a>
           </div>
+
+		  <!-- Modal for Wedding -->
+			<div class="modal fade" id="weddingModal" tabindex="-1" role="dialog" aria-labelledby="weddingModalLabel" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+					<h5 style="color: aliceblue;" class="modal-title" id="weddingModalLabel">Bans of Marriage</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					</div>
+					<div class="modal-body">
+					<div id="weddingPage" class="church-program-page">
+						<!-- Prayer content will be inserted here -->
+					</div>
+					</div>
+				</div>
+				</div>
+			</div>
+
+
+
+
+
           <div class="col-md d-flex align-self-stretch ftco-animate">
-			<a href="#">
+			<a href="/groups.html">
             <div class="media block-6 services text-center d-block">
               <div class="icon"><span class="flaticon-social-care"></span></div>
               <div class="media-body">
@@ -946,16 +996,16 @@
       </div>
     </section>
 
-		<section class="ftco-section ftco-no-pt ftco-no-pb">
+		<!-- <section class="ftco-section ftco-no-pt ftco-no-pb">
 			<div id="map" class="bg-white"></div>
-		</section>
+		</section> -->
 
 		<section id="photo-section" class="ftco-gallery ftco-section ftco-no-pb mb-4">
     	<div class="container-fluid px-4">
     		<div class="row justify-content-center mb-5 pb-3">
           <div class="col-md-7 heading-section ftco-animate text-center">
             <h3 class="subheading">Gallery</h3>
-            <h2 class="mb-1">HCRBC Photos</h2>
+            <h2 class="mb-1">SPAC Photos</h2>
           </div>
         </div>
     		<div class="row">
@@ -995,7 +1045,7 @@
         <div class="row mb-5">
           <div class="col-md">
             <div class="ftco-footer-widget mb-4">
-              <h2 class="ftco-heading-2 logo"><span>Hill City Reformed </span>Baptist Church</h2>
+              <h2 class="ftco-heading-2 logo"><span>St.Philip's </span>Anglican Church</h2>
               <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
               <ul class="ftco-footer-social list-unstyled float-md-left float-lft mt-5">
                 <li class="ftco-animate"><a href="#"><span class="icon-twitter"></span></a></li>
@@ -1038,7 +1088,10 @@
               <h2 class="ftco-heading-2">Service Hours</h2>
               <div class="opening-hours">
               	<!-- <p>Saturday Prayer Meeting: <span class="mb-3">10:00 am to 11:30 am</span></p> -->
-              	<p>Sunday Service: <span class="mb-3">10:30 am to 11:30 am</span></p>
+              	<p>First Sunday Service: <span class="mb-3">6:00 am to 07:30 am</span></p>
+              	<p>Bible Study: <span class="mb-3">7:30 am to 08:00 am</span></p>
+              	<p>Second Sunday Service: <span class="mb-3">8:00 am to 10:30 am</span></p>
+              	<p>Combined Sunday Service: <span class="mb-3">7:30 am to 10:30 am</span></p>
               </div>
             </div>
           </div>
@@ -1046,9 +1099,9 @@
         <div class="row">
           <div class="col-md-12 text-center">
 
-            <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This Website was designed with <i class="icon-heart color-danger" aria-hidden="true"></i> by <a href="" target="_blank">empireWorks</a>
-  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
+            <p><!-- Link back to empireWorks can't be removed. Template is licensed under CC BY 3.0. -->
+			Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This Website was designed with <i class="icon-heart color-danger" aria-hidden="true"></i> by <a href="" target="_blank">empireWorks</a>
+			<!-- Link back to empireWorks can't be removed. Template is licensed under CC BY 3.0. --></p>
           </div>
         </div>
       </div>

@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>HCRBC</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Great+Vibes&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="css/open-iconic-bootstrap.min.css" />
+    <link rel="stylesheet" href="css/animate.css" />
+
+    <link rel="stylesheet" href="css/owl.carousel.min.css" />
+    <link rel="stylesheet" href="css/owl.theme.default.min.css" />
+    <link rel="stylesheet" href="css/magnific-popup.css" />
+
+    <link rel="stylesheet" href="css/aos.css" />
+
+    <link rel="stylesheet" href="css/ionicons.min.css" />
+
+    <link rel="stylesheet" href="css/flaticon.css" />
+    <link rel="stylesheet" href="css/icomoon.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+        /* style.css */
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            max-height: 700px;
+            overflow: scroll;
+            /* Hide the scrollbar */
+            scrollbar-width: none; /* For Firefox */
+            -ms-overflow-style: none; /* For Internet Explorer and Edge */
+        }
+        .card::-webkit-scrollbar {
+            display: none;  /* For Chrome, Safari, and Opera */
+        }
+
+        .card-img-top {
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .view-members {
+            margin-top: 10px;
+        }
+
+        .members-list {
+            margin-top: 10px;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .members-list table {
+            width: 100%;
+        }
+        @media (min-width: 991px) {
+          .mt-5 {
+            margin-top: 120px !important;
+        }
+        }
+
+    </style>
+  </head>
+  <body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
+    <nav
+      class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light site-navbar-target"
+      id="ftco-navbar" style="background: #a76969 !important;"
+    >
+      <div class="container">
+        <a class="navbar-brand" href="index.html"
+          ><span>
+            <img style="width: 60px" src="./images/logo.png" alt="" />
+          </span>
+          SPAC</a
+        >
+        <button
+          class="navbar-toggler js-fh5co-nav-toggle fh5co-nav-toggle"
+          type="button"
+          data-toggle="collapse"
+          data-target="#ftco-nav"
+          aria-controls="ftco-nav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="oi oi-menu"></span> Menu
+        </button>
+
+        <div class="collapse navbar-collapse" id="ftco-nav">
+          <ul class="navbar-nav nav ml-auto">
+            <li class="nav-item">
+              <a href="#home-section" class="nav-link"><span>Home</span></a>
+            </li>
+            <li class="nav-item">
+              <a href="#about-section" class="nav-link"><span>About</span></a>
+            </li>
+            <li class="nav-item">
+              <a href="#services-section" class="nav-link"
+                ><span>Doctrine</span></a
+              >
+            </li>
+            <li class="nav-item">
+              <a href="#sermons-section" class="nav-link"
+                ><span>Bulletin</span></a
+              >
+            </li>
+            <li class="nav-item">
+              <a href="#events-section" class="nav-link"><span>Events</span></a>
+            </li>
+            <!-- <li class="nav-item"><a href="#causes-section" class="nav-link"><span>Causes</span></a></li>
+                  <li class="nav-item"><a href="#blog-section" class="nav-link"><span>Blog</span></a></li> -->
+            <li class="nav-item">
+              <a href="#pastor-section" class="nav-link"><span>Priests</span></a>
+            </li>
+            <li class="nav-item">
+              <a href="#contact-section" class="nav-link"
+                ><span>Contact</span></a
+              >
+            </li>
+            <li class="nav-item">
+              <a href="#photo-section" class="nav-link"><span>Photos</span></a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div style="margin-top: 0 ;" class="container mt-5">
+        <h1 class="text-center mb-4">Group Directory</h1>
+    
+        <div class="row">
+            <!-- Women's Groups -->
+            <div class="col-md-6">
+                <h2 class="mb-3">Women's Groups</h2>
+                <div class="row" id="womens-groups">
+                    <!-- Group 1 -->
+                    <div class="col-md-6 mb-3">
+                        <div class="card">
+                            <img src="group1-women.jpg" class="card-img-top" alt="Group Image">
+                            <div class="card-body">
+                                <h5 class="card-title">Group 1 Name</h5>
+                                <button class="btn btn-primary view-members" data-target="womens-group1-members">View Members</button>
+                                <div class="members-list" id="womens-group1-members" style="display: none;">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Member 1</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Member 2</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Member 1</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Member 2</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Member 1</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Member 2</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Member 1</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Member 2</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Member 1</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Member 2</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Member 1</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Member 2</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Member 1</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Member 2</td>
+                                            </tr>
+                                            <!-- Add more members here -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Group 2 -->
+                    <div class="col-md-6 mb-3">
+                        <div class="card">
+                            <img src="group2-women.jpg" class="card-img-top" alt="Group Image">
+                            <div class="card-body">
+                                <h5 class="card-title">Group 2 Name</h5>
+                                <button class="btn btn-primary view-members" data-target="womens-group2-members">View Members</button>
+                                <div class="members-list" id="womens-group2-members" style="display: none;">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Member 1</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Member 2</td>
+                                            </tr>
+                                            <!-- Add more members here -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Group 3 -->
+                    <div class="col-md-6 mb-3">
+                        <div class="card">
+                            <img src="group2-women.jpg" class="card-img-top" alt="Group Image">
+                            <div class="card-body">
+                                <h5 class="card-title">Group 2 Name</h5>
+                                <button class="btn btn-primary view-members" data-target="womens-group2-members">View Members</button>
+                                <div class="members-list" id="womens-group2-members" style="display: none;">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Member 1</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Member 2</td>
+                                            </tr>
+                                            <!-- Add more members here -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Group 4 -->
+                    <div class="col-md-6 mb-3">
+                        <div class="card">
+                            <img src="group2-women.jpg" class="card-img-top" alt="Group Image">
+                            <div class="card-body">
+                                <h5 class="card-title">Group 2 Name</h5>
+                                <button class="btn btn-primary view-members" data-target="womens-group2-members">View Members</button>
+                                <div class="members-list" id="womens-group2-members" style="display: none;">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Member 1</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Member 2</td>
+                                            </tr>
+                                            <!-- Add more members here -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Group 5 -->
+                    <div class="col-md-6 mb-3">
+                        <div class="card">
+                            <img src="group2-women.jpg" class="card-img-top" alt="Group Image">
+                            <div class="card-body">
+                                <h5 class="card-title">Group 2 Name</h5>
+                                <button class="btn btn-primary view-members" data-target="womens-group2-members">View Members</button>
+                                <div class="members-list" id="womens-group2-members" style="display: none;">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Member 1</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Member 2</td>
+                                            </tr>
+                                            <!-- Add more members here -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Add more women's groups here -->
+                </div>
+            </div>
+            <!-- Men's Groups -->
+            <div class="col-md-6">
+                <h2 class="mb-3">Men's Groups</h2>
+                <div class="row" id="mens-groups">
+                    <!-- Group 1 -->
+                    <div class="col-md-6 mb-3">
+                        <div class="card">
+                            <img src="group1-men.jpg" class="card-img-top" alt="Group Image">
+                            <div class="card-body">
+                                <h5 class="card-title">Group 1 Name</h5>
+                                <button class="btn btn-primary view-members" data-target="mens-group1-members">View Members</button>
+                                <div class="members-list" id="mens-group1-members" style="display: none;">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Member 1</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Member 2</td>
+                                            </tr>
+                                            <!-- Add more members here -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Group 2 -->
+                    <div class="col-md-6 mb-3">
+                        <div class="card">
+                            <img src="group2-men.jpg" class="card-img-top" alt="Group Image">
+                            <div class="card-body">
+                                <h5 class="card-title">Group 2 Name</h5>
+                                <button class="btn btn-primary view-members" data-target="mens-group2-members">View Members</button>
+                                <div class="members-list" id="mens-group2-members" style="display: none;">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Member 1</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Member 2</td>
+                                            </tr>
+                                            <!-- Add more members here -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Add more men's groups here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery-migrate-3.0.1.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.easing.1.3.js"></script>
+    <script src="js/jquery.waypoints.min.js"></script>
+    <script src="js/jquery.stellar.min.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/jquery.magnific-popup.min.js"></script>
+    <script src="js/aos.js"></script>
+    <script src="js/jquery.animateNumber.min.js"></script>
+    <script src="js/scrollax.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
+    <script src="js/google-map.js"></script>
+
+    <script src="js/main.js"></script>
+    <script>
+        // script.js
+        $(document).ready(function() {
+            // Event listener for View Members buttons
+            $(".view-members").click(function() {
+                var target = $(this).data("target");
+                $(`#${target}`).slideToggle(); 
+            });
+        });
+    </script>
+  </body>
+</html>
