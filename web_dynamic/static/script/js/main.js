@@ -276,11 +276,78 @@
 })(jQuery);
 
 
+function fetchLatestService() {
+	return fetch('/latest_service')
+	  .then(response => {
+		if (!response.ok) {
+		  throw new Error(`HTTP error! status: ${response.status}`);
+		}
+		return response.json();
+	  })
+	  .catch(error => {
+		console.error('Error fetching latest service data:', error);
+		return null; // Handle error
+	  });
+}
+  
+function fetchHymns() {
+return fetch('/hymns')
+	.then(response => {
+	if (!response.ok) {
+		throw new Error(`HTTP error! status: ${response.status}`);
+	}
+	return response.json();
+	})
+	.catch(error => {
+	console.error('Error fetching hymns:', error);
+	return [];
+	});
+}
+  
+let hymn = {
+procesional: null,
+gradual: null,
+communion: null,
+Recessional: null,
+};
+  
+function fetchAndProcessHymns() {
+fetchLatestService()
+	.then(latestServiceData => {
+	if (!latestServiceData) return;
+
+	return fetchHymns().then(hymnData => {
+		// Find hymns for the specific service
+		const serviceHymns = hymnData.filter(hymn => hymn.service_id === latestServiceData.id);
+
+		// Assign hymns to relevant properties
+		hymn = {
+		procesional: serviceHymns.find(hymn => hymn.type === 'procesional')?.hymn_id,
+		gradual: serviceHymns.find(hymn => hymn.type === 'gradual')?.hymn_id,
+		communion: serviceHymns.find(hymn => hymn.type === 'communion')?.hymn_id,
+		Recessional: serviceHymns.find(hymn => hymn.type === 'Recessional')?.hymn_id,
+		};
+
+		// Log or process the hymn object here
+		console.log(hymn);
+	});
+	})
+	.catch(error => {
+	console.error(error);
+	});
+}
+
+// Call the function to fetch and process hymn data when the page loads
+fetchAndProcessHymns();
+console.log(hymn);
+  
+
 const prevButton = document.getElementById('prevButton');
 const nextButton = document.getElementById('nextButton');
 const churchProgramPage = document.getElementById('churchProgramPage');
 
 let currentPage = 1;
+
 
 // Sample church program data (replace with your actual data)
 const churchProgramData = [

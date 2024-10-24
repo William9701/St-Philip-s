@@ -4,28 +4,20 @@ import models
 import shlex
 from models.base_models import Basemodels
 from models.admin import Admin
-from models.service import ServiceInfo
-from models.service import ReadingSchedule
-from models.service import SpecialPrayers
-from models.service import Hymns
-from models.service import Notices
-from models.service import Members
-from models.service import Weddings
-
-
-
+from models.service import *
+import models.service as service_module
+import inspect
 
 # Add all classes from models.service to the dictionary
 classes = {
-    "Admin": Admin,
-    "ServiceInfo": ServiceInfo,
-    "ReadingSchedule": ReadingSchedule,
-    "SpecialPrayers": SpecialPrayers,
-    "Hymns": Hymns,
-    "Notices": Notices,
-    "Members": Members,
-    "Weddings": Weddings
+    "Admin": Admin
 }
+
+for name, obj in inspect.getmembers(service_module):
+    # Check if the object is a class and is defined in the service module
+    if inspect.isclass(obj) and obj.__module__ == service_module.__name__:
+        # Add the class to the classes dictionary
+        classes[name] = obj
 
 class HBNBCommand(cmd.Cmd):
     """ HBNH console """

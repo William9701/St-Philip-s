@@ -3,7 +3,7 @@ import random
 import json
 
 # Define the new service ID to be used
-service_id = "a8ed5cca-7a0d-485f-b392-8e82460c8ac3"
+service_id = "a7259b76-728c-41e9-a2ff-a17b868cdf1c"
 
 # Endpoints for each entity
 endpoints = {
