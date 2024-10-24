@@ -14,6 +14,7 @@ class ServiceInfo(Basemodels, Base):
     prayers = relationship('SpecialPrayers', back_populates='service')
     hymns = relationship('Hymns', back_populates='service')
     notices = relationship('Notices', back_populates='service')
+    weddings = relationship('Weddings', back_populates='service')
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -32,8 +33,10 @@ class ReadingSchedule(Basemodels, Base):
 class SpecialPrayers(Basemodels, Base):
     __tablename__ = 'special_prayers'
     service_id = Column(String(225), ForeignKey('service_info.id', ondelete='CASCADE'), nullable=False)
-    prayer_name = Column(String(100))
     prayer_text = Column(Text)
+    prayer_topic = Column(Text)
+    prayer_name = Column(String(100))
+    prayer_note = Column(Text)
 
     service = relationship('ServiceInfo', back_populates='prayers')
     def __init__(self, *args, **kwargs):
@@ -54,9 +57,19 @@ class Notices(Basemodels, Base):
     __tablename__ = 'notices'
     service_id = Column(String(225), ForeignKey('service_info.id', ondelete='CASCADE'), nullable=False)
     notice_text = Column(Text)
-    priority_level = Column(String(50))
+    notice_type = Column(String(50))
 
     service = relationship('ServiceInfo', back_populates='notices')
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+class Weddings(Basemodels, Base):
+    __tablename__ = 'weddings'
+    service_id = Column(String(225), ForeignKey('service_info.id', ondelete='CASCADE'), nullable=False)
+    text = Column(Text)
+    message = Column(Text)
+
+    service = relationship('ServiceInfo', back_populates='weddings')
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -67,6 +80,27 @@ class Members(Basemodels, Base):
     title = Column(String(225), nullable=False)
     last_name = Column(String(225), nullable=False)
     group_name = Column(String(225), nullable=False)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+
+class SubScribed_Members(Basemodels, Base):
+    __tablename__ = 'subscribed_members'
+    name = Column(String(225), nullable=False)
+    email = Column(String(225), nullable=False)
+    subject = Column(Text)
+    message = Column(Text)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+class UpcomingEvent(Basemodels, Base):
+    __tablename__ = 'events' #upcoming events
+    event_name = Column(String(225), nullable=False)
+    time = Column(String(225), nullable=False)
+    event_text = Column(String(225), nullable=False)
+    event_img = Column(String(225), nullable=False)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

@@ -49,8 +49,8 @@ class Basemodels:
         new_dict = self.__dict__.copy()
         if "created_at" in new_dict:
             new_dict["created_at"] = new_dict["created_at"].strftime(time)
-        if "service_date" in new_dict:
-            new_dict["service_time"] = new_dict["service_time"].strftime(('%H:%M:%S'))
+        # if "service_date" in new_dict:
+        #     new_dict["service_time"] = new_dict["service_time"].strftime(('%H:%M:%S'))
         if "updated_at" in new_dict:
             new_dict["updated_at"] = new_dict["updated_at"].strftime(time)
         new_dict["__class__"] = self.__class__.__name__

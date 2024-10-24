@@ -3,14 +3,14 @@ import random
 import json
 
 # Define the new service ID to be used
-service_id = "bdd7e6c9-5508-48a0-ad16-fb2f3939485f"
+service_id = "a8ed5cca-7a0d-485f-b392-8e82460c8ac3"
 
 # Endpoints for each entity
 endpoints = {
     "reading_schedule": "http://127.0.0.1:4000/reading_schedule",
     "special_prayers": "http://127.0.0.1:4000/special_prayers",
     "hymns": "http://127.0.0.1:4000/hymns",
-    "notices": "http://127.0.0.1:4000/notices",
+    "weddings": "http://127.0.0.1:4000/wedding",
     "members": "http://127.0.0.1:4000/members"
 }
 
@@ -31,8 +31,12 @@ reading_schedule_data = {
 # Data for SpecialPrayers
 special_prayers_data = {
     "service_id": service_id,
-    "prayer_name": "Christmas Prayer",
-    "prayer_text": "Heavenly Father, we thank you for the gift of your son Jesus Christ. Guide us in peace and love this season."
+    "prayer_name": "weekly_meditation",
+    "prayer_note": "Praise be to the God and Father of our Lord Jesus Christ, the Father of compassion and the God of all comfort, who comforts us in all our troubles, so that we can comfort those in any trouble with the comfort we ourselves receive from God. For just as we share abundantly in the sufferings of Christ, so also our comfort abounds through Christ. 2 Corinthians 1:3–5, NIV. Praise be to the God and Father of our Lord our God, Father of compassion and the God of all comfort, who encourages and strengthens us in all distress, we thank you for turning our suffering into a pathway to life, so that we may be thankful and trusting through everything. You can change what we find hardest into what is best for us. Praise to your name that a way through sin and death is given to us. Praise to your name that you have shown us a way through all evil, a way that is blest. Amen.",
+    "prayer_topic": "Working for the masters will",
+    "prayer_text": "Luke 19: 11-26; 1Corinthians 1: 3-5"
+
+
 }
 
 # Data for Hymns
@@ -44,10 +48,10 @@ hymns_data = {
 }
 
 # Data for Notices
-notices_data = {
+wedding_data = {
     "service_id": service_id,
-    "notice_text": "Christmas services and charity events scheduled for the upcoming week.",
-    "priority_level": "Medium"
+    "text": "<b> THIS IS THE 2ND AND LAST TIME OF ASKING</b>",
+    "message": "I here by publish the Bans of marriage between <b>Akunne Obi William</b> and <b>Abadom Kosisochukwu</b>. if any know any just cause why they will not marry each other delcare it now or forever remain silent. ",
 }
 
 # Data for Members
@@ -67,5 +71,5 @@ def post_data(data, endpoint):
 post_data(reading_schedule_data, endpoints['reading_schedule'])
 post_data(special_prayers_data, endpoints['special_prayers'])
 post_data(hymns_data, endpoints['hymns'])
-post_data(notices_data, endpoints['notices'])
+post_data(wedding_data, endpoints['weddings'])
 post_data(members_data, endpoints['members'])

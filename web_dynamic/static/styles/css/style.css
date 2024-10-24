@@ -8699,7 +8699,8 @@ h1, h2, h3, h4, h5,
   margin-bottom: 50px; }
   .sermon-wrap .img {
     display: block;
-    height: 450px;
+    height: 556px;
+    width: 393px;
     position: relative;
     z-index: 0;
     -moz-transition: all 0.3s ease;

@@ -14,6 +14,7 @@ from models.service import SpecialPrayers
 from models.service import Hymns
 from models.service import Notices
 from models.service import Members
+from models.service import Weddings
 
 
 app = Flask(__name__)
@@ -31,16 +32,47 @@ def not_found(error):
 
 @app.route('/')
 def index():
-    latest = latest_service()
-    Latest_service = latest.json
     all_services = get_services()
     All_services = all_services.json
-    return render_template('index.html', service=Latest_service, services=All_services)
+    return render_template('index.html', services=All_services)
 
 
+@app.route('/history', strict_slashes=False)
+def history():
+    return render_template('history.html')
+
+@app.route('/groups', strict_slashes=False)
+def groups():
+    return render_template('groups.html')
 
 
+@app.route('/meditation/<id>')
+def get_meditaion(id):
+    prayers = storage.all(SpecialPrayers).values()
+    for prayer in prayers:
+        if prayer.service_id == id:
+            if prayer.prayer_name == "weekly_meditation":
+                meditation = prayer.to_dict()
+                return jsonify(meditation)
+    # No matching meditation found, return an appropriate response
+    return jsonify({"error": "Meditation not found"}), 404  # Or handle as needed
 
+@app.route('/wedding_notice/<id>')
+def get_wedding_notice(id):
+    print('i am here at wedding')
+    weddings = storage.all(Weddings).values()
+    print(weddings)
+    for wedding in weddings:
+        print('i am here in the weddings')
+        if wedding.service_id == id:
+            wedding = wedding.to_dict()
+            print('i am here at wedding')
+            return jsonify(wedding)
+    # No matching notice found, return an appropriate response
+    return jsonify({"error": "Notice not found"}), 404  # Or handle as needed
+
+
+@app.route('/latest_service')
 def latest_service():
     """Returns the service object with the latest date."""
     services = storage.all(ServiceInfo).values()  # Get all service objects
@@ -49,9 +81,10 @@ def latest_service():
     services = sorted(services, key=lambda x: x.service_date, reverse=True) 
     
     # The first element in the sorted list will be the service with the latest date
-    latest_service = services[0]
+    latest_service = services[0].to_dict()
     # print(latest_service.to_dict())
-    return jsonify(latest_service.to_dict())
+    latest_service["service_time"] = latest_service["service_time"].strftime(('%H:%M'))
+    return jsonify(latest_service)
 
 # services Routes
 @app.route('/service', methods=['POST'], strict_slashes=False)
@@ -75,7 +108,10 @@ def get_service(id):
     instance = storage.get(ServiceInfo, id)
     if not instance:
         abort(404)
-    return jsonify(instance.to_dict())
+
+    instance = instance.to_dict()
+    instance["service_time"] = instance["service_time"].strftime(('%H:%M'))
+    return jsonify(instance)
 
 @app.route('/service/<id>', methods=['PUT'], strict_slashes=False)
 def update_service(id):
@@ -112,6 +148,8 @@ def delete_service(id):
         storage.delete(reading)
     for prayer in instance.prayers:
         storage.delete(prayer)
+    for wedding in instance.weddings:
+        storage.delete(wedding)
     
 
     # Delete the service and save changes
@@ -131,7 +169,11 @@ def get_services():
     
     for service in services:
         service_dict = service.to_dict()
+        # Format the time without seconds
+        service_dict["service_time"] = service_dict["service_time"].strftime(('%H:%M'))
         list_services.append(service_dict)
+
+    print(list_services)
     
     return jsonify(list_services)
 
@@ -434,6 +476,81 @@ def delete_notice(id):
     return make_response(jsonify({}), 200)
 
 # end notices
+
+
+# weddings Routes
+@app.route('/wedding', methods=['POST'], strict_slashes=False)
+def create_wedding():
+    """
+    Creates a wedding
+    """
+    if not request.get_json():
+        abort(400, description="Not a JSON")
+
+    data = request.get_json()
+    instance = Weddings(**data)
+    instance.save()
+    return make_response(jsonify(instance.to_dict()), 201)
+
+@app.route('/wedding/<id>', methods=['GET'], strict_slashes=False)
+def get_wedding(id):
+    """
+    Gets a wedding
+    """
+    instance = storage.get(Weddings, id)
+    if not instance:
+        abort(404)
+    return jsonify(instance.to_dict())
+
+@app.route('/wedding/<id>', methods=['PUT'], strict_slashes=False)
+def update_wedding(id):
+    """
+    Updates a wedding
+    """
+    if not request.get_json():
+        abort(400, description="Not a JSON")
+
+    data = request.get_json()
+    instance = storage.get(Weddings, id)
+    if not instance:
+        abort(404)
+    for key, value in data.items():
+        setattr(instance, key, value)
+    instance.save()
+    return jsonify(instance.to_dict())
+
+@app.route('/wedding', methods=['GET'], strict_slashes=False)
+def get_weddings():
+    """
+    Gets all wedding
+    """
+    services = storage.all(Weddings).values()
+    list_services = []
+    
+    for service in services:
+        service_dict = service.to_dict()
+        list_services.append(service_dict)
+    
+    return jsonify(list_services)
+
+@app.route('/wedding/<id>', methods=['DELETE'], strict_slashes=False)
+def delete_wedding(id):
+    """
+    Deletes a wedding
+    """
+    instance = storage.get(Weddings, id)
+    if not instance:
+        abort(404)
+
+    storage.delete(instance)
+    storage.save()
+
+    return make_response(jsonify({}), 200)
+
+# end weddings
+
+
+
 
 
 

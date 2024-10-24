@@ -164,7 +164,8 @@
         // Function to load and process the static PDF document
         function loadDocument() {
             // Load PDF using PDF.js
-            const loadingTask = pdfjsLib.getDocument('./files/history.pdf'); // Change here to point to the static file
+            
+            const loadingTask = pdfjsLib.getDocument('../static/files/history.pdf'); // Change here to point to the static file
             loadingTask.promise.then(pdf => {
                 pdfDocument = pdf;
                 numPages = pdf.numPages;

@@ -10,6 +10,7 @@ from models.service import SpecialPrayers
 from models.service import Hymns
 from models.service import Notices
 from models.service import Members
+from models.service import Weddings
 
 
 
@@ -22,7 +23,8 @@ classes = {
     "SpecialPrayers": SpecialPrayers,
     "Hymns": Hymns,
     "Notices": Notices,
-    "Members": Members
+    "Members": Members,
+    "Weddings": Weddings
 }
 
 class HBNBCommand(cmd.Cmd):

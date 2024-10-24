@@ -285,20 +285,33 @@ let currentPage = 1;
 // Sample church program data (replace with your actual data)
 const churchProgramData = [
 	{
-	"image": "./images/sermon-1.png"
+	"image": "../static/images/sermon-1.png"
 	},
 	{
 	"program": [
-		{ "time": "10:00 AM", "event": "Welcome and Announcements" },
-		{ "time": "10:15 AM", "event": "Worship" },
-		{ "time": "11:00 AM", "event": "Sermon" },
-		{ "time": "11:45 AM", "event": "Offering" }
+		{ "sn": "1", "event": `Processional Hymn - ${hymn.procesional}` },
+		{ "sn": "2", "event": "The Preparation" },
+		{ "sn": "3", "event": "Ministry of the word" },
+		{ "sn": "4", "event": `Epistle - ${reading.epistle}` },
+		{ "sn": "4", "event": `Gradual Hymn - ${hymn.gradual}` },
+		{ "sn": "4", "event": `Gospel - ${reading.gospel}` },
+		{ "sn": "4", "event": "Sermon" },
+		{ "sn": "4", "event": "Nicene Creed, Intercessory Prayers To Peace" },
+		{ "sn": "4", "event": "Eucaristic Prayer and Concencration of Elemnets" },
+		{ "sn": "4", "event": `Communion Proper - ${hymn.communion}`  },
+		{ "sn": "4", "event": "Post Comunion Prayers" },
+		{ "sn": "4", "event": "Return of Tithe" },
+		{ "sn": "4", "event": `Church Offering (General, Welfare/Building Collection)` },
+		{ "sn": "4", "event": `Special Thanksgiving - (i) Covennt Seed of Faith (ii)${Aob.family_havest}` },
+		{ "sn": "4", "event": "Prayer For" },
+		{ "sn": "4", "event": "Notice" },
+		{ "sn": "4", "event": `Ressesional Hymn - ${hymn.ressesional}` },
 	]
 	},
 	{
 	"program": [
-		{ "time": "7:00 PM", "event": "Prayer Meeting" },
-		{ "time": "7:30 PM", "event": "Bible Study" }
+		{ "sn": "1", "event": "Prayer Meeting" },
+		{ "sn": "2", "event": "Bible Study" }
 	]
 	}
 ];
@@ -324,7 +337,7 @@ function displayProgramPage() {
 	if (data.program) {
 	churchProgramPage.innerHTML += `
 		<ul class="church-program-list">
-		${data.program.map(item => `<li>${item.time} - ${item.event}</li>`).join('')}
+		${data.program.map(item => `<li>${item.sn} - ${item.event}</li>`).join('')}
 		</ul>
 	`;
 	}
@@ -365,6 +378,20 @@ const meditation = [
 	}
 ]
 
+fetch('/latest_service')
+.then(response => response.json())
+.then(data => {
+	fetch(`/meditation/${data.id}`)
+	.then(response => response.json())
+	.then(meditationData => {
+		meditation[0].message = meditationData.prayer_note
+		meditation[0].Topic = meditationData.prayer_topic
+		meditation[0].Text = meditationData.prayer_text
+	})
+})
+
+
+
 
 function displayMeditation() {
 	const meditationPage = document.getElementById('meditationPage');
@@ -379,15 +406,28 @@ function displayMeditation() {
 const wedding = [
 	{
 		'topic': '',
-		'text': 'This is the Third time of Asking',
+		'text': '',
 		'message': ' I hereby publish the banns of marriage between <b>Oburo Anthony Chukwubuikem</b> and <b>Amatobi ifunanya Mercy</b>. if any one knows any reason why these persons should not marry each other he/she should declare it now. '
 	},
 	{
 		'topic': '',
-		'text': 'This is the Third time of Asking',
+		'text': '<b>This is the Third time of asking</b>',
 		'message': ' I hereby publish the banns of marriage between <b>Odibei Adimabua James</b> and <b>Ezeigwe Amechi Mary</b>. if any one knows any reason why these persons should not marry each other he/she should declare it now. '
 	}
 ]
+
+fetch('/latest_service')
+	.then(response => response.json())
+	.then(data => {
+		fetch(`/wedding_notice/${data.id}`)
+		.then(response => response.json())
+		.then(weddingData => {
+			wedding[0].message = weddingData.message
+			wedding[0].text = weddingData.text
+
+		})
+	})
+
 
 function displayWedding(){
 	const weddingPage = document.getElementById('weddingPage');
