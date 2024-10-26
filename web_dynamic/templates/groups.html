@@ -43,6 +43,7 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             max-height: 700px;
             overflow: scroll;
+            width: 274px;
             /* Hide the scrollbar */
             scrollbar-width: none; /* For Firefox */
             -ms-overflow-style: none; /* For Internet Explorer and Edge */
@@ -65,6 +66,7 @@
             border: 1px solid #ddd;
             padding: 10px;
             border-radius: 5px;
+            width: 239px;
         }
 
         .members-list table {
@@ -105,36 +107,36 @@
         <div class="collapse navbar-collapse" id="ftco-nav">
           <ul class="navbar-nav nav ml-auto">
             <li class="nav-item">
-              <a href="#home-section" class="nav-link"><span>Home</span></a>
+              <a href="/#home-section" class="nav-link"><span>Home</span></a>
             </li>
             <li class="nav-item">
-              <a href="#about-section" class="nav-link"><span>About</span></a>
+              <a href="/#about-section" class="nav-link"><span>About</span></a>
             </li>
             <li class="nav-item">
-              <a href="#services-section" class="nav-link"
+              <a href="/#services-section" class="nav-link"
                 ><span>Doctrine</span></a
               >
             </li>
             <li class="nav-item">
-              <a href="#sermons-section" class="nav-link"
+              <a href="/#sermons-section" class="nav-link"
                 ><span>Bulletin</span></a
               >
             </li>
             <li class="nav-item">
-              <a href="#events-section" class="nav-link"><span>Events</span></a>
+              <a href="/#events-section" class="nav-link"><span>Events</span></a>
             </li>
             <!-- <li class="nav-item"><a href="#causes-section" class="nav-link"><span>Causes</span></a></li>
                   <li class="nav-item"><a href="#blog-section" class="nav-link"><span>Blog</span></a></li> -->
             <li class="nav-item">
-              <a href="#pastor-section" class="nav-link"><span>Priests</span></a>
+              <a href="/#pastor-section" class="nav-link"><span>Priests</span></a>
             </li>
             <li class="nav-item">
-              <a href="#contact-section" class="nav-link"
+              <a href="/#contact-section" class="nav-link"
                 ><span>Contact</span></a
               >
             </li>
             <li class="nav-item">
-              <a href="#photo-section" class="nav-link"><span>Photos</span></a>
+              <a href="/#photo-section" class="nav-link"><span>Photos</span></a>
             </li>
           </ul>
         </div>
@@ -153,58 +155,23 @@
                         <div class="card">
                             <img src="group1-women.jpg" class="card-img-top" alt="Group Image">
                             <div class="card-body">
-                                <h5 class="card-title">Group 1 Name</h5>
+                                <h5 class="card-title">Favour Group</h5>
                                 <button class="btn btn-primary view-members" data-target="womens-group1-members">View Members</button>
                                 <div class="members-list" id="womens-group1-members" style="display: none;">
                                     <table class="table table-striped">
                                         <thead>
                                             <tr>
+                                                <th>S/N</th>
                                                 <th>Name</th>
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            {% for member in Favour %}
                                             <tr>
-                                                <td>Member 1</td>
+                                                <td>{{ loop.index }}</td> <!-- Serial number (s/n) -->
+                                                <td>{{ member.title }}.{{ member.first_name }} {{ member.last_name }}</td>
                                             </tr>
-                                            <tr>
-                                                <td>Member 2</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Member 1</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Member 2</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Member 1</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Member 2</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Member 1</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Member 2</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Member 1</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Member 2</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Member 1</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Member 2</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Member 1</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Member 2</td>
-                                            </tr>
+                                            {% endfor %}
                                             <!-- Add more members here -->
                                         </tbody>
                                     </table>
@@ -217,22 +184,23 @@
                         <div class="card">
                             <img src="group2-women.jpg" class="card-img-top" alt="Group Image">
                             <div class="card-body">
-                                <h5 class="card-title">Group 2 Name</h5>
+                                <h5 class="card-title">Joy Group</h5>
                                 <button class="btn btn-primary view-members" data-target="womens-group2-members">View Members</button>
                                 <div class="members-list" id="womens-group2-members" style="display: none;">
                                     <table class="table table-striped">
                                         <thead>
                                             <tr>
+                                                <th>S/N</th>
                                                 <th>Name</th>
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            {% for member in Joy %}
                                             <tr>
-                                                <td>Member 1</td>
+                                                <td>{{ loop.index }}</td> <!-- Serial number (s/n) -->
+                                                <td>{{ member.title }}.{{ member.first_name }} {{ member.last_name }}</td>
                                             </tr>
-                                            <tr>
-                                                <td>Member 2</td>
-                                            </tr>
+                                            {% endfor %}
                                             <!-- Add more members here -->
                                         </tbody>
                                     </table>
@@ -245,22 +213,23 @@
                         <div class="card">
                             <img src="group2-women.jpg" class="card-img-top" alt="Group Image">
                             <div class="card-body">
-                                <h5 class="card-title">Group 2 Name</h5>
-                                <button class="btn btn-primary view-members" data-target="womens-group2-members">View Members</button>
-                                <div class="members-list" id="womens-group2-members" style="display: none;">
+                                <h5 class="card-title">Faith Group</h5>
+                                <button class="btn btn-primary view-members" data-target="womens-group3-members">View Members</button>
+                                <div class="members-list" id="womens-group3-members" style="display: none;">
                                     <table class="table table-striped">
                                         <thead>
                                             <tr>
+                                                <th>S/N</th>
                                                 <th>Name</th>
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            {% for member in Faith %}
                                             <tr>
-                                                <td>Member 1</td>
+                                                <td>{{ loop.index }}</td> <!-- Serial number (s/n) -->
+                                                <td>{{ member.title }}.{{ member.first_name }} {{ member.last_name }}</td>
                                             </tr>
-                                            <tr>
-                                                <td>Member 2</td>
-                                            </tr>
+                                            {% endfor %}
                                             <!-- Add more members here -->
                                         </tbody>
                                     </table>
@@ -273,22 +242,23 @@
                         <div class="card">
                             <img src="group2-women.jpg" class="card-img-top" alt="Group Image">
                             <div class="card-body">
-                                <h5 class="card-title">Group 2 Name</h5>
-                                <button class="btn btn-primary view-members" data-target="womens-group2-members">View Members</button>
-                                <div class="members-list" id="womens-group2-members" style="display: none;">
+                                <h5 class="card-title">Love Group</h5>
+                                <button class="btn btn-primary view-members" data-target="womens-group4-members">View Members</button>
+                                <div class="members-list" id="womens-group4-members" style="display: none;">
                                     <table class="table table-striped">
                                         <thead>
                                             <tr>
+                                                <th>S/N</th>
                                                 <th>Name</th>
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            {% for member in Love %}
                                             <tr>
-                                                <td>Member 1</td>
+                                                <td>{{ loop.index }}</td> <!-- Serial number (s/n) -->
+                                                <td>{{ member.title }}.{{ member.first_name }} {{ member.last_name }}</td>
                                             </tr>
-                                            <tr>
-                                                <td>Member 2</td>
-                                            </tr>
+                                            {% endfor %}
                                             <!-- Add more members here -->
                                         </tbody>
                                     </table>
@@ -296,34 +266,7 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Group 5 -->
-                    <div class="col-md-6 mb-3">
-                        <div class="card">
-                            <img src="group2-women.jpg" class="card-img-top" alt="Group Image">
-                            <div class="card-body">
-                                <h5 class="card-title">Group 2 Name</h5>
-                                <button class="btn btn-primary view-members" data-target="womens-group2-members">View Members</button>
-                                <div class="members-list" id="womens-group2-members" style="display: none;">
-                                    <table class="table table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th>Name</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>Member 1</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Member 2</td>
-                                            </tr>
-                                            <!-- Add more members here -->
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+
                     <!-- Add more women's groups here -->
                 </div>
             </div>

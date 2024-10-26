@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>HCRBC</title>
+    <title>St.Philip's Anglican Church</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -248,7 +248,7 @@
 
 
 
-          <div class="col-md d-flex align-self-stretch ftco-animate">
+          <!-- <div class="col-md d-flex align-self-stretch ftco-animate">
 			<a href="">
             <div class="media block-6 services text-center d-block">
               <div class="icon"><span class="flaticon-church"></span></div>
@@ -258,7 +258,7 @@
               </div>
             </div>
 			</a>
-          </div>
+          </div> -->
 
 
 
@@ -267,7 +267,7 @@
             <div class="media block-6 services text-center d-block">
               <div class="icon"><span class="flaticon-rings"></span></div>
               <div class="media-body">
-                <h3 class="heading mb-3">Weddings</h3>
+                <h3 class="heading mb-3">Bans of Marriage</h3>
                 <p style="color: #999999;">Bans of marriages. A list of all the marriage bans in our Church.</p>
               </div>
             </div>
@@ -330,7 +330,7 @@
     							<!-- <span>by pastor:</span>
     							<h3>Jerry Simon</h3> -->
     							<p class="">
-									<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#churchProgramModal">
+									<button type="button" class="btn btn-primary view-bulletin-btn" data-toggle="modal" data-target="#churchProgramModal-{{ service.id}}" data-service-id="{{ service.id }}">
 										View Bulletin
 									  </button>
 										<!-- <a href="#" class="btn-custom p-2 text-center"><span class="icon-download"></span> Download</a> -->
@@ -338,10 +338,10 @@
     						</div>
     					</div>
     					<div class="text pt-3 text-center">
-    						<h2 class="mb-0"><a href="sermon.html">Let the Sunset Inspire You</a></h2>
+    						<h2 class="mb-0"><a href="#">{{ service.special_celebration }}</a></h2>
     						<div class="meta">
 		  						<p class="mb-0">
-			  						<span>July 01, 2019</span>
+			  						<span>{{ service.service_date}}</span>
 		  						</p>
 		  					</div>
     					</div>
@@ -349,23 +349,29 @@
         	</div>
 
 			<!-- Modal -->
-			<div class="modal fade" id="churchProgramModal" tabindex="-1" role="dialog" aria-labelledby="churchProgramModalLabel" aria-hidden="true">
+			<div class="modal fade" id="churchProgramModal-{{ service.id }}" tabindex="-1" role="dialog" aria-labelledby="churchProgramModalLabel" aria-hidden="true">
 				<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
-					<h5 class="modal-title" id="churchProgramModalLabel">Church Program</h5>
+						<img style="width: 62px;
+						display: block;
+						margin-left: -64px;
+						margin-bottom: -75px;" src="../static/images/logo.png" alt="">
+					<h5 class="modal-title" id="churchProgramModalLabel">{{ service.service_name }}</h5>
+					<h5 class="modal-title" id="churchProgramModalLabel1">Liturgical Color {{ service.liturgical_color }}</h5>
+					<h5 class="modal-title" id="churchProgramModalLabel2">{{ service.special_celebration }}</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
 					</div>
 					<div class="modal-body">
-					<div id="churchProgramPage" class="church-program-page">
+					<div id="churchProgramPage-{{ service.id }}" class="church-program-page">
 						<!-- Program content will be inserted here -->
 					</div> 
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" id="prevButton" disabled>Previous</button>
-						<button type="button" class="btn btn-primary" id="nextButton">Next</button>
+						<button type="button" class="btn btn-secondary" id="prevButton-{{ service.id }}"  data-service-id="{{ service.id }}" disabled>Previous</button>
+						<button type="button" class="btn btn-primary"  data-service-id="{{ service.id }}" id="nextButton-{{ service.id }}">Next</button>
 					</div>
 				</div>
 				</div>

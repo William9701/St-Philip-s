@@ -2,7 +2,7 @@ from flask import redirect, url_for, session
 from flask import request, jsonify
 from flask import Flask, render_template, request
 from jinja2 import Environment, select_autoescape
-from datetime import datetime, timedelta
+from datetime import datetime, time, timedelta
 import os
 import uuid
 from models import storage
@@ -26,6 +26,17 @@ def not_found(error):
 @app.route('/')
 def index():
     all_services = get_services().json
+    
+    # Parse the service_date into datetime objects for accurate sorting
+    for service in all_services:
+        service['parsed_date'] = datetime.strptime(service['service_date'], '%a, %d %b %Y %H:%M:%S %Z')
+
+    # Sort services by parsed_date
+    all_sorted_services = sorted(all_services, key=lambda service: service['parsed_date'], reverse=True)
+    
+    print("Sorted services:", all_sorted_services)
+    print("All services:", all_services)
+    
     latst_service = latest_service().json
     meditations = get_prayers().json
     events = get_upcoming_event_list().json
@@ -33,7 +44,7 @@ def index():
     # Find the meditation associated with the latest service
     mediPrayer = next((m for m in meditations if m['service_id'] == latst_service['id']), None)
 
-    return render_template('index.html', services=all_services, mediPrayer=mediPrayer, events=events)
+    return render_template('index.html', services=all_sorted_services, mediPrayer=mediPrayer, events=events)
 
 
 @app.route('/history', strict_slashes=False)
@@ -42,33 +53,48 @@ def history():
 
 @app.route('/groups', strict_slashes=False)
 def groups():
-    return render_template('groups.html')
+    Favour = groupFavour().json
+    Joy = groupJoy().json
+    Faith = groupFaith().json
+    Love = groupLove().json
+    return render_template('groups.html', Favour=Favour, Joy=Joy, Faith=Faith, Love=Love)
+
+def groupFavour():
+    Allmembers = get_members().json
+    groupList = []
+    for member in Allmembers:
+        if member['group_name'] == 'Favour':
+            groupList.append(member)
+    return jsonify(groupList)
 
 
-# @app.route('/meditation/<id>')
-# def get_meditaion(id):
-#     prayers = storage.all(Meditation).values()
-#     for prayer in prayers:
-#         if prayer.service_id == id:
-#             if prayer.prayer_name == "weekly_meditation":
-#                 meditation = prayer.to_dict()
-#                 return jsonify(meditation)
-#     # No matching meditation found, return an appropriate response
-#     return jsonify({"error": "Meditation not found"}), 404  # Or handle as needed
+def groupJoy():
+    Allmembers = get_members().json
+    groupList = []
+    for member in Allmembers:
+        if member['group_name'] == 'Joy':
+            groupList.append(member)
+    return jsonify(groupList)
 
-# @app.route('/wedding_notice/<id>')
-# def get_wedding_notice(id):
-#     print('i am here at wedding')
-#     weddings = storage.all(Weddings).values()
-#     print(weddings)
-#     for wedding in weddings:
-#         print('i am here in the weddings')
-#         if wedding.service_id == id:
-#             wedding = wedding.to_dict()
-#             print('i am here at wedding')
-#             return jsonify(wedding)
-#     # No matching notice found, return an appropriate response
-#     return jsonify({"error": "Notice not found"}), 404  # Or handle as needed
+
+def groupFaith():
+    Allmembers = get_members().json
+    groupList = []
+    for member in Allmembers:
+        if member['group_name'] == 'Faith':
+            groupList.append(member)
+    return jsonify(groupList)
+
+
+def groupLove():
+    Allmembers = get_members().json
+    groupList = []
+    for member in Allmembers:
+        if member['group_name'] == 'Love':
+            groupList.append(member)
+    return jsonify(groupList)
+
+
 
 
 @app.route('/latest_service')
@@ -132,7 +158,15 @@ def update_service(id):
     for key, value in data.items():
         setattr(instance, key, value)
     instance.save()
-    return jsonify(instance.to_dict())
+
+    # Convert the service_time to string (if it's a time object)
+    instance_dict = instance.to_dict()
+
+    if isinstance(instance_dict.get("service_time"), time):  # If service_time exists and is a time object
+        instance_dict["service_time"] = instance_dict["service_time"].strftime('%H:%M')
+
+    # Return the updated instance as JSON
+    return jsonify(instance_dict)
 
 
 @app.route('/service/<id>', methods=['DELETE'], strict_slashes=False)

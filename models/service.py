@@ -9,6 +9,7 @@ class ServiceInfo(Basemodels, Base):
     service_name = Column(String(100), nullable=False)
     liturgical_color = Column(String(20), nullable=False)
     special_celebration = Column(String(100))
+    service_type = Column(String(100))
 
     readings = relationship('ReadingSchedule', back_populates='service')
     meditations = relationship('Meditation', back_populates='service')
@@ -22,8 +23,11 @@ class ServiceInfo(Basemodels, Base):
 class ReadingSchedule(Basemodels, Base):
     __tablename__ = 'reading_schedule'
     service_id = Column(String(225), ForeignKey('service_info.id', ondelete='CASCADE'), nullable=False)
-    first_lesson = String(225)
+    first_lesson = Column(String(225))
     second_lesson = Column(String(50))
+    espistle = Column(String(225))
+    gospel = Column(String(225))
+    psalm = Column(String(225))
 
     service = relationship('ServiceInfo', back_populates='readings')
     def __init__(self, *args, **kwargs):
@@ -92,8 +96,7 @@ class Notices(Basemodels, Base):
 class NoticeSchedule(Basemodels, Base):
     __tablename__ = 'notice_schedule'
     notice_id = Column(String(225), ForeignKey('notices.id', ondelete='CASCADE'))
-    event_day = Column(Date, nullable=False)
-    event_time = Column(Time, nullable=False)
+    event_day = Column(String(225), nullable=False)
     event_description = Column(Text)
 
     notice = relationship('Notices', back_populates='schedules')
@@ -136,7 +139,7 @@ class MarriageBann(Basemodels, Base):
     notice_id = Column(String(225), ForeignKey('notices.id', ondelete='CASCADE'))
     groom_name = Column(String(255))
     bride_name = Column(String(255))
-    bann_announcement_count = Column(Integer)
+    bann_announcement_count = Column(String(255))
 
     notice = relationship('Notices', back_populates='marriages')
 

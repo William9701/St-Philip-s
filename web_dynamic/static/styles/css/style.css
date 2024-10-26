@@ -4689,7 +4689,9 @@ a.close.disabled {
 
 .modal-title {
   margin-bottom: 0;
-  line-height: 1.5; }
+  line-height: 1.5; 
+  color: aliceblue;
+}
 
 .modal-body {
   position: relative;
@@ -9933,6 +9935,8 @@ textarea.form-control {
   background-color: rgba(0, 0, 0, 0.9); /* Darker black for header */
   border-bottom: none;
   color: white;
+  display: block;
+  padding-left: 17%;
 }
 .modal-body {
   padding: 0;
