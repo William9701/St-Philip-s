@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Community Dashboard</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Great+Vibes&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="../static/styles/css/open-iconic-bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="../static/styles/css/animate.css" />
+
+    <link rel="stylesheet" href="../static/styles/css/owl.carousel.min.css" />
+    <link
+      rel="stylesheet"
+      href="../static/styles/css/owl.theme.default.min.css"
+    />
+    <link rel="stylesheet" href="../static/styles/css/magnific-popup.css" />
+
+    <link rel="stylesheet" href="../static/styles/css/aos.css" />
+
+    <link rel="stylesheet" href="../static/styles/css/ionicons.min.css" />
+
+    <link rel="stylesheet" href="../static/styles/css/flaticon.css" />
+    <link rel="stylesheet" href="../static/styles/css/icomoon.css" />
+    <link rel="stylesheet" href="../static/styles/css/style.css" />
+    <link
+      href="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/smart_wizard.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/smart_wizard_theme_arrows.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    />
+    <style>
+      body {
+        background-color: #f9f9f9;
+      }
+      .container {
+        margin-top: 50px;
+      }
+      .welcome-section {
+        text-align: center;
+        margin-bottom: 50px;
+      }
+      .card-selection {
+        text-align: center;
+      }
+      .card-selection .card {
+        cursor: pointer;
+        transition: 0.3s;
+      }
+      .card-selection .card:hover {
+        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+      }
+      .modal-footer {
+        display: flex;
+        justify-content: space-between;
+      }
+      .table-responsive {
+        max-height: 300px;
+        overflow-y: auto;
+      }
+      .sw-main {
+        height: 82vh;
+        overflow: scroll;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Welcome Section -->
+      <div class="welcome-section">
+        <h1>Welcome to the Community Dashboard</h1>
+        <p>Select a section to continue:</p>
+      </div>
+
+      <!-- Section Selection Cards -->
+      <div class="row card-selection">
+        <div class="col-md-4 mb-4">
+          <div class="card" data-toggle="modal" data-target="">
+            <div class="card-body">
+              <h5 class="card-title">Space Community</h5>
+              <p class="card-text">Manage your community space activities.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 mb-4">
+          <div class="card" data-toggle="modal" data-target="#optionsModal">
+            <div class="card-body">
+              <h5 class="card-title">Bulletin</h5>
+              <p class="card-text">Create or update community bulletins.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 mb-4">
+          <div class="card" data-toggle="modal" data-target="">
+            <div class="card-body">
+              <h5 class="card-title">Upcoming Event</h5>
+              <p class="card-text">Manage your upcoming events here.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Options Modal -->
+    <div
+      class="modal fade"
+      id="optionsModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="optionsModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Select an Action</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body text-center">
+            <button
+              type="button"
+              class="btn btn-primary mb-3"
+              data-toggle="modal"
+              data-target="#serviceTypeModal"
+              data-dismiss="modal"
+            >
+              Create
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary mb-3"
+              data-toggle="modal"
+              data-target="#updateModal"
+              data-dismiss="modal"
+            >
+              Update
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Service Type Modal -->
+    <div
+      class="modal fade"
+      id="serviceTypeModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="serviceTypeModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Select Service Type</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body text-center">
+            <p>What kind of service do you want to create?</p>
+            <button
+              type="button"
+              class="btn btn-primary mb-3"
+              id="combinedServiceBtn"
+            >
+              Combined Service
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary mb-3"
+              id="doubleServiceBtn"
+            >
+              Double Service
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Combined Service Modal with Steps 1, 3, and 4 -->
+    <div class="modal fade" id="combinedServiceModal" tabindex="-1" role="dialog" aria-labelledby="combinedServiceModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Create New Entry</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div id="smartwizard">
+              <ul>
+                <li>
+                  <a href="#step-1">Step 1<br /><small>Service Info</small></a>
+                </li>
+                <li>
+                  <a href="#step-2">Step 2<br /><small>Notices</small></a>
+                </li>
+                <li>
+                  <a href="#step-3">Step 3<br /><small>Meditation</small></a>
+                </li>
+              </ul>
+              <div class="mt-4">
+                <!-- Steps Content Here -->
+                <div id="step-1">
+                  <form>
+                    <div class="form-group">
+                      <label for="sundayName">Sunday Name</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="sundayName"
+                        placeholder="Third Sunday in Lent"
+                        required
+                      />
+                    </div>
+
+                    <div class="form-group">
+                      <label for="sundayDate">Select Date</label>
+                      <input
+                        type="date"
+                        class="form-control"
+                        id="sundayDate"
+                        required
+                        onchange="highlightSundays(this)"
+                      />
+                    </div>
+
+                    <div class="form-group">
+                      <label for="specialEvent">Sunday Special Event</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="specialEvent"
+                        placeholder="Enter the special event"
+                        required
+                      />
+                    </div>
+
+                    <div class="form-group">
+                      <label for="processionalHymn">Processional Hymn</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="processionalHymn"
+                        placeholder="Enter the processional hymn"
+                        required
+                      />
+                    </div>
+
+                    <div class="form-group">
+                      <label for="Epistle">Epistle</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="epistle"
+                        placeholder="Enter the Epistle"
+                        required
+                      />
+                    </div>
+
+                    <div class="form-group">
+                      <label for="gradualHymn">Gradual Hymn</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="gradualHymn"
+                        placeholder="Enter the gradual hymn"
+                        required
+                      />
+                    </div>
+
+                    <div class="form-group">
+                      <label for="gospel">Gospel</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="gospel"
+                        placeholder="Enter Gospel"
+                        required
+                      />
+                    </div>
+
+                    <div class="form-group">
+                      <label for="communionHymn">Communion Hymn</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="communionHymn"
+                        placeholder="Enter the communion hymn"
+                        required
+                      />
+                    </div>
+
+                    <div class="form-group">
+                      <label for="specialThanksgiving"
+                        >Special Thanksgiving</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="specialThanksgiving"
+                        placeholder="Enter details for special thanksgiving starting with (ii) and then on to add more details"
+                      />
+                    </div>
+
+                    <div class="form-group">
+                      <label for="aob">Any Other Business (AOB)</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="aob"
+                        placeholder="Enter any other business"
+                      />
+                    </div>
+
+                    <div class="form-group">
+                      <label for="recessionalHymn">Recessional Hymn</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="recessionalHymn"
+                        placeholder="Enter the recessional hymn"
+                        required
+                      />
+                    </div>
+                  </form>
+                </div>
+                <!-- Step 2 Content Here -->
+
+                <!-- Step 2 Content Here -->
+                <div id="step-2">
+                  <form id="infoForm">
+                    <!-- Section for Collect for the Day -->
+                    <div class="form-group">
+                      <label for="collect">Collect for the Day</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="collect"
+                        placeholder="Enter the collect for the day"
+                        required
+                      />
+                    </div>
+
+                    <!-- Section for Daily Info -->
+                    <div id="dailyInfoContainer">
+                      <label>Daily Info</label>
+                      <div class="form-group row mb-3">
+                        <div class="col-md-5">
+                          <label for="date1">Date</label>
+                          <input
+                            type="date"
+                            class="form-control"
+                            id="date1"
+                            required
+                          />
+                        </div>
+                        <div class="col-md-7">
+                          <label for="dailyInfo1">Daily Info</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="dailyInfo1"
+                            placeholder="Enter daily info"
+                            required
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      id="addDailyInfo"
+                    >
+                      Add More Daily Info
+                    </button>
+
+                    <!-- Section for Button Info -->
+                    <div id="buttonInfoContainer" class="mt-4">
+                      <label>Button Info</label>
+                      <div class="form-group mb-3">
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="buttonInfo1"
+                          placeholder="Enter button info"
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      id="addButtonInfo"
+                    >
+                      Add More Button Info
+                    </button>
+
+                    <!-- Section for Family Names -->
+                    <div id="familyNamesContainer" class="mt-4">
+                      <label>Family Names</label>
+                      <div class="form-group mb-3">
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="familyName1"
+                          placeholder="Enter family name"
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      id="addFamilyName"
+                    >
+                      Add More Family Name
+                    </button>
+
+                    <!-- Section for Bride and Groom Info -->
+                    <div id="brideGroomContainer" class="mt-4">
+                      <label>Bride and Groom Info</label>
+                      <div class="form-group row mb-3">
+                        <div class="col-md-4">
+                          <label for="brideName1">Bride's Name</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="brideName1"
+                            placeholder="Enter bride's name"
+                            required
+                          />
+                        </div>
+                        <div class="col-md-4">
+                          <label for="groomName1">Groom's Name</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="groomName1"
+                            placeholder="Enter groom's name"
+                            required
+                          />
+                        </div>
+                        <div class="col-md-4">
+                          <label for="timeOfAsking1">Time of Asking</label>
+                          <select
+                            class="form-control"
+                            id="timeOfAsking1"
+                            required
+                          >
+                            <option value="" disabled selected>
+                              Select time of asking
+                            </option>
+                            <option value="First">First</option>
+                            <option value="Second">Second</option>
+                            <option value="Third">Third and Final</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      id="addBrideGroom"
+                    >
+                      Add More Bride/Groom Info
+                    </button>
+                  </form>
+                </div>
+                <!-- Step 3 Content Here -->
+                <div id="step-3">
+                  <form id="meditationForm">
+                    <!-- Meditation Topic -->
+                    <div class="form-group mb-3">
+                      <label for="meditationTopic">Meditation Topic</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="meditationTopic"
+                        placeholder="Enter meditation topic"
+                        required
+                      />
+                    </div>
+
+                    <!-- Meditation Text -->
+                    <div class="form-group mb-3">
+                      <label for="meditationText">Meditation Text</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="meditationText"
+                        rows="4"
+                        placeholder="Enter meditation text"
+                        required
+                      />
+                    </div>
+
+                    <!-- Message -->
+                    <div class="form-group mb-3">
+                      <label for="message">Message</label>
+                      <textarea
+                        class="form-control"
+                        id="message"
+                        rows="4"
+                        placeholder="Enter message"
+                        required
+                      ></textarea>
+                    </div>
+                    <!-- Create Bulletin Button -->
+                    <button type="submit" class="btn btn-primary mt-3">
+                      Create Bulletin
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
+
+
+    <!-- Create Double Service Modal with Multi-step Wizard -->
+    <div
+      class="modal fade"
+      id="createModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="createModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Create New Entry</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div id="smartwizard">
+              <ul>
+                <li>
+                  <a href="#step-1">Step 1<br /><small>1st Service</small></a>
+                </li>
+                <li>
+                  <a href="#step-2">Step 2<br /><small>2nd Service</small></a>
+                </li>
+                <li>
+                  <a href="#step-3">Step 3<br /><small>Notices</small></a>
+                </li>
+                <li>
+                  <a href="#step-4">Step 4<br /><small>Meditation</small></a>
+                </li>
+              </ul>
+              <div class="mt-4">
+                <!-- Steps Content Here -->
+                <div id="step-1">
+                  <form>
+                    <div class="form-group">
+                      <label for="sundayName">Sunday Name</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="sundayName"
+                        placeholder="Third Sunday in Lent"
+                        required
+                      />
+                    </div>
+
+                    <div class="form-group">
+                      <label for="sundayDate">Select Date</label>
+                      <input
+                        type="date"
+                        class="form-control"
+                        id="sundayDate"
+                        required
+                        onchange="highlightSundays(this)"
+                      />
+                    </div>
+
+                    <div class="form-group">
+                      <label for="specialEvent">Sunday Special Event</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="specialEvent"
+                        placeholder="Enter the special event"
+                        required
+                      />
+                    </div>
+
+                    <div class="form-group">
+                      <label for="processionalHymn">Processional Hymn</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="processionalHymn"
+                        placeholder="Enter the processional hymn"
+                        required
+                      />
+                    </div>
+
+                    <div class="form-group">
+                      <label for="Epistle">Epistle</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="epistle"
+                        placeholder="Enter the Epistle"
+                        required
+                      />
+                    </div>
+
+                    <div class="form-group">
+                      <label for="gradualHymn">Gradual Hymn</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="gradualHymn"
+                        placeholder="Enter the gradual hymn"
+                        required
+                      />
+                    </div>
+
+                    <div class="form-group">
+                      <label for="gospel">Gospel</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="gospel"
+                        placeholder="Enter Gospel"
+                        required
+                      />
+                    </div>
+
+                    <div class="form-group">
+                      <label for="communionHymn">Communion Hymn</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="communionHymn"
+                        placeholder="Enter the communion hymn"
+                        required
+                      />
+                    </div>
+
+                    <div class="form-group">
+                      <label for="specialThanksgiving"
+                        >Special Thanksgiving</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="specialThanksgiving"
+                        placeholder="Enter details for special thanksgiving starting with (ii) and then on to add more details"
+                      />
+                    </div>
+
+                    <div class="form-group">
+                      <label for="aob">Any Other Business (AOB)</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="aob"
+                        placeholder="Enter any other business"
+                      />
+                    </div>
+
+                    <div class="form-group">
+                      <label for="recessionalHymn">Recessional Hymn</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="recessionalHymn"
+                        placeholder="Enter the recessional hymn"
+                        required
+                      />
+                    </div>
+                  </form>
+                </div>
+                <!-- Step 2 Content Here -->
+                <div id="step-2">
+                  <form>
+                    <div class="form-group">
+                      <label for="Psalm">Psalm</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="psalm"
+                        placeholder="Enter the psalm"
+                        required
+                      />
+                    </div>
+
+                    <div class="form-group">
+                      <label for="firstLesson">First Lesson</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="firstLesson"
+                        placeholder="Enter the first lesson"
+                        required
+                      />
+                    </div>
+
+                    <div class="form-group">
+                      <label for="gradualHymn">Gradual Hymn</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="gradualHymn"
+                        placeholder="Enter the gradual hymn or Te-Deum"
+                        required
+                      />
+                    </div>
+
+                    <div class="form-group">
+                      <label for="secondLesson">Second Lesson</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="secondLesson"
+                        placeholder="Enter the second lesson"
+                        required
+                      />
+                    </div>
+
+                    <div class="form-group">
+                      <label for="sermonHymn">Hymn for Sermon</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="sermonHymn"
+                        placeholder="Enter the hymn for sermon"
+                        required
+                      />
+                    </div>
+
+                    <div class="form-group">
+                      <label for="specialThanksgiving"
+                        >Special Thanksgiving</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="specialThanksgiving"
+                        placeholder="Enter details for special thanksgiving"
+                      />
+                    </div>
+
+                    <div class="form-group">
+                      <label for="aob">Any Other Business (AOB)</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="aob"
+                        placeholder="Enter any other business"
+                      />
+                    </div>
+
+                    <div class="form-group">
+                      <label for="recessionalHymn">Recessional Hymn</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="recessionalHymn"
+                        placeholder="Enter the recessional hymn"
+                        required
+                      />
+                    </div>
+                  </form>
+                </div>
+                <!-- Step 3 Content Here -->
+                <div id="step-3">
+                  <form id="infoForm">
+                    <!-- Section for Collect for the Day -->
+                    <div class="form-group">
+                      <label for="collect">Collect for the Day</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="collect"
+                        placeholder="Enter the collect for the day"
+                        required
+                      />
+                    </div>
+
+                    <!-- Section for Daily Info -->
+                    <div id="dailyInfoContainer">
+                      <label>Daily Info</label>
+                      <div class="form-group row mb-3">
+                        <div class="col-md-5">
+                          <label for="date1">Date</label>
+                          <input
+                            type="date"
+                            class="form-control"
+                            id="date1"
+                            required
+                          />
+                        </div>
+                        <div class="col-md-7">
+                          <label for="dailyInfo1">Daily Info</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="dailyInfo1"
+                            placeholder="Enter daily info"
+                            required
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      id="addDailyInfo"
+                    >
+                      Add More Daily Info
+                    </button>
+
+                    <!-- Section for Button Info -->
+                    <div id="buttonInfoContainer" class="mt-4">
+                      <label>Button Info</label>
+                      <div class="form-group mb-3">
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="buttonInfo1"
+                          placeholder="Enter button info"
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      id="addButtonInfo"
+                    >
+                      Add More Button Info
+                    </button>
+
+                    <!-- Section for Family Names -->
+                    <div id="familyNamesContainer" class="mt-4">
+                      <label>Family Names</label>
+                      <div class="form-group mb-3">
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="familyName1"
+                          placeholder="Enter family name"
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      id="addFamilyName"
+                    >
+                      Add More Family Name
+                    </button>
+
+                    <!-- Section for Bride and Groom Info -->
+                    <div id="brideGroomContainer" class="mt-4">
+                      <label>Bride and Groom Info</label>
+                      <div class="form-group row mb-3">
+                        <div class="col-md-4">
+                          <label for="brideName1">Bride's Name</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="brideName1"
+                            placeholder="Enter bride's name"
+                            required
+                          />
+                        </div>
+                        <div class="col-md-4">
+                          <label for="groomName1">Groom's Name</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="groomName1"
+                            placeholder="Enter groom's name"
+                            required
+                          />
+                        </div>
+                        <div class="col-md-4">
+                          <label for="timeOfAsking1">Time of Asking</label>
+                          <select
+                            class="form-control"
+                            id="timeOfAsking1"
+                            required
+                          >
+                            <option value="" disabled selected>
+                              Select time of asking
+                            </option>
+                            <option value="First">First</option>
+                            <option value="Second">Second</option>
+                            <option value="Third">Third and Final</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      id="addBrideGroom"
+                    >
+                      Add More Bride/Groom Info
+                    </button>
+                  </form>
+                </div>
+                <!-- Step 4 Content Here -->
+                <div id="step-4">
+                  <form id="meditationForm">
+                    <!-- Meditation Topic -->
+                    <div class="form-group mb-3">
+                      <label for="meditationTopic">Meditation Topic</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="meditationTopic"
+                        placeholder="Enter meditation topic"
+                        required
+                      />
+                    </div>
+
+                    <!-- Meditation Text -->
+                    <div class="form-group mb-3">
+                      <label for="meditationText">Meditation Text</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="meditationText"
+                        rows="4"
+                        placeholder="Enter meditation text"
+                        required
+                      />
+                    </div>
+
+                    <!-- Message -->
+                    <div class="form-group mb-3">
+                      <label for="message">Message</label>
+                      <textarea
+                        class="form-control"
+                        id="message"
+                        rows="4"
+                        placeholder="Enter message"
+                        required
+                      ></textarea>
+                    </div>
+                    <!-- Create Bulletin Button -->
+                    <button type="submit" class="btn btn-primary mt-3">
+                      Create Bulletin
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Update Modal with List Table -->
+    <div
+      class="modal fade"
+      id="updateModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="updateModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Update Existing Entries</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="table-responsive">
+              <table class="table table-bordered table-striped">
+                <thead>
+                  <tr>
+                    <th>Item Name</th>
+                    <th>Date Created</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Sample Item 1</td>
+                    <td>2024-10-24</td>
+                    <td>
+                      <button class="btn btn-danger btn-sm">Delete</button>
+                    </td>
+                  </tr>
+                  <!-- Additional rows as needed -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/jquery.smartWizard.min.js"
+    ></script>
+    <script>
+      $(document).ready(function () {
+        $("#smartwizard").smartWizard({
+          selected: 0,
+          theme: "arrows",
+          autoAdjustHeight: true,
+          transitionEffect: "fade",
+          showStepURLhash: false,
+        });
+
+        // Show create modal based on the selected service type
+        $("#combinedServiceBtn").on("click", function () {
+          $("#serviceTypeModal").modal("hide");
+          $("#combinedServiceModal").modal("show");
+          // You can load the combined service form here if needed
+        });
+
+        $("#doubleServiceBtn").on("click", function () {
+          $("#serviceTypeModal").modal("hide");
+          $("#createModal").modal("show");
+          // You can load the double service form here if needed
+        });
+      });
+    </script>
+    <script>
+      function highlightSundays(dateInput) {
+        const dateValue = new Date(dateInput.value);
+        if (dateValue.getDay() !== 0) {
+          alert("Please select a Sunday.");
+          dateInput.value = "";
+        }
+      }
+    </script>
+    <script>
+      let dailyInfoCount = 1;
+      let buttonInfoCount = 1;
+      let familyNameCount = 1;
+      let brideGroomCount = 1;
+
+      // Add more Daily Info input fields
+      document
+        .getElementById("addDailyInfo")
+        .addEventListener("click", function () {
+          dailyInfoCount++;
+
+          const newDailyInfo = document.createElement("div");
+          newDailyInfo.className = "form-group row mb-3";
+          newDailyInfo.innerHTML = `
+          <div class="col-md-5">
+            <label for="date${dailyInfoCount}">Date</label>
+            <input type="date" class="form-control" id="date${dailyInfoCount}" required />
+          </div>
+          <div class="col-md-7">
+            <label for="dailyInfo${dailyInfoCount}">Daily Info</label>
+            <input type="text" class="form-control" id="dailyInfo${dailyInfoCount}" placeholder="Enter daily info" required />
+          </div>
+        `;
+
+          document
+            .getElementById("dailyInfoContainer")
+            .appendChild(newDailyInfo);
+        });
+
+      // Add more Button Info input fields
+      document
+        .getElementById("addButtonInfo")
+        .addEventListener("click", function () {
+          buttonInfoCount++;
+
+          const newButtonInfo = document.createElement("div");
+          newButtonInfo.className = "form-group mb-3";
+          newButtonInfo.innerHTML = `
+          <input type="text" class="form-control" id="buttonInfo${buttonInfoCount}" placeholder="Enter button info" required />
+        `;
+
+          document
+            .getElementById("buttonInfoContainer")
+            .appendChild(newButtonInfo);
+        });
+
+      // Add more Family Name input fields
+      document
+        .getElementById("addFamilyName")
+        .addEventListener("click", function () {
+          familyNameCount++;
+
+          const newFamilyName = document.createElement("div");
+          newFamilyName.className = "form-group mb-3";
+          newFamilyName.innerHTML = `
+          <input type="text" class="form-control" id="familyName${familyNameCount}" placeholder="Enter family name" required />
+        `;
+
+          document
+            .getElementById("familyNamesContainer")
+            .appendChild(newFamilyName);
+        });
+
+      // Add more Bride/Groom Info input fields
+      document
+        .getElementById("addBrideGroom")
+        .addEventListener("click", function () {
+          brideGroomCount++;
+
+          const newBrideGroom = document.createElement("div");
+          newBrideGroom.className = "form-group row mb-3";
+          newBrideGroom.innerHTML = `
+          <div class="col-md-4">
+            <label for="brideName${brideGroomCount}">Bride's Name</label>
+            <input type="text" class="form-control" id="brideName${brideGroomCount}" placeholder="Enter bride's name" required />
+          </div>
+          <div class="col-md-4">
+            <label for="groomName${brideGroomCount}">Groom's Name</label>
+            <input type="text" class="form-control" id="groomName${brideGroomCount}" placeholder="Enter groom's name" required />
+          </div>
+          <div class="col-md-4">
+            <label for="timeOfAsking${brideGroomCount}">Time of Asking</label>
+            <select class="form-control" id="timeOfAsking${brideGroomCount}" required>
+              <option value="" disabled selected>Select time of asking</option>
+              <option value="First">First</option>
+              <option value="Second">Second</option>
+              <option value="Third">Third and Final</option>
+            </select>
+          </div>
+        `;
+
+          document
+            .getElementById("brideGroomContainer")
+            .appendChild(newBrideGroom);
+        });
+    </script>
+    <!-- <script src="../static/script/js/jquery.min.js"></script> -->
+    <script src="../static/script/js/jquery-migrate-3.0.1.min.js"></script>
+    <script src="../static/script/js/popper.min.js"></script>
+    <script src="../static/script/js/bootstrap.min.js"></script>
+    <script src="../static/script/js/jquery.easing.1.3.js"></script>
+    <script src="../static/script/js/jquery.waypoints.min.js"></script>
+    <script src="../static/script/js/jquery.stellar.min.js"></script>
+    <script src="../static/script/js/owl.carousel.min.js"></script>
+    <script src="../static/script/js/jquery.magnific-popup.min.js"></script>
+    <script src="../static/script/js/aos.js"></script>
+    <script src="../static/script/js/jquery.animateNumber.min.js"></script>
+    <script src="../static/script/js/scrollax.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
+    <script src="../static/script/js/google-map.js"></script>
+  </body>
+</html>

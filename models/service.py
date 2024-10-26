@@ -51,6 +51,7 @@ class Hymns(Basemodels, Base):
     gradual = Column(String(225))
     communion = Column(String(225))
     Recessional = Column(String(225))
+    sermon = Column(String(225))
 
     service = relationship('ServiceInfo', back_populates='hymns')
     def __init__(self, *args, **kwargs):

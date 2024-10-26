@@ -340,6 +340,7 @@ async function fetchAndUseService(serviceId) {
           { text: "We welcome all worshipers to this divine service, especially those worshiping with us for the first time" },
           ...schedules,
           ...resources,
+          { text: "<b><u>PLEASE NOTE:</u></b> For tithe use <b>Access Bank</b>   {Account Name: <b>St. Philip's Anglican Church Asaba</b>. Account Number: <b>0057259382</b>}. For Harvest & Building Support use <b>Polaris Bank</b>  {Account Name: <b>St. Philip's Anglican Church Asaba</b>. Account Number: <b>1040502076</b>}. For all your sacrifice use <b>Eco Bank</b>  {Account Name: <b>St. Philip's Anglican Church Asaba</b>. Account Number: <b>4312025686</b>.} For <b>MISSION PARTNERSHIP</b> use <b>Polaris Bank</b>  {Account Name: <b>St. Philip's Anglican Church Asaba</b>. Account Number: <b>4091373646</b>.}" },
           { text: "Weekly Prayers: The Church should please pray for the following families" },
           ...prayers
         ]
@@ -448,6 +449,7 @@ async function DoubleService(serviceId) {
           { text: "We welcome all worshipers to this divine service, especially those worshiping with us for the first time" },
           ...schedules,
           ...resources,
+          { text: "<b><u>PLEASE NOTE:</u></b> For tithe use <b>Access Bank</b>  {Account Name: <b>St. Philip's Anglican Church Asaba</b>. Account Number: <b>0057259382</b>}. For Harvest & Building Support use <b>Polaris Bank</b>  {Account Name: <b>St. Philip's Anglican Church Asaba</b>. Account Number: <b>1040502076</b>}. For all your sacrifice use <b>Eco Bank</b>  {Account Name: <b>St. Philip's Anglican Church Asaba</b>. Account Number: <b>4312025686</b>.} For <b>MISSION PARTNERSHIP</b> use <b>Polaris Bank</b>  {Account Name: <b>St. Philip's Anglican Church Asaba</b>. Account Number: <b>4091373646</b>.}" },
           { text: "Weekly Prayers: The Church should please pray for the following families" },
           ...prayers
         ]
