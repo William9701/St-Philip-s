@@ -5,11 +5,13 @@ from models.base_models import Basemodels, Base
 class ServiceInfo(Basemodels, Base):
     __tablename__ = 'service_info'
     service_date = Column(Date, nullable=False)
-    service_time = Column(Time, nullable=False)
+    Csunday_time = Column(String(50), nullable=False)
+    FirstServiceTime = Column(String(50), nullable=False)
+    SecondServiceTime = Column(String(50), nullable=False)
     service_name = Column(String(100), nullable=False)
     liturgical_color = Column(String(20), nullable=False)
     special_celebration = Column(String(100))
-    service_type = Column(String(100))
+    sunday_name = Column(String(100))
 
     readings = relationship('ReadingSchedule', back_populates='service')
     meditations = relationship('Meditation', back_populates='service')
@@ -62,6 +64,7 @@ class SpecialThanksgiving(Basemodels, Base):
     __tablename__ = 'special_thanksgiving'
     service_id = Column(String(225), ForeignKey('service_info.id', ondelete='CASCADE'), nullable=False)
     text = Column(Text)
+    second_service_text = Column(Text)
 
     service = relationship('ServiceInfo', back_populates='thanksgiving')
     def __init__(self, *args, **kwargs):

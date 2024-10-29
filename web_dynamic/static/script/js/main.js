@@ -265,7 +265,6 @@ AOS.init({
   });
 })(jQuery);
 
-
 let currentPage = 1;
 const serviceDataCache = {}; // Cache to store data for each serviceId
 
@@ -274,9 +273,19 @@ async function fetchAndUseService(serviceId) {
   if (serviceDataCache[serviceId]) {
     return serviceDataCache[serviceId];
   }
-  
+
   try {
-    const [serviceResponse, hymnsResponse, lessonResponse, ThanksgivingResponse, NoticesResponse, NoticeScheduleResponse, ChurchRescourceResponse, PrayerListResponse] = await Promise.all([
+    const [
+      serviceResponse,
+      hymnsResponse,
+      lessonResponse,
+      ThanksgivingResponse,
+      NoticesResponse,
+      NoticeScheduleResponse,
+      ChurchRescourceResponse,
+      PrayerListResponse,
+      MarriageBannResponse,
+    ] = await Promise.all([
       fetch(`/service/${serviceId}`),
       fetch("/hymns"),
       fetch("/reading_schedule"),
@@ -284,10 +293,21 @@ async function fetchAndUseService(serviceId) {
       fetch("/notices"),
       fetch("/notice_schedule"),
       fetch("/church_resources"),
-      fetch("/prayerlist")
+      fetch("/prayerlist"),
+      fetch("/marriagebann"),
     ]);
 
-    const [service, hymns, lessons, thanksgivingList, notices, noticeSchedule, churchResources, prayerList] = await Promise.all([
+    const [
+      service,
+      hymns,
+      lessons,
+      thanksgivingList,
+      notices,
+      noticeSchedule,
+      churchResources,
+      prayerList,
+      marriagebann,
+    ] = await Promise.all([
       serviceResponse.json(),
       hymnsResponse.json(),
       lessonResponse.json(),
@@ -295,17 +315,39 @@ async function fetchAndUseService(serviceId) {
       NoticesResponse.json(),
       NoticeScheduleResponse.json(),
       ChurchRescourceResponse.json(),
-      PrayerListResponse.json()
+      PrayerListResponse.json(),
+      MarriageBannResponse.json(), //
     ]);
 
     // Process and structure data as before
-    const hymn = hymns.find(h => h.service_id === serviceId) || {};
-    const lesson = lessons.find(l => l.service_id === serviceId) || {};
-    const thankgivings = thanksgivingList.filter(t => t.service_id === serviceId);
-    const notice = notices.find(n => n.service_id === serviceId) || {};
-    const schedules = noticeSchedule.filter(ns => ns.notice_id === notice.id).map((s, i) => ({ sn: `${i + 1}`, event: `${s.event_day}: ${s.event_description}` }));
-    const resources = churchResources.filter(cr => cr.notice_id === notice.id).map((r, i) => ({ sn: `${i + 1}`, event: r.description }));
-    const prayers = prayerList.filter(pl => pl.notice_id === notice.id).map((p, i) => ({ sn: `${i + 1}`, event: p.family_name }));
+    const hymn = hymns.find((h) => h.service_id === serviceId) || {};
+    const lesson = lessons.find((l) => l.service_id === serviceId) || {};
+    const marriages =
+      marriagebann.filter((l) => l.service_id === serviceId) || {};
+    // Check if any marriages were found
+    // Create the wedding data entries for each marriage bann
+    const marriageEntries = marriages.map((marriage, index) => {
+      return {
+        text: `<b>This is the ${marriage.bann_announcement_count} time of asking</b> \n I hereby publish the banns of marriage between <b>${marriage.groom_name}</b> and <b>${marriage.bride_name}</b>. If anyone knows any reason why these persons should not marry each other, he/she should declare it now.`, // Incremental sn starting from 1
+      };
+    });
+    console.log(marriageEntries);
+    const thankgivings = thanksgivingList.filter(
+      (t) => t.service_id === serviceId
+    );
+    const notice = notices.find((n) => n.service_id === serviceId) || {};
+    const schedules = noticeSchedule
+      .filter((ns) => ns.notice_id === notice.id)
+      .map((s, i) => ({
+        sn: `${i + 1}`,
+        event: `${s.event_day}: ${s.event_description}`,
+      }));
+    const resources = churchResources
+      .filter((cr) => cr.notice_id === notice.id)
+      .map((r, i) => ({ sn: `${i + 1}`, event: r.description }));
+    const prayers = prayerList
+      .filter((pl) => pl.notice_id === notice.id)
+      .map((p, i) => ({ sn: `${i + 1}`, event: p.family_name }));
 
     const churchProgramData = [
       { image: "../static/images/sermon-1.png" },
@@ -313,7 +355,10 @@ async function fetchAndUseService(serviceId) {
         program: [
           { time: `${service.service_time}AM` },
           { text: "Order of Eucharistic Service" },
-          { sn: "1", event: `Processional Hymn - ${hymn.processional || "N/A"}` },
+          {
+            sn: "1",
+            event: `Processional Hymn - ${hymn.processional || "N/A"}`,
+          },
           { sn: "2", event: "The Preparation" },
           { sn: "3", event: "Ministry of the word" },
           { sn: "4", event: `Epistle - ${lesson.first_lesson || "N/A"}` },
@@ -325,26 +370,47 @@ async function fetchAndUseService(serviceId) {
           { sn: "10", event: `Communion Proper - ${hymn.communion || "N/A"}` },
           { sn: "11", event: "Post Communion Prayers" },
           { sn: "12", event: "Return of Tithe" },
-          { sn: "13", event: "Church Offering (General, Welfare/Building Collection)" },
-          { sn: "14", event: `Special Thanksgiving - ${thankgivings.map(t => t.text).join(" & ") || "N/A"}` },
+          {
+            sn: "13",
+            event: "Church Offering (General, Welfare/Building Collection)",
+          },
+          {
+            sn: "14",
+            event: `Special Thanksgiving - ${
+              thankgivings.map((t) => t.text).join(" & ") || "N/A"
+            }`,
+          },
           { sn: "15", event: "Prayer For" },
           { sn: "16", event: "Notice" },
-          { sn: "17", event: `Recessional Hymn - ${hymn.Recessional || "N/A"}` }
-        ]
+          {
+            sn: "17",
+            event: `Recessional Hymn - ${hymn.Recessional || "N/A"}`,
+          },
+        ],
       },
       {
         program: [
           { subheading: `${notice.title}` },
           { text: `${notice.content}` },
           { subheading: "Notice" },
-          { text: "We welcome all worshipers to this divine service, especially those worshiping with us for the first time" },
+          {
+            text: "We welcome all worshipers to this divine service, especially those worshiping with us for the first time",
+          },
           ...schedules,
           ...resources,
-          { text: "<b><u>PLEASE NOTE:</u></b> For tithe use <b>Access Bank</b>   {Account Name: <b>St. Philip's Anglican Church Asaba</b>. Account Number: <b>0057259382</b>}. For Harvest & Building Support use <b>Polaris Bank</b>  {Account Name: <b>St. Philip's Anglican Church Asaba</b>. Account Number: <b>1040502076</b>}. For all your sacrifice use <b>Eco Bank</b>  {Account Name: <b>St. Philip's Anglican Church Asaba</b>. Account Number: <b>4312025686</b>.} For <b>MISSION PARTNERSHIP</b> use <b>Polaris Bank</b>  {Account Name: <b>St. Philip's Anglican Church Asaba</b>. Account Number: <b>4091373646</b>.}" },
-          { text: "Weekly Prayers: The Church should please pray for the following families" },
-          ...prayers
-        ]
-      }
+          {
+            text: "<b><u>PLEASE NOTE:</u></b> For tithe use <b>Access Bank</b>   {Account Name: <b>St. Philip's Anglican Church Asaba</b>. Account Number: <b>0057259382</b>}. For Harvest & Building Support use <b>Polaris Bank</b>  {Account Name: <b>St. Philip's Anglican Church Asaba</b>. Account Number: <b>1040502076</b>}. For all your sacrifice use <b>Eco Bank</b>  {Account Name: <b>St. Philip's Anglican Church Asaba</b>. Account Number: <b>4312025686</b>.} For <b>MISSION PARTNERSHIP</b> use <b>Polaris Bank</b>  {Account Name: <b>St. Philip's Anglican Church Asaba</b>. Account Number: <b>4091373646</b>.}",
+          },
+          {
+            text: "<b><u>Bans of Marriage:</u></b>",
+          },
+          ...marriageEntries,
+          {
+            text: "Weekly Prayers: The Church should please pray for the following families",
+          },
+          ...prayers,
+        ],
+      },
     ];
 
     // Cache the data for future reference
@@ -356,14 +422,23 @@ async function fetchAndUseService(serviceId) {
   }
 }
 
-
 async function DoubleService(serviceId) {
   if (serviceDataCache[serviceId]) {
     return serviceDataCache[serviceId];
   }
-  
+
   try {
-    const [serviceResponse, hymnsResponse, lessonResponse, ThanksgivingResponse, NoticesResponse, NoticeScheduleResponse, ChurchRescourceResponse, PrayerListResponse] = await Promise.all([
+    const [
+      serviceResponse,
+      hymnsResponse,
+      lessonResponse,
+      ThanksgivingResponse,
+      NoticesResponse,
+      NoticeScheduleResponse,
+      ChurchRescourceResponse,
+      PrayerListResponse,
+      MarriageBannResponse,
+    ] = await Promise.all([
       fetch(`/service/${serviceId}`),
       fetch("/hymns"),
       fetch("/reading_schedule"),
@@ -371,10 +446,21 @@ async function DoubleService(serviceId) {
       fetch("/notices"),
       fetch("/notice_schedule"),
       fetch("/church_resources"),
-      fetch("/prayerlist")
+      fetch("/prayerlist"),
+      fetch("/marriagebann"),
     ]);
 
-    const [service, hymns, lessons, thanksgivingList, notices, noticeSchedule, churchResources, prayerList] = await Promise.all([
+    const [
+      service,
+      hymns,
+      lessons,
+      thanksgivingList,
+      notices,
+      noticeSchedule,
+      churchResources,
+      prayerList,
+      marriagebann,
+    ] = await Promise.all([
       serviceResponse.json(),
       hymnsResponse.json(),
       lessonResponse.json(),
@@ -382,17 +468,40 @@ async function DoubleService(serviceId) {
       NoticesResponse.json(),
       NoticeScheduleResponse.json(),
       ChurchRescourceResponse.json(),
-      PrayerListResponse.json()
+      PrayerListResponse.json(),
+      MarriageBannResponse.json(), //
     ]);
 
     // Process and structure data as before
-    const hymn = hymns.find(h => h.service_id === serviceId) || {};
-    const lesson = lessons.find(l => l.service_id === serviceId) || {};
-    const thankgivings = thanksgivingList.filter(t => t.service_id === serviceId);
-    const notice = notices.find(n => n.service_id === serviceId) || {};
-    const schedules = noticeSchedule.filter(ns => ns.notice_id === notice.id).map((s, i) => ({ sn: `${i + 1}`, event: `${s.event_day}: ${s.event_description}` }));
-    const resources = churchResources.filter(cr => cr.notice_id === notice.id).map((r, i) => ({ sn: `${i + 1}`, event: r.description }));
-    const prayers = prayerList.filter(pl => pl.notice_id === notice.id).map((p, i) => ({ sn: `${i + 1}`, event: p.family_name }));
+    const hymn = hymns.find((h) => h.service_id === serviceId) || {};
+    const lesson = lessons.find((l) => l.service_id === serviceId) || {};
+    const marriages =
+      marriagebann.filter((l) => l.service_id === serviceId) || {};
+    // Check if any marriages were found
+
+    // Create the wedding data entries for each marriage bann
+    const marriageEntries = marriages.map((marriage, index) => {
+      return {
+        text: `<b>This is the ${marriage.bann_announcement_count} time of asking</b> \n I hereby publish the banns of marriage between <b>${marriage.groom_name}</b> and <b>${marriage.bride_name}</b>. If anyone knows any reason why these persons should not marry each other, he/she should declare it now.`, // Incremental sn starting from 1
+      };
+    });
+
+    const thankgivings = thanksgivingList.filter(
+      (t) => t.service_id === serviceId
+    );
+    const notice = notices.find((n) => n.service_id === serviceId) || {};
+    const schedules = noticeSchedule
+      .filter((ns) => ns.notice_id === notice.id)
+      .map((s, i) => ({
+        sn: `${i + 1}`,
+        event: `${s.event_day}: ${s.event_description}`,
+      }));
+    const resources = churchResources
+      .filter((cr) => cr.notice_id === notice.id)
+      .map((r, i) => ({ sn: `${i + 1}`, event: r.description }));
+    const prayers = prayerList
+      .filter((pl) => pl.notice_id === notice.id)
+      .map((p, i) => ({ sn: `${i + 1}`, event: p.family_name }));
 
     const churchProgramData = [
       { image: "../static/images/sermon-1.png" },
@@ -400,7 +509,10 @@ async function DoubleService(serviceId) {
         program: [
           { time: `6:00AM` },
           { text: "Order of Eucharistic Service" },
-          { sn: "1", event: `Processional Hymn - ${hymn.processional || "N/A"}` },
+          {
+            sn: "1",
+            event: `Processional Hymn - ${hymn.processional || "N/A"}`,
+          },
           { sn: "2", event: "The Preparation" },
           { sn: "3", event: "Ministry of the word" },
           { sn: "4", event: `Epistle - ${lesson.first_lesson || "N/A"}` },
@@ -412,48 +524,89 @@ async function DoubleService(serviceId) {
           { sn: "10", event: `Communion Proper - ${hymn.communion || "N/A"}` },
           { sn: "11", event: "Post Communion Prayers" },
           { sn: "12", event: "Return of Tithe" },
-          { sn: "13", event: "Church Offering (General, Welfare/Building Collection)" },
-          { sn: "14", event: `Special Thanksgiving - ${thankgivings.map(t => t.text).join(" & ") || "N/A"}` },
+          {
+            sn: "13",
+            event: "Church Offering (General, Welfare/Building Collection)",
+          },
+          {
+            sn: "14",
+            event: `Special Thanksgiving - ${
+              thankgivings.map((t) => t.text).join(" & ") || "N/A"
+            }`,
+          },
           { sn: "15", event: "Prayer For" },
           { sn: "16", event: "Notice" },
-          { sn: "17", event: `Recessional Hymn - ${hymn.Recessional || "N/A"}` }
-        ]
+          {
+            sn: "17",
+            event: `Recessional Hymn - ${hymn.Recessional || "N/A"}`,
+          },
+        ],
       },
       {
         program: [
           { time: `7:30AM` },
           { text: "Order of Service" },
-          { sn: "1", event: `Processional Hymn - ${hymn.processional || "N/A"}` },
+          {
+            sn: "1",
+            event: `Processional Hymn - ${hymn.processional || "N/A"}`,
+          },
           { sn: "2", event: "Call to Worship" },
-          { sn: "3", event: "Psalm - " },
+          { sn: "3", event: `Psalm - ${lesson.psalm}` },
           { sn: "4", event: `First lesson - ${lesson.first_lesson || "N/A"}` },
           { sn: "5", event: `Te-Deum - ${hymn.gradual || "N/A"}` },
-          { sn: "6", event: `Second Lesson - ${lesson.second_lesson || "N/A"}` },
+          {
+            sn: "6",
+            event: `Second Lesson - ${lesson.second_lesson || "N/A"}`,
+          },
           { sn: "7", event: "Hymn for Sermon" },
           { sn: "8", event: "SERMON" },
-          { sn: "9", event: "Apostle's Creed, Collects, Intercession to Grace" },
+          {
+            sn: "9",
+            event: "Apostle's Creed, Collects, Intercession to Grace",
+          },
           { sn: "10", event: "Return of Tithe" },
-          { sn: "11", event: "Church Offering (General, Welfare/Building Collection)" },
-          { sn: "12", event: `Special Thanksgiving - ${thankgivings.map(t => t.text).join(" & ") || "N/A"}` },
+          {
+            sn: "11",
+            event: "Church Offering (General, Welfare/Building Collection)",
+          },
+          {
+            sn: "12",
+            event: `Special Thanksgiving - ${
+              thankgivings.map((t) => t.text).join(" & ") || "N/A"
+            }`,
+          },
           { sn: "13", event: "Aob section" },
           { sn: "14", event: "Prayer For" },
           { sn: "15", event: "Notice" },
-          { sn: "16", event: `Recessional Hymn - ${hymn.Recessional || "N/A"}` }
-        ]
+          {
+            sn: "16",
+            event: `Recessional Hymn - ${hymn.Recessional || "N/A"}`,
+          },
+        ],
       },
       {
         program: [
           { subheading: `${notice.title}` },
           { text: `${notice.content}` },
           { subheading: "Notice" },
-          { text: "We welcome all worshipers to this divine service, especially those worshiping with us for the first time" },
+          {
+            text: "We welcome all worshipers to this divine service, especially those worshiping with us for the first time",
+          },
           ...schedules,
           ...resources,
-          { text: "<b><u>PLEASE NOTE:</u></b> For tithe use <b>Access Bank</b>  {Account Name: <b>St. Philip's Anglican Church Asaba</b>. Account Number: <b>0057259382</b>}. For Harvest & Building Support use <b>Polaris Bank</b>  {Account Name: <b>St. Philip's Anglican Church Asaba</b>. Account Number: <b>1040502076</b>}. For all your sacrifice use <b>Eco Bank</b>  {Account Name: <b>St. Philip's Anglican Church Asaba</b>. Account Number: <b>4312025686</b>.} For <b>MISSION PARTNERSHIP</b> use <b>Polaris Bank</b>  {Account Name: <b>St. Philip's Anglican Church Asaba</b>. Account Number: <b>4091373646</b>.}" },
-          { text: "Weekly Prayers: The Church should please pray for the following families" },
-          ...prayers
-        ]
-      }
+          {
+            text: "<b><u>PLEASE NOTE:</u></b> For tithe use <b>Access Bank</b>  {Account Name: <b>St. Philip's Anglican Church Asaba</b>. Account Number: <b>0057259382</b>}. For Harvest & Building Support use <b>Polaris Bank</b>  {Account Name: <b>St. Philip's Anglican Church Asaba</b>. Account Number: <b>1040502076</b>}. For all your sacrifice use <b>Eco Bank</b>  {Account Name: <b>St. Philip's Anglican Church Asaba</b>. Account Number: <b>4312025686</b>.} For <b>MISSION PARTNERSHIP</b> use <b>Polaris Bank</b>  {Account Name: <b>St. Philip's Anglican Church Asaba</b>. Account Number: <b>4091373646</b>.}",
+          },
+          {
+            text: "<b><u>Bans of Marriage:</u></b>",
+          },
+          ...marriageEntries,
+          {
+            text: "Weekly Prayers: The Church should please pray for the following families",
+          },
+          ...prayers,
+        ],
+      },
     ];
 
     // Cache the data for future reference
@@ -465,22 +618,20 @@ async function DoubleService(serviceId) {
   }
 }
 
-
-
-
 async function displayProgramPage(serviceId) {
-  const churchProgramPage = document.getElementById(`churchProgramPage-${serviceId}`);
+  const churchProgramPage = document.getElementById(
+    `churchProgramPage-${serviceId}`
+  );
   const service = await fetch(`/service/${serviceId}`);
   const serviceData = await service.json();
   let churchProgramData = [];
   if (serviceData.service_name === "Combined_Service") {
     churchProgramData = await fetchAndUseService(serviceId);
-  }
-  else{
-    churchProgramData = await DoubleService(serviceId)
+  } else {
+    churchProgramData = await DoubleService(serviceId);
   }
   const data = churchProgramData[currentPage - 1];
-  
+
   // Clear previous content
   churchProgramPage.innerHTML = "";
 
@@ -503,66 +654,39 @@ async function displayProgramPage(serviceId) {
   // Display the program list with checks for each item's properties
   if (data.program) {
     churchProgramPage.innerHTML += `<ul class="church-program-list">
-      ${data.program.map(item => {
-        // Check for subheading, text, sn, and event in each program item
-        if (item.subheading) {
-          return `<li class="subheading"><h4 style="color: aliceblue;">${item.subheading}</h4></li>`;
-        } else if (item.text) {
-          return `<li class="program-text">${item.text}</li>`;
-        } else if (item.sn && item.event) {
-          return `<li>${item.sn} - ${item.event}</li>`;
-        } else {
-          return '';  // Skip items without recognizable properties
-        }
-      }).join("")}
+      ${data.program
+        .map((item) => {
+          // Check for subheading, text, sn, and event in each program item
+          if (item.subheading) {
+            return `<li class="subheading"><h4 style="color: aliceblue;">${item.subheading}</h4></li>`;
+          } else if (item.text) {
+            return `<li class="program-text">${item.text}</li>`;
+          } else if (item.text && item.event) {
+            return `<li class="program-text">${item.text}</li>`;
+          } else if (item.sn && item.event) {
+            return `<li>${item.sn} - ${item.event}</li>`;
+          } else {
+            return ""; // Skip items without recognizable properties
+          }
+        })
+        .join("")}
     </ul>`;
   }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.view-bulletin-btn[data-service-id]').forEach(button => {
-    displayProgramPage(button.getAttribute('data-service-id'));
-  });
+document.addEventListener("DOMContentLoaded", () => {
+  document
+    .querySelectorAll(".view-bulletin-btn[data-service-id]")
+    .forEach((button) => {
+      displayProgramPage(button.getAttribute("data-service-id"));
+    });
 });
 
-document.querySelectorAll('.btn-primary').forEach(button => {
-  button.addEventListener('click', function() {
-    displayProgramPage(this.getAttribute('data-service-id'));
+document.querySelectorAll(".btn-primary").forEach((button) => {
+  button.addEventListener("click", function () {
+    displayProgramPage(this.getAttribute("data-service-id"));
   });
 });
-
-
-
-
-
-
-
 
 // document.querySelectorAll('[id^="prevButton"]').forEach(prevButton => {
 //   prevButton.addEventListener('click', function() {
@@ -574,16 +698,13 @@ document.querySelectorAll('.btn-primary').forEach(button => {
 //   });
 // });
 
-
-
-
-document.addEventListener('click', function(event) {
+document.addEventListener("click", function (event) {
   const target = event.target;
 
   // Check if the next button was clicked
-  if (target.matches('.btn-primary[data-service-id]')) {
-    const serviceId = target.getAttribute('data-service-id');
-    fetchAndUseService(serviceId).then(data => {
+  if (target.matches(".btn-primary[data-service-id]")) {
+    const serviceId = target.getAttribute("data-service-id");
+    fetchAndUseService(serviceId).then((data) => {
       if (currentPage < data.length) {
         currentPage++;
         displayProgramPage(serviceId);
@@ -592,9 +713,9 @@ document.addEventListener('click', function(event) {
     });
   }
 
-  if (target.matches('.btn-secondary[data-service-id]')) {
-    console.log('Previous button clicked');
-    const serviceId = target.getAttribute('data-service-id');
+  if (target.matches(".btn-secondary[data-service-id]")) {
+    console.log("Previous button clicked");
+    const serviceId = target.getAttribute("data-service-id");
     if (currentPage > 1) {
       currentPage--;
       displayProgramPage(serviceId);
@@ -603,18 +724,7 @@ document.addEventListener('click', function(event) {
       }
     }
   }
-
 });
-
-
-
-
-
-
-
-
-
-
 
 // document.querySelectorAll('[id^="nextButton"]').forEach(nextButton => {
 //   nextButton.addEventListener('click', function() {
@@ -629,28 +739,20 @@ document.addEventListener('click', function(event) {
 //   });
 // });
 
-
 // Function to monitor modal's display state and reset currentPage when hidden
-document.querySelectorAll('.modal').forEach(modal => {
-  const observer = new MutationObserver(mutations => {
-    mutations.forEach(mutation => {
+document.querySelectorAll(".modal").forEach((modal) => {
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
       // Check if the 'show' class is removed (modal is closed)
-      if (mutation.type === 'attributes' && !modal.classList.contains('show')) {
+      if (mutation.type === "attributes" && !modal.classList.contains("show")) {
         currentPage = 1; // Reset currentPage to 1
       }
     });
   });
 
   // Observe changes to the 'class' attribute
-  observer.observe(modal, { attributes: true, attributeFilter: ['class'] });
+  observer.observe(modal, { attributes: true, attributeFilter: ["class"] });
 });
-
-
-
-
-
-
-
 
 const prayerData = [
   {

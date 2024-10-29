@@ -51,6 +51,10 @@ def index():
 def history():
     return render_template('history.html')
 
+@app.route('/admin', strict_slashes=False)
+def admin():
+    return render_template('admin.html')
+
 @app.route('/groups', strict_slashes=False)
 def groups():
     Favour = groupFavour().json
@@ -106,9 +110,11 @@ def latest_service():
     services = sorted(services, key=lambda x: x.service_date, reverse=True) 
     
     # The first element in the sorted list will be the service with the latest date
-    latest_service = services[0].to_dict()
+    if services:
+        latest_service = services[0].to_dict()
     # print(latest_service.to_dict())
-    latest_service["service_time"] = latest_service["service_time"].strftime(('%H:%M'))
+    # latest_service["service_time"] = latest_service["service_time"].strftime(('%H:%M'))
+    latest_service = None
     return jsonify(latest_service)
 
 
@@ -140,7 +146,7 @@ def get_service(id):
         abort(404)
 
     instance = instance.to_dict()
-    instance["service_time"] = instance["service_time"].strftime(('%H:%M'))
+    # instance["service_time"] = instance["service_time"].strftime(('%H:%M'))
     return jsonify(instance)
 
 @app.route('/service/<id>', methods=['PUT'], strict_slashes=False)
@@ -184,8 +190,12 @@ def delete_service(id):
         storage.delete(notice)
     for reading in instance.readings:
         storage.delete(reading)
-    for prayer in instance.prayers:
-        storage.delete(prayer)
+    for meditation in instance.meditations:
+        storage.delete(meditation)
+    for thanks in instance.thanksgiving:
+        storage.delete(thanks)
+    for ao in instance.aob:
+        storage.delete(ao)
     
 
     # Delete the service and save changes
@@ -206,7 +216,7 @@ def get_services():
     for service in services:
         service_dict = service.to_dict()
         # Format the time without seconds
-        service_dict["service_time"] = service_dict["service_time"].strftime(('%H:%M'))
+        # service_dict["service_time"] = service_dict["service_time"].strftime(('%H:%M'))
         list_services.append(service_dict)
 
     print(list_services)
