@@ -103,19 +103,21 @@ def groupLove():
 
 @app.route('/latest_service')
 def latest_service():
-    """Returns the service object with the latest date."""
-    services = storage.all(ServiceInfo).values()  # Get all service objects
-    
-    # Sort the services by service_date in descending order 
-    services = sorted(services, key=lambda x: x.service_date, reverse=True) 
-    
-    # The first element in the sorted list will be the service with the latest date
+    """Returns the latest service object based on the service_date."""
+    services = storage.all(ServiceInfo).values()  # Retrieve all service objects
+
+    # Check if there are any services and sort by date
     if services:
-        latest_service = services[0].to_dict()
-    # print(latest_service.to_dict())
-    # latest_service["service_time"] = latest_service["service_time"].strftime(('%H:%M'))
-    latest_service = None
-    return jsonify(latest_service)
+        latest_service = max(services, key=lambda x: x.service_date)  # Get the latest service by date
+        latest_service_dict = latest_service.to_dict()
+        
+        
+        
+        return jsonify(latest_service_dict)
+    
+    # Return empty JSON object if no services found
+    return jsonify({})
+
 
 
 

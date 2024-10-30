@@ -350,7 +350,7 @@ async function fetchAndUseService(serviceId) {
       .map((p, i) => ({ sn: `${i + 1}`, event: p.family_name }));
 
     const churchProgramData = [
-      { image: "../static/images/sermon-1.png" },
+      { image: "" },
       {
         program: [
           { time: `${service.service_time}AM` },
@@ -412,6 +412,15 @@ async function fetchAndUseService(serviceId) {
         ],
       },
     ];
+
+    if (service.liturgical_color == "green" || service.liturgical_color == "Green"){
+      churchProgramData[0].image = "../static/images/sermon-1.png";
+    } else if (service.liturgical_color == "red" || service.liturgical_color == "Red") {
+      churchProgramData[0].image = "../static/images/red_Church_Program.png"
+    } else if (service.liturgical_color == "Purple" || service.liturgical_color == "purple" || service.liturgical_color == "violet" || service.liturgical_color == "Violet") {
+      churchProgramData[0].image = "../static/images/Purple_church_program.png"
+    } else if (service.liturgical_color == "gold" || service.liturgical_color == "Gold" || service.liturgical_color == "white" || service.liturgical_color == "White") {
+      churchProgramData[0].image = "../static/images/Gold_church"}
 
     // Cache the data for future reference
     serviceDataCache[serviceId] = churchProgramData;
@@ -625,7 +634,7 @@ async function displayProgramPage(serviceId) {
   const service = await fetch(`/service/${serviceId}`);
   const serviceData = await service.json();
   let churchProgramData = [];
-  if (serviceData.service_name === "Combined_Service") {
+  if (serviceData.service_name === "combined_service") {
     churchProgramData = await fetchAndUseService(serviceId);
   } else {
     churchProgramData = await DoubleService(serviceId);
@@ -647,7 +656,7 @@ async function displayProgramPage(serviceId) {
   if (data.program && data.program[0]?.time) {
     churchProgramPage.innerHTML += `
       <div class="program-time">
-        <h5 style="color: green;">Service Time: ${data.program[0].time}</h5>
+        <h5 style="color: #c9b2c6;">Service Time: ${data.program[0].time}</h5>
       </div>`;
   }
 

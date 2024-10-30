@@ -344,18 +344,19 @@
                 </li>
               </ul>
               <div class="mt-4">
-                
                 <!-- Steps Content Here -->
                 <div id="step-1">
-                  <form>
-                    <div style="display: block;" class="toggle-switch">
-                      <input
-                        type="checkbox"
-                        class="l toggle-checkbox"
-                        id="dark-mode-toggle"
-                      />
-                      <label for="dark-mode-toggle" class="toggle-label"></label>
-                    </div>
+                  <div style="display: flex" class="toggle-switch">
+                    <p>Eucaristic service</p>
+                    <input
+                      type="checkbox"
+                      class="l toggle-checkbox"
+                      id="dark-mode-toggle"
+                    />
+                    <p>Martin</p>
+                    <label for="dark-mode-toggle" class="toggle-label"></label>
+                  </div>
+                  <form style="display: block" id="EucaristicForm">
                     <div class="form-group1">
                       <label for="sundayName">Sunday Name</label>
                       <input
@@ -417,6 +418,28 @@
                         class="form-control"
                         id="processionalHymn1"
                         placeholder="Enter the processional hymn"
+                        required
+                      />
+                    </div>
+
+                    <div class="form-group1">
+                      <label for="OldReading">Old Testament Reading</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="OldReading"
+                        placeholder="Enter the old reading"
+                        required
+                      />
+                    </div>
+
+                    <div class="form-group1">
+                      <label for="Psalm">Psalm</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="psalm1"
+                        placeholder="Enter the Psalm"
                         required
                       />
                     </div>
@@ -498,107 +521,268 @@
                       />
                     </div>
                   </form>
+                  <form style="display: none" id="MartinForm">
+                    <div class="form-group1">
+                      <label for="sundayName2">Sunday Name</label>
+                      <input type="text" class="form-control" id="sundayName2" placeholder="Third Sunday in Lent" required />
+                    </div>
+                    <div class="form-group1">
+                      <label for="litColor2">Liturgical Color</label>
+                      <input type="text" class="form-control" id="litColor2" placeholder="Green" required />
+                    </div>
+                    <div class="form-group1">
+                      <label for="sundayDate2">Select Date</label>
+                      <input type="date" class="form-control" id="sundayDate2" required onchange="highlightSundays(this)" />
+                    </div>
+                    <div class="form-group1">
+                      <label for="sundayTime2">Select Time</label>
+                      <input type="time" class="form-control" id="sundayTime2" required />
+                    </div>
+                    <div class="form-group1">
+                      <label for="specialEvent2">Sunday Special Event</label>
+                      <input type="text" class="form-control" id="specialEvent2" placeholder="Enter the special event" required />
+                    </div>
+                    <div class="form-group1">
+                      <label for="processionalHymn2">Processional Hymn</label>
+                      <input type="text" class="form-control" id="processionalHymn2" placeholder="Enter the processional hymn" required />
+                    </div>
+                    <div class="form-group1">
+                      <label for="fsPsalm">Psalm</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="fspsalm"
+                        placeholder="Enter the Psalm"
+                        required
+                      />
+                    </div>
+                    <div class="form-group1">
+                      <label for="fSfirstlesson">First Lesson</label>
+                      <input type="text" class="form-control" id="fSfirstlesson" placeholder="Enter the First Lesson" required />
+                    </div>
+                    <div class="form-group1">
+                      <label for="gradualHymn2">Gradual Hymn</label>
+                      <input type="text" class="form-control" id="gradualHymn2" placeholder="Enter the gradual hymn" required />
+                    </div>
+                    <div class="form-group1">
+                      <label for="fsSecondlesson">Second Lesson</label>
+                      <input type="text" class="form-control" id="fsSecondlesson" placeholder="Enter Second Lesson" required />
+                    </div>
+                    <div class="form-group1">
+                      <label for="fsSermonhymn">Hymn for Sermon</label>
+                      <input type="text" class="form-control" id="fsSermonhymn" placeholder="Enter the hymn for sermon" required />
+                    </div>
+                    <div class="form-group1">
+                      <label for="specialThanksgiving2">Special Thanksgiving</label>
+                      <input type="text" class="form-control" id="specialThanksgiving2" placeholder="Enter details for special thanksgiving" />
+                    </div>
+                    <div class="form-group1">
+                      <label for="aob2">Any Other Business (AOB)</label>
+                      <input type="text" class="form-control" id="aob2" placeholder="Enter any other business" />
+                    </div>
+                    <div class="form-group1">
+                      <label for="recessionalHymn2">Recessional Hymn</label>
+                      <input type="text" class="form-control" id="recessionalHymn2" placeholder="Enter the recessional hymn" required />
+                    </div>
+                  </form>
                 </div>
                 <!-- Step 2 Content Here -->
                 <div id="step-2">
-                  <form>
-                    <div style="display: block;" class="toggle-switch">
-                      <input
-                        type="checkbox"
-                        class="l toggle-checkbox"
-                        id="dark-mode-toggle"
-                      />
-                      <label for="dark-mode-toggle" class="toggle-label"></label>
-                    </div>
+                  <div style="display: flex" class="toggle-switch">
+                    <p>Martin</p>
+                    <input
+                      type="checkbox"
+                      class="l toggle-checkbox"
+                      id="dark-mode-toggle2"
+                    />
+                    <p>Eucaristic service</p>
+                    <label for="dark-mode-toggle" class="toggle-label"></label>
+                  </div>
+                <form style="display: block" id="ssMartinForm">
                     <div class="form-group1">
-                      <label for="SecondsundayTime">Select Time</label>
-                      <input
-                        type="time"
-                        class="form-control"
-                        id="SecondsundayTime"
-                        required
-                      />
+                        <label for="SecondsundayTimeMartin">Select Time</label>
+                        <input
+                            type="time"
+                            class="form-control"
+                            id="SecondsundayTimeMartin"
+                            required
+                        />
+                    </div>
+                
+                    <div class="form-group1">
+                        <label for="Psalm1Martin">Psalm</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="psalm1Martin"
+                            placeholder="Enter the psalm"
+                            required
+                        />
+                    </div>
+                
+                    <div class="form-group1">
+                        <label for="firstLesson1Martin">First Lesson</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="firstLesson1Martin"
+                            placeholder="Enter the first lesson"
+                            required
+                        />
                     </div>
 
                     <div class="form-group1">
-                      <label for="Psalm1">Psalm</label>
+                      <label for="gradualhymnMartin1">Gradual Hymn</label>
                       <input
-                        type="text"
-                        class="form-control"
-                        id="psalm1"
-                        placeholder="Enter the psalm"
-                        required
+                          type="text"
+                          class="form-control"
+                          id="gradualhymnMartin1"
+                          placeholder="Enter the Gradual hymn"
+                          required
                       />
+                  </div>
+                
+                    <div class="form-group1">
+                        <label for="secondLessonMartin">Second Lesson</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="secondLesson1Martin"
+                            placeholder="Enter the second lesson"
+                            required
+                        />
+                    </div>
+                
+                    <div class="form-group1">
+                        <label for="sermonHymnMartin">Hymn for Sermon</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="sermonHymn1Martin"
+                            placeholder="Enter the hymn for sermon"
+                            required
+                        />
+                    </div>
+                
+                    <div class="form-group1">
+                        <label for="specialThanksgivingMartin">Special Thanksgiving</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="specialThanksgivingMartin"
+                            placeholder="Enter details for special thanksgiving"
+                        />
+                    </div>
+                
+                    <div class="form-group1">
+                        <label for="aobMartin">Any Other Business (AOB)</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="aob1Martin"
+                            placeholder="Enter any other business"
+                        />
+                    </div>
+                </form>
+                
+                <form style="display: none" id="ssEucaristicForm">
+                    <div class="form-group1">
+                        <label for="SecondsundayTimeEucaristic">Select Time</label>
+                        <input
+                            type="time"
+                            class="form-control"
+                            id="ssSecondsundayTimeEucaristic"
+                            required
+                        />
+                    </div>
+                
+                    <div class="form-group1">
+                        <label for="ssOldReadingEucaristic">Old Testament Reading</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="ssOldReadingEucaristic"
+                            placeholder="Enter the Old Testament Reading"
+                            required
+                        />
                     </div>
 
                     <div class="form-group1">
-                      <label for="firstLesson1">First Lesson</label>
+                      <label for="sspsalmEucaristic">Psalm</label>
                       <input
-                        type="text"
-                        class="form-control"
-                        id="firstLesson1"
-                        placeholder="Enter the first lesson"
-                        required
+                          type="text"
+                          class="form-control"
+                          id="sspsalmEucaristic"
+                          placeholder="Enter the psalm"
+                          required
                       />
                     </div>
-
-                    
-
+                
                     <div class="form-group1">
-                      <label for="secondLesson">Second Lesson</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="secondLesson1"
-                        placeholder="Enter the second lesson"
-                        required
-                      />
+                        <label for="ssepistleEucaristic">Epistle</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="ssepistle1Eucaristic"
+                            placeholder="Enter the epistle"
+                            required
+                        />
                     </div>
 
                     <div class="form-group1">
-                      <label for="sermonHymn">Hymn for Sermon</label>
+                      <label for="ssgradualhymnEucaristic">Gradual Hymn</label>
                       <input
-                        type="text"
-                        class="form-control"
-                        id="sermonHymn1"
-                        placeholder="Enter the hymn for sermon"
-                        required
+                          type="text"
+                          class="form-control"
+                          id="ssgradualhymnEucaristic"
+                          placeholder="Enter the Gradual Hymn"
+                          required
                       />
                     </div>
-
+                
                     <div class="form-group1">
-                      <label for="specialThanksgiving"
-                        >Special Thanksgiving</label
-                      >
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="specialThanksgiving1"
-                        placeholder="Enter details for special thanksgiving"
-                      />
+                        <label for="ssGospelEucaristic">Gospel</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="ssGospel1Eucaristic"
+                            placeholder="Enter the gospel"
+                            required
+                        />
                     </div>
-
+                
                     <div class="form-group1">
-                      <label for="aob">Any Other Business (AOB)</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="aob1"
-                        placeholder="Enter any other business"
-                      />
+                        <label for="sscommunionHymnEucaristic">Communion Hymn</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="sscommunionHymn1Eucaristic"
+                            placeholder="Enter the communion hymn"
+                            required
+                        />
                     </div>
-
+                
                     <div class="form-group1">
-                      <label for="recessionalHymn">Recessional Hymn</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="recessionalHymn1"
-                        placeholder="Enter the recessional hymn"
-                        required
-                      />
+                        <label for="specialThanksgivingEucaristic">Special Thanksgiving</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="specialThanksgiving1Eucaristic"
+                            placeholder="Enter details for special thanksgiving"
+                        />
                     </div>
-                  </form>
+                
+                    <div class="form-group1">
+                        <label for="aobEucaristic">Any Other Business (AOB)</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="aob1Eucaristic"
+                            placeholder="Enter any other business"
+                        />
+                    </div>
+                </form>
+                
                 </div>
                 <!-- Step 3 Content Here -->
                 <div id="step-3">
@@ -606,13 +790,13 @@
                     <!-- Section for Collect for the Day -->
                     <div class="form-group1">
                       <label for="collect">Collect for the Day</label>
-                      <input
+                      <textarea
                         type="text"
                         class="form-control"
                         id="collect1"
                         placeholder="Enter the collect for the day"
                         required
-                      />
+                      ></textarea>
                     </div>
 
                     <!-- start here to add 1 from begingn -->
@@ -797,7 +981,7 @@
       </div>
     </div>
 
-    <!-- Combined Service Modal with Steps 1, 3, and 4 -->
+    <!-- Single Service Modal with Steps 1, 3, and 4 -->
     <div
       class="modal fade"
       id="combinedServiceModal"
@@ -835,157 +1019,334 @@
               <div class="mt-4">
                 <!-- Steps Content Here -->
                 <div id="step-4">
-                  <form>
-                    <div style="display: block;" class="toggle-switch">
-                      <input
-                        type="checkbox"
-                        class="l toggle-checkbox"
-                        id="dark-mode-toggle"
-                      />
-                      <label for="dark-mode-toggle" class="toggle-label"></label>
-                    </div>
+                  <div style="display: flex" class="toggle-switch">
+                    <p>Eucaristic service</p>
+                    <input
+                      type="checkbox"
+                      class="l toggle-checkbox"
+                      id="dark-mode-toggle3"
+                    />
+                    <p>Martin</p>
+                    <label for="dark-mode-toggle" class="toggle-label"></label>
+                  </div>
+                  <form style="display: block;" id="SnEucaristicForm">
                     <div class="form-group">
-                      <label for="sundayName">Sunday Name</label>
+                      <label for="sundayNameEucaristic">Sunday Name</label>
                       <input
                         type="text"
                         class="form-control"
-                        id="sundayName"
+                        id="sundayNameEucaristic"
                         placeholder="Third Sunday in Lent"
                         required
                       />
                     </div>
-
+                  
                     <div class="form-group">
-                      <label for="litColor">Liturgical Color</label>
+                      <label for="litColorEucaristic">Liturgical Color</label>
                       <input
                         type="text"
                         class="form-control"
-                        id="litColor"
+                        id="litColorEucaristic"
                         placeholder="Green"
                         required
                       />
                     </div>
-
+                  
                     <div class="form-group">
-                      <label for="sundayDate">Select Date</label>
+                      <label for="sundayDateEucaristic">Select Date</label>
                       <input
                         type="date"
                         class="form-control"
-                        id="sundayDate"
+                        id="sundayDateEucaristic"
                         required
                         onchange="highlightSundays(this)"
                       />
                     </div>
-
+                  
                     <div class="form-group">
-                      <label for="sundayTime">Select Time</label>
+                      <label for="sundayTimeEucaristic">Select Time</label>
                       <input
                         type="time"
                         class="form-control"
-                        id="sundayTime"
+                        id="sundayTimeEucaristic"
                         required
                       />
                     </div>
-
+                  
                     <div class="form-group">
-                      <label for="specialEvent">Sunday Special Event</label>
+                      <label for="specialEventEucaristic">Sunday Special Event</label>
                       <input
                         type="text"
                         class="form-control"
-                        id="specialEvent"
+                        id="specialEventEucaristic"
                         placeholder="Enter the special event"
                         required
                       />
                     </div>
-
+                  
                     <div class="form-group">
-                      <label for="processionalHymn">Processional Hymn</label>
+                      <label for="processionalHymnEucaristic">Processional Hymn</label>
                       <input
                         type="text"
                         class="form-control"
-                        id="processionalHymn"
+                        id="processionalHymnEucaristic"
                         placeholder="Enter the processional hymn"
                         required
                       />
                     </div>
 
                     <div class="form-group">
-                      <label for="Epistle">Epistle</label>
+                      <label for="OldTestReadingEucaristic">Old Testament Reading</label>
                       <input
                         type="text"
                         class="form-control"
-                        id="epistle"
+                        id="OldTestReadingEucaristic"
+                        placeholder="Enter the Old Testament Reading"
+                        required
+                      />
+                    </div>
+
+                    <div class="form-group">
+                      <label for="psalmEucaristic">Psalm</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="psalmEucaristic"
+                        placeholder="Enter the Psalm"
+                        required
+                      />
+                    </div>
+                  
+                    <div class="form-group">
+                      <label for="epistleEucaristic">Epistle</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="epistleEucaristic"
                         placeholder="Enter the Epistle"
                         required
                       />
                     </div>
-
+                  
                     <div class="form-group">
-                      <label for="gradualHymn">Gradual Hymn</label>
+                      <label for="gradualHymnEucaristic">Gradual Hymn</label>
                       <input
                         type="text"
                         class="form-control"
-                        id="gradualHymn"
+                        id="gradualHymnEucaristic"
                         placeholder="Enter the gradual hymn"
                         required
                       />
                     </div>
-
+                  
                     <div class="form-group">
-                      <label for="gospel">Gospel</label>
+                      <label for="gospelEucaristic">Gospel</label>
                       <input
                         type="text"
                         class="form-control"
-                        id="gospel"
+                        id="gospelEucaristic"
                         placeholder="Enter Gospel"
                         required
                       />
                     </div>
-
+                  
                     <div class="form-group">
-                      <label for="communionHymn">Communion Hymn</label>
+                      <label for="communionHymnEucaristic">Communion Hymn</label>
                       <input
                         type="text"
                         class="form-control"
-                        id="communionHymn"
+                        id="communionHymnEucaristic"
                         placeholder="Enter the communion hymn"
                         required
                       />
                     </div>
-
+                  
                     <div class="form-group">
-                      <label for="specialThanksgiving"
-                        >Special Thanksgiving</label
-                      >
+                      <label for="specialThanksgivingEucaristic">Special Thanksgiving</label>
                       <input
                         type="text"
                         class="form-control"
-                        id="specialThanksgiving"
-                        placeholder="Enter details for special thanksgiving starting with (ii) and then on to add more details"
+                        id="specialThanksgivingEucaristic"
+                        placeholder="Enter details for special thanksgiving"
                       />
                     </div>
-
+                  
                     <div class="form-group">
-                      <label for="aob">Any Other Business (AOB)</label>
+                      <label for="aobEucaristic">Any Other Business (AOB)</label>
                       <input
                         type="text"
                         class="form-control"
-                        id="aob"
+                        id="aobEucaristic"
                         placeholder="Enter any other business"
                       />
                     </div>
-
+                  
                     <div class="form-group">
-                      <label for="recessionalHymn">Recessional Hymn</label>
+                      <label for="recessionalHymnEucaristic">Recessional Hymn</label>
                       <input
                         type="text"
                         class="form-control"
-                        id="recessionalHymn"
+                        id="recessionalHymnEucaristic"
                         placeholder="Enter the recessional hymn"
                         required
                       />
                     </div>
                   </form>
+                  
+                  <form style="display: none;" id="SnMartinForm">
+                    <div class="form-group">
+                      <label for="sundayNameMartin">Sunday Name</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="sundayNameMartin"
+                        placeholder="Third Sunday in Lent"
+                        required
+                      />
+                    </div>
+                  
+                    <div class="form-group">
+                      <label for="litColorMartin">Liturgical Color</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="litColorMartin"
+                        placeholder="Green"
+                        required
+                      />
+                    </div>
+                  
+                    <div class="form-group">
+                      <label for="sundayDateMartin">Select Date</label>
+                      <input
+                        type="date"
+                        class="form-control"
+                        id="sundayDateMartin"
+                        required
+                        onchange="highlightSundays(this)"
+                      />
+                    </div>
+                  
+                    <div class="form-group">
+                      <label for="sundayTimeMartin">Select Time</label>
+                      <input
+                        type="time"
+                        class="form-control"
+                        id="sundayTimeMartin"
+                        required
+                      />
+                    </div>
+                  
+                    <div class="form-group">
+                      <label for="specialEventMartin">Sunday Special Event</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="specialEventMartin"
+                        placeholder="Enter the special event"
+                        required
+                      />
+                    </div>
+                  
+                    <div class="form-group">
+                      <label for="processionalHymnMartin">Processional Hymn</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="processionalHymnMartin"
+                        placeholder="Enter the processional hymn"
+                        required
+                      />
+                    </div>
+
+                    <div class="form-group">
+                      <label for="snPsalmMartin">Psalm</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="snPsalmnMartin"
+                        placeholder="Enter the Psalm"
+                        required
+                      />
+                    </div>
+
+                  
+                    <div class="form-group">
+                      <label for="snfirstlessonMartin">First Lesson</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="snfirstlessonMartin"
+                        placeholder="Enter the First Lesson"
+                        required
+                      />
+                    </div>
+                  
+                    <div class="form-group">
+                      <label for="sngradualHymnMartin">Gradual Hymn</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="sngradualHymnMartin"
+                        placeholder="Enter the gradual hymn"
+                        required
+                      />
+                    </div>
+                  
+                    <div class="form-group">
+                      <label for="snSecondlessonMartin">Second Lesson</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="snSecondlessonMartin"
+                        placeholder="Enter Gospel"
+                        required
+                      />
+                    </div>
+                  
+                    <div class="form-group">
+                      <label for="snSermonMartin">Hymn for Sermon</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="snSermonMartin"
+                        placeholder="Enter the communion hymn"
+                        required
+                      />
+                    </div>
+                  
+                    <div class="form-group">
+                      <label for="snspecialThanksgivingMartin">Special Thanksgiving</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="snspecialThanksgivingMartin"
+                        placeholder="Enter details for special thanksgiving"
+                      />
+                    </div>
+                  
+                    <div class="form-group">
+                      <label for="snaobMartin">Any Other Business (AOB)</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="snaobMartin"
+                        placeholder="Enter any other business"
+                      />
+                    </div>
+                  
+                    <div class="form-group">
+                      <label for="snrecessionalHymnMartin">Recessional Hymn</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="snrecessionalHymnMartin"
+                        placeholder="Enter the recessional hymn"
+                        required
+                      />
+                    </div>
+                  </form>
+                  
                 </div>
                 <!-- Step 2 Content Here -->
 
@@ -995,13 +1356,13 @@
                     <!-- Section for Collect for the Day -->
                     <div class="form-group">
                       <label for="collect">Collect for the Day</label>
-                      <input
+                      <textarea
                         type="text"
                         class="form-control"
                         id="collect"
                         placeholder="Enter the collect for the day"
                         required
-                      />
+                      ></textarea>
                     </div>
 
                     <!-- Section for Daily Info -->

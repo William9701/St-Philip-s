@@ -325,7 +325,15 @@
 					{% for service in services %}
         	<div class="col-md-4">
         		<div class="sermon-wrap ftco-animate">
-    					<div class="img d-flex align-items-center justify-content-center" style="background-image: url(../static/images/sermon-1.png);">
+					{% if service.liturgical_color in ("green", "Green") %}
+    					<div class="img d-flex align-items-center justify-content-center"  style="background-image: url(../static/images/sermon-1.png);">
+							{% elif service.liturgical_color in ("Red", "red")%}
+							    <div class="img d-flex align-items-center justify-content-center"  style="background-image: url(../static/images/red_Church_Program.png);">
+                            {% elif service.liturgical_color in ("Purple", "purple", "Violet", "violet") %}
+                                <div class="img d-flex align-items-center justify-content-center"  style="background-image: url(../static/images/Purpule_Church_Program.png);">
+									{% elif service.liturgical_color in ("Gold", "gold") %}
+									<div class="img d-flex align-items-center justify-content-center"  style="background-image: url(../static/images/Gold_Church_Program.png);"></div>
+									{% endif %}
     						<div class="text-content p-4 text-center">
     							<!-- <span>by pastor:</span>
     							<h3>Jerry Simon</h3> -->
@@ -358,7 +366,7 @@
 						margin-left: -64px;
 						margin-bottom: -75px;" src="../static/images/logo.png" alt="">
 					<h5 class="modal-title" id="churchProgramModalLabel">{{ service.service_name }}</h5>
-					<h5 class="modal-title" id="churchProgramModalLabel1">Liturgical Color {{ service.liturgical_color }}</h5>
+					<h5 class="modal-title" id="churchProgramModalLabel1">Liturgical Color: {{ service.liturgical_color }}</h5>
 					<h5 class="modal-title" id="churchProgramModalLabel2">{{ service.special_celebration }}</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>

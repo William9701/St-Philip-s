@@ -12,6 +12,9 @@ class ServiceInfo(Basemodels, Base):
     liturgical_color = Column(String(20), nullable=False)
     special_celebration = Column(String(100))
     sunday_name = Column(String(100))
+    FirstServiceStyle = Column(String(100))
+    SecondServiceStyle = Column(String(100))
+    CombinedServiceStyle = Column(String(100))
 
     readings = relationship('ReadingSchedule', back_populates='service')
     meditations = relationship('Meditation', back_populates='service')
@@ -30,6 +33,8 @@ class ReadingSchedule(Basemodels, Base):
     espistle = Column(String(225))
     gospel = Column(String(225))
     psalm = Column(String(225))
+    SecServicePsalm = Column(String(225))
+    OldTestament = Column(String(225))
 
     service = relationship('ServiceInfo', back_populates='readings')
     def __init__(self, *args, **kwargs):
@@ -51,6 +56,7 @@ class Hymns(Basemodels, Base):
     service_id = Column(String(225), ForeignKey('service_info.id', ondelete='CASCADE'), nullable=False)
     processional = Column(String(225))
     gradual = Column(String(225))
+    SecondServicegradual = Column(String(225))
     communion = Column(String(225))
     Recessional = Column(String(225))
     sermon = Column(String(225))
@@ -74,6 +80,8 @@ class AOB(Basemodels, Base):
     __tablename__ = 'aob'
     service_id = Column(String(225), ForeignKey('service_info.id', ondelete='CASCADE'), nullable=False)
     text = Column(Text)
+    aob1 = Column(Text)
+    aob2 = Column(Text)
 
     service = relationship('ServiceInfo', back_populates='aob')
     def __init__(self, *args, **kwargs):
