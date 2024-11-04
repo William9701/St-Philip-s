@@ -285,6 +285,8 @@ async function fetchAndUseService(serviceId) {
       ChurchRescourceResponse,
       PrayerListResponse,
       MarriageBannResponse,
+      meditationResponse,
+      aobResponse,
     ] = await Promise.all([
       fetch(`/service/${serviceId}`),
       fetch("/hymns"),
@@ -295,6 +297,8 @@ async function fetchAndUseService(serviceId) {
       fetch("/church_resources"),
       fetch("/prayerlist"),
       fetch("/marriagebann"),
+      fetch("/meditation"),
+      fetch("/aob"),
     ]);
 
     const [
@@ -307,6 +311,8 @@ async function fetchAndUseService(serviceId) {
       churchResources,
       prayerList,
       marriagebann,
+      meditations,
+      aobs,
     ] = await Promise.all([
       serviceResponse.json(),
       hymnsResponse.json(),
@@ -316,10 +322,13 @@ async function fetchAndUseService(serviceId) {
       NoticeScheduleResponse.json(),
       ChurchRescourceResponse.json(),
       PrayerListResponse.json(),
-      MarriageBannResponse.json(), //
+      MarriageBannResponse.json(),
+      meditationResponse.json(),
+      aobResponse.json(),
     ]);
 
     // Process and structure data as before
+    const meditation = meditations.find((m) => m.service_id === serviceId) || {};
     const hymn = hymns.find((h) => h.service_id === serviceId) || {};
     const lesson = lessons.find((l) => l.service_id === serviceId) || {};
     const marriages =
@@ -331,101 +340,216 @@ async function fetchAndUseService(serviceId) {
         text: `<b>This is the ${marriage.bann_announcement_count} time of asking</b> \n I hereby publish the banns of marriage between <b>${marriage.groom_name}</b> and <b>${marriage.bride_name}</b>. If anyone knows any reason why these persons should not marry each other, he/she should declare it now.`, // Incremental sn starting from 1
       };
     });
-    console.log(marriageEntries);
     const thankgivings = thanksgivingList.filter(
       (t) => t.service_id === serviceId
     );
     const notice = notices.find((n) => n.service_id === serviceId) || {};
     const schedules = noticeSchedule
       .filter((ns) => ns.notice_id === notice.id)
-      .map((s, i) => ({
-        sn: `${i + 1}`,
-        event: `${s.event_day}: ${s.event_description}`,
-      }));
+      .map((s, i) => {
+        const eventDate = new Date(s.event_day);
+        const formattedDate = new Intl.DateTimeFormat('en-US', {
+          weekday: 'long', 
+          month: 'short', 
+          day: 'numeric', 
+          year: 'numeric'
+        }).format(eventDate);
+
+        // Format the day with the appropriate suffix (st, nd, rd, th)
+        const day = eventDate.getDate();
+        const daySuffix = day % 10 === 1 && day !== 11 ? 'st' :
+                          day % 10 === 2 && day !== 12 ? 'nd' :
+                          day % 10 === 3 && day !== 13 ? 'rd' : 'th';
+
+        return {
+          sn: `${i + 1}`,
+          event: `${formattedDate.replace(/\d+/, day + daySuffix)}: ${s.event_description}`,
+        };
+      });
+
     const resources = churchResources
       .filter((cr) => cr.notice_id === notice.id)
       .map((r, i) => ({ sn: `${i + 1}`, event: r.description }));
     const prayers = prayerList
       .filter((pl) => pl.notice_id === notice.id)
       .map((p, i) => ({ sn: `${i + 1}`, event: p.family_name }));
+    const aob = (aobs.find(a => a.service_id === serviceId) || {}).aob1 || "";
 
-    const churchProgramData = [
-      { image: "" },
-      {
-        program: [
-          { time: `${service.service_time}AM` },
-          { text: "Order of Eucharistic Service" },
-          {
-            sn: "1",
-            event: `Processional Hymn - ${hymn.processional || "N/A"}`,
-          },
-          { sn: "2", event: "The Preparation" },
-          { sn: "3", event: "Ministry of the word" },
-          { sn: "4", event: `Epistle - ${lesson.first_lesson || "N/A"}` },
-          { sn: "5", event: `Gradual Hymn - ${hymn.gradual || "N/A"}` },
-          { sn: "6", event: `Gospel - ${lesson.second_lesson || "N/A"}` },
-          { sn: "7", event: "Sermon" },
-          { sn: "8", event: "Nicene Creed, Intercessory Prayers To Peace" },
-          { sn: "9", event: "Eucharistic Prayer and Consecration of Elements" },
-          { sn: "10", event: `Communion Proper - ${hymn.communion || "N/A"}` },
-          { sn: "11", event: "Post Communion Prayers" },
-          { sn: "12", event: "Return of Tithe" },
-          {
-            sn: "13",
-            event: "Church Offering (General, Welfare/Building Collection)",
-          },
-          {
-            sn: "14",
-            event: `Special Thanksgiving - ${
-              thankgivings.map((t) => t.text).join(" & ") || "N/A"
-            }`,
-          },
-          { sn: "15", event: "Prayer For" },
-          { sn: "16", event: "Notice" },
-          {
-            sn: "17",
-            event: `Recessional Hymn - ${hymn.Recessional || "N/A"}`,
-          },
-        ],
-      },
-      {
-        program: [
-          { subheading: `${notice.title}` },
-          { text: `${notice.content}` },
-          { subheading: "Notice" },
-          {
-            text: "We welcome all worshipers to this divine service, especially those worshiping with us for the first time",
-          },
-          ...schedules,
-          ...resources,
-          {
-            text: "<b><u>PLEASE NOTE:</u></b> For tithe use <b>Access Bank</b>   {Account Name: <b>St. Philip's Anglican Church Asaba</b>. Account Number: <b>0057259382</b>}. For Harvest & Building Support use <b>Polaris Bank</b>  {Account Name: <b>St. Philip's Anglican Church Asaba</b>. Account Number: <b>1040502076</b>}. For all your sacrifice use <b>Eco Bank</b>  {Account Name: <b>St. Philip's Anglican Church Asaba</b>. Account Number: <b>4312025686</b>.} For <b>MISSION PARTNERSHIP</b> use <b>Polaris Bank</b>  {Account Name: <b>St. Philip's Anglican Church Asaba</b>. Account Number: <b>4091373646</b>.}",
-          },
-          {
-            text: "<b><u>Bans of Marriage:</u></b>",
-          },
-          ...marriageEntries,
-          {
-            text: "Weekly Prayers: The Church should please pray for the following families",
-          },
-          ...prayers,
-        ],
-      },
-    ];
-
-    if (service.liturgical_color == "green" || service.liturgical_color == "Green"){
-      churchProgramData[0].image = "../static/images/sermon-1.png";
-    } else if (service.liturgical_color == "red" || service.liturgical_color == "Red") {
-      churchProgramData[0].image = "../static/images/red_Church_Program.png"
-    } else if (service.liturgical_color == "Purple" || service.liturgical_color == "purple" || service.liturgical_color == "violet" || service.liturgical_color == "Violet") {
-      churchProgramData[0].image = "../static/images/Purple_church_program.png"
-    } else if (service.liturgical_color == "gold" || service.liturgical_color == "Gold" || service.liturgical_color == "white" || service.liturgical_color == "White") {
-      churchProgramData[0].image = "../static/images/Gold_church"}
-
-    // Cache the data for future reference
-    serviceDataCache[serviceId] = churchProgramData;
-
-    return churchProgramData;
+    if (service.CombinedServiceStyle == "Eucharistic"){
+      const churchProgramData = [
+        { image: "" },
+        {
+          program: [
+            { time: `${service.Csunday_time}AM` },
+            { text: "Order of Eucharistic Service" },
+            {
+              sn: "1",
+              event: `Processional Hymn - ${hymn.processional || "N/A"}`,
+            },
+            { sn: "2", event: "The Preparation" },
+            { sn: "3", event: "Ministry of the word" },
+            { sn: "4", event: `Old Testament Reading - ${lesson.OldTestament}` },
+            { sn: "5", event: `Psalm  ${lesson.psalm || "N/A"}` },
+            { sn: "6", event: `Epistle - ${lesson.espistle || "N/A"}` },
+            { sn: "7", event: `Gradual Hymn - ${hymn.gradual || "N/A"}` },
+            { sn: "8", event: `Gospel - ${lesson.gospel || "N/A"}` },
+            { sn: "9", event: "Sermon" },
+            { sn: "10", event: "Nicene Creed, Intercessory Prayers To Peace" },
+            { sn: "11", event: "Eucharistic Prayer and Consecration of Elements" },
+            { sn: "12", event: `Communion Proper - ${hymn.communion || "N/A"}` },
+            { sn: "13", event: "Post Communion Prayers" },
+            { sn: "14", event: "Return of Tithe" },
+            {
+              sn: "15",
+              event: "Church Offering (General, Welfare/Building Collection)",
+            },
+            {
+              sn: "16",
+              event: `Special Thanksgiving - (i) Convenant Seed Of Faith ${
+                thankgivings.map((t) => t.text).join(" & ") || "N/A"
+              }`,
+            },
+            ...(aob ? [{ sn: "16.1", event: `${aob}` }] : []),
+            { sn: "17", event: "Prayer For" },
+            { sn: "18", event: "Notice" },
+            {
+              sn: "19",
+              event: `Recessional Hymn - ${hymn.Recessional || "N/A"}`,
+            },
+          ],
+        },
+        {
+          program: [
+            { subheading: `COLLECT FOR ${notice.title}` },
+            { text: `${notice.content}` },
+            { subheading: "Notice" },
+            {
+              text: "We welcome all worshipers to this divine service, especially those worshiping with us for the first time",
+            },
+            ...schedules,
+            ...resources,
+            {
+              text: "<b><u>PLEASE NOTE:</u></b> For tithe use <b>Access Bank</b>   {Account Name: <b>St. Philip's Anglican Church Asaba</b>. Account Number: <b>0057259382</b>}. For Harvest & Building Support use <b>Polaris Bank</b>  {Account Name: <b>St. Philip's Anglican Church Asaba</b>. Account Number: <b>1040502076</b>}. For all your sacrifice use <b>Eco Bank</b>  {Account Name: <b>St. Philip's Anglican Church Asaba</b>. Account Number: <b>4312025686</b>.} For <b>MISSION PARTNERSHIP</b> use <b>Polaris Bank</b>  {Account Name: <b>St. Philip's Anglican Church Asaba</b>. Account Number: <b>4091373646</b>.}",
+            },
+            {
+              text: "<b><u>Bans of Marriage:</u></b>",
+            },
+            ...marriageEntries,
+            {
+              text: "Weekly Prayers: The Church should please pray for the following families",
+            },
+            ...prayers,
+          ],
+        },
+        {
+          program: [
+            { text: "<b><u>Weekly Meditation:</u></b>" },
+            { subheading: `TOPIC: ${meditation.topic}` },
+            { text: `<b>TEXT: ${meditation.text}</b>` },
+            { text: `<b><u>INTRODUCTION:</u></b> ${meditation.note}` },
+          ],
+        },
+      ];
+  
+      if (service.liturgical_color == "green" || service.liturgical_color == "Green"){
+        churchProgramData[0].image = "../static/images/sermon-1.png";
+      } else if (service.liturgical_color == "red" || service.liturgical_color == "Red") {
+        churchProgramData[0].image = "../static/images/red_Church_Program.png"
+      } else if (service.liturgical_color == "Purple" || service.liturgical_color == "purple" || service.liturgical_color == "violet" || service.liturgical_color == "Violet") {
+        churchProgramData[0].image = "../static/images/Purpule_Church_Program.png"
+      } else if (service.liturgical_color == "gold" || service.liturgical_color == "Gold" || service.liturgical_color == "white" || service.liturgical_color == "White") {
+        churchProgramData[0].image = "../static/images/Gold_Church_Program.png"}
+  
+      // Cache the data for future reference
+      serviceDataCache[serviceId] = churchProgramData;
+  
+      return churchProgramData;
+    } else {
+      const churchProgramData = [
+        { image: "" },
+        {
+          program: [
+            { time: `${service.Csunday_time}AM` },
+            { text: "Order of Service" },
+            {
+              sn: "1",
+              event: `Processional Hymn - ${hymn.processional || "N/A"}`,
+            },
+            { sn: "2", event: "Call to Worship" },
+            { sn: "3", event: `Psalm ${lesson.psalm}` },
+            { sn: "4", event: `First Lesson - ${lesson.first_lesson || "N/A"}` },
+            { sn: "5", event: `Gradual Hymn - ${hymn.gradual || "N/A"}` },
+            { sn: "6", event: `Second Lesson - ${lesson.second_lesson || "N/A"}` },
+            { sn: "7", event: `Hymn for Sermon - ${hymn.sermon}` },
+            { sn: "8", event: "Sermon" },
+            { sn: "9", event: "Apostles' Creed, Collect, Intercession to Grace" },
+            { sn: "10", event: "Return of Tithe" },
+            {
+              sn: "11",
+              event: "Church Offering (General, Welfare/Building Collection)",
+            },
+            {
+              sn: "12",
+              event: `Special Thanksgiving - (i) Convenant Seed Of Faith ${
+                thankgivings.map((t) => t.text).join(" & ") || "N/A"
+              }`,
+            },
+            ...(aob ? [{ sn: "12.1", event: `${aob}` }] : []),
+            { sn: "13", event: "Prayer For" },
+            { sn: "14", event: "Notice" },
+            {
+              sn: "15",
+              event: `Recessional Hymn - ${hymn.Recessional || "N/A"}`,
+            },
+          ],
+        },
+        {
+          program: [
+            { subheading: `COLLECT FOR ${notice.title}` },
+            { text: `${notice.content}` },
+            { subheading: "Notice" },
+            {
+              text: "We welcome all worshipers to this divine service, especially those worshiping with us for the first time",
+            },
+            ...schedules,
+            ...resources,
+            {
+              text: "<b><u>PLEASE NOTE:</u></b> For tithe use <b>Access Bank</b>   {Account Name: <b>St. Philip's Anglican Church Asaba</b>. Account Number: <b>0057259382</b>}. For Harvest & Building Support use <b>Polaris Bank</b>  {Account Name: <b>St. Philip's Anglican Church Asaba</b>. Account Number: <b>1040502076</b>}. For all your sacrifice use <b>Eco Bank</b>  {Account Name: <b>St. Philip's Anglican Church Asaba</b>. Account Number: <b>4312025686</b>.} For <b>MISSION PARTNERSHIP</b> use <b>Polaris Bank</b>  {Account Name: <b>St. Philip's Anglican Church Asaba</b>. Account Number: <b>4091373646</b>.}",
+            },
+            {
+              text: "<b><u>Bans of Marriage:</u></b>",
+            },
+            ...marriageEntries,
+            {
+              text: "Weekly Prayers: The Church should please pray for the following families",
+            },
+            ...prayers,
+          ],
+        },
+        {
+          program: [
+            { text: "<b><u>Weekly Meditation:</u></b>" },
+            { subheading: `TOPIC: ${meditation.topic}` },
+            { text: `<b>TEXT: ${meditation.text}</b>` },
+            { text: `<b><u>INTRODUCTION:</u></b> ${meditation.note}` },
+          ],
+        },
+      ];
+  
+      if (service.liturgical_color == "green" || service.liturgical_color == "Green"){
+        churchProgramData[0].image = "../static/images/sermon-1.png";
+      } else if (service.liturgical_color == "red" || service.liturgical_color == "Red") {
+        churchProgramData[0].image = "../static/images/red_Church_Program.png"
+      } else if (service.liturgical_color == "Purple" || service.liturgical_color == "purple" || service.liturgical_color == "violet" || service.liturgical_color == "Violet") {
+        churchProgramData[0].image = "../static/images/Purpule_Church_Program.png"
+      } else if (service.liturgical_color == "gold" || service.liturgical_color == "Gold" || service.liturgical_color == "white" || service.liturgical_color == "White") {
+        churchProgramData[0].image = "../static/images/Gold_Church_Program.png"}
+  
+      // Cache the data for future reference
+      serviceDataCache[serviceId] = churchProgramData;
+  
+      return churchProgramData;
+    }
   } catch (error) {
     console.error("Error fetching service data:", error);
   }
@@ -447,6 +571,8 @@ async function DoubleService(serviceId) {
       ChurchRescourceResponse,
       PrayerListResponse,
       MarriageBannResponse,
+      aobResponse,
+      meditationResponse,
     ] = await Promise.all([
       fetch(`/service/${serviceId}`),
       fetch("/hymns"),
@@ -457,6 +583,8 @@ async function DoubleService(serviceId) {
       fetch("/church_resources"),
       fetch("/prayerlist"),
       fetch("/marriagebann"),
+      fetch("/aob"),
+      fetch("/meditation"),
     ]);
 
     const [
@@ -469,6 +597,8 @@ async function DoubleService(serviceId) {
       churchResources,
       prayerList,
       marriagebann,
+      aob,
+      meditations,
     ] = await Promise.all([
       serviceResponse.json(),
       hymnsResponse.json(),
@@ -478,145 +608,140 @@ async function DoubleService(serviceId) {
       NoticeScheduleResponse.json(),
       ChurchRescourceResponse.json(),
       PrayerListResponse.json(),
-      MarriageBannResponse.json(), //
+      MarriageBannResponse.json(),
+      aobResponse.json(),
+      meditationResponse.json(),
     ]);
 
-    // Process and structure data as before
-    const hymn = hymns.find((h) => h.service_id === serviceId) || {};
-    const lesson = lessons.find((l) => l.service_id === serviceId) || {};
-    const marriages =
-      marriagebann.filter((l) => l.service_id === serviceId) || {};
-    // Check if any marriages were found
+    // Define service styles based on type
+    const getServiceProgram = (serviceType, time, aob, hymn, lesson, thankgivings) => {
+      const specialThanksgiving = thankgivings.map(t => t.text).join(" & ") || "N/A";
+      const formattedAob = typeof aob === 'string' ? aob : JSON.stringify(aob);
+      if (serviceType === "Eucharistic") {
+        return [
+          { time: `${time}AM` },
+          { text: "Order of Eucharistic Service" },
+          { sn: "1", event: `Processional Hymn - ${hymn.processional || "N/A"}` },
+          { sn: "2", event: "The Preparation" },
+          { sn: "3", event: "Ministry of the Word" },
+          { sn: "4", event: `Old Testament Reading - ${lesson.OldTestament || "N/A"}` },
+          { sn: "5", event: `Psalm ${lesson.psalm || "N/A"}` },
+          { sn: "6", event: `Epistle - ${lesson.espistle || "N/A"}` },
+          { sn: "7", event: `Gradual Hymn - ${hymn.gradual || "N/A"}` },
+          { sn: "8", event: `Gospel - ${lesson.gospel || "N/A"}` },
+          { sn: "9", event: "Sermon" },
+          { sn: "10", event: "Nicene Creed, Intercessory Prayers To Peace" },
+          { sn: "11", event: "Eucharistic Prayer and Consecration of Elements" },
+          { sn: "12", event: `Communion Proper - ${hymn.communion || "N/A"}` },
+          { sn: "13", event: "Post Communion Prayers" },
+          { sn: "14", event: "Return of Tithe" },
+          { sn: "15", event: "Church Offering (General, Welfare/Building Collection)" },
+          { sn: "16", event: `Special Thanksgiving - (i) Covenant Seed Of Faith ${specialThanksgiving}` },
+          ...(aob ? [{ sn: "16.1", event: `${aob}` }] : []),
+          { sn: "17", event: "Prayer For" },
+          { sn: "18", event: "Notice" },
+          { sn: "19", event: `Recessional Hymn - ${hymn.Recessional || "N/A"}` },
+        ];
+      } else {
+        return [
+          { time: `${time}AM` },
+          { text: "Order of Service" },
+          { sn: "1", event: `Processional Hymn - ${hymn.processional || "N/A"}` },
+          { sn: "2", event: "Call to Worship" },
+          { sn: "3", event: `Psalm  ${lesson.psalm || "N/A"}` },
+          { sn: "4", event: `First lesson - ${lesson.first_lesson || "N/A"}` },
+          { sn: "5", event: `Gradual Hymn - ${hymn.gradual || "N/A"}` },
+          { sn: "6", event: `Second Lesson - ${lesson.second_lesson || "N/A"}` },
+          { sn: "7", event: `Hymn for Sermon - ${hymn.sermon}` },
+          { sn: "8", event: "SERMON" },
+          { sn: "9", event: "Apostle's Creed, Collects, Intercession to Grace" },
+          { sn: "10", event: "Return of Tithe" },
+          { sn: "11", event: "Church Offering (General, Welfare/Building Collection)" },
+          { sn: "12", event: `Special Thanksgiving - (i) Convenant Seed Of Faith ${thankgivings.map(t => t.text).join(" & ") || "N/A"}` },
+          ...(aob ? [{ sn: "12.1", event: aob }] : []),
+          { sn: "13", event: "Prayer For" },
+          { sn: "14", event: "Notice" },
+          { sn: "15", event: `Recessional Hymn - ${hymn.Recessional || "N/A"}` },
+        ];
+      }
+    };
 
-    // Create the wedding data entries for each marriage bann
-    const marriageEntries = marriages.map((marriage, index) => {
-      return {
-        text: `<b>This is the ${marriage.bann_announcement_count} time of asking</b> \n I hereby publish the banns of marriage between <b>${marriage.groom_name}</b> and <b>${marriage.bride_name}</b>. If anyone knows any reason why these persons should not marry each other, he/she should declare it now.`, // Incremental sn starting from 1
-      };
-    });
+    const serviceAob = (aob.find(a => a.service_id === serviceId) || {}).aob1 || "";
+    const serviceAob2 = (aob.find(a => a.service_id === serviceId) || {}).aob2 || "";
+    // Process data for each program
+    const program1 = getServiceProgram(service.FirstServiceStyle, service.FirstServiceTime, serviceAob, hymns.find(h => h.service_id === serviceId) || {}, lessons.find(l => l.service_id === serviceId) || {}, thanksgivingList.filter(t => t.service_id === serviceId));
+    const program2 = getServiceProgram(service.SecondServiceStyle, service.SecondServiceTime, serviceAob2, hymns.find(h => h.service_id === serviceId) || {}, lessons.find(l => l.service_id === serviceId) || {}, thanksgivingList.filter(t => t.service_id === serviceId));
 
-    const thankgivings = thanksgivingList.filter(
-      (t) => t.service_id === serviceId
-    );
-    const notice = notices.find((n) => n.service_id === serviceId) || {};
+    // Other program sections (notices, meditation,  resources, prayers, marriage banns)
+    const meditation = meditations.find(m => m.service_id === serviceId) || {};
+    const notice = notices.find(n => n.service_id === serviceId) || {};
     const schedules = noticeSchedule
       .filter((ns) => ns.notice_id === notice.id)
-      .map((s, i) => ({
-        sn: `${i + 1}`,
-        event: `${s.event_day}: ${s.event_description}`,
-      }));
-    const resources = churchResources
-      .filter((cr) => cr.notice_id === notice.id)
-      .map((r, i) => ({ sn: `${i + 1}`, event: r.description }));
-    const prayers = prayerList
-      .filter((pl) => pl.notice_id === notice.id)
-      .map((p, i) => ({ sn: `${i + 1}`, event: p.family_name }));
+      .map((s, i) => {
+        const eventDate = new Date(s.event_day);
+        const formattedDate = new Intl.DateTimeFormat('en-US', {
+          weekday: 'long', 
+          month: 'short', 
+          day: 'numeric', 
+          year: 'numeric'
+        }).format(eventDate);
+
+        // Format the day with the appropriate suffix (st, nd, rd, th)
+        const day = eventDate.getDate();
+        const daySuffix = day % 10 === 1 && day !== 11 ? 'st' :
+                          day % 10 === 2 && day !== 12 ? 'nd' :
+                          day % 10 === 3 && day !== 13 ? 'rd' : 'th';
+
+        return {
+          sn: `${i + 1}`,
+          event: `${formattedDate.replace(/\d+/, day + daySuffix)}: ${s.event_description}`,
+        };
+      });
+    const resources = churchResources.filter(cr => cr.notice_id === notice.id).map((r, i) => ({ sn: `${i + 1}`, event: r.description }));
+    const prayers = prayerList.filter(pl => pl.notice_id === notice.id).map((p, i) => ({ sn: `${i + 1}`, event: p.family_name }));
+    const marriageEntries = marriagebann.filter(l => l.service_id === serviceId).map((marriage) => ({
+      text: `<b>This is the ${marriage.bann_announcement_count} time of asking</b> \n I hereby publish the banns of marriage between <b>${marriage.groom_name}</b> and <b>${marriage.bride_name}</b>. If anyone knows any reason why these persons should not marry each other, he/she should declare it now.`,
+    }));
 
     const churchProgramData = [
       { image: "../static/images/sermon-1.png" },
+      { program: program1 },
+      { program: program2 },
       {
         program: [
-          { time: `6:00AM` },
-          { text: "Order of Eucharistic Service" },
-          {
-            sn: "1",
-            event: `Processional Hymn - ${hymn.processional || "N/A"}`,
-          },
-          { sn: "2", event: "The Preparation" },
-          { sn: "3", event: "Ministry of the word" },
-          { sn: "4", event: `Epistle - ${lesson.first_lesson || "N/A"}` },
-          { sn: "5", event: `Gradual Hymn - ${hymn.gradual || "N/A"}` },
-          { sn: "6", event: `Gospel - ${lesson.second_lesson || "N/A"}` },
-          { sn: "7", event: "Sermon" },
-          { sn: "8", event: "Nicene Creed, Intercessory Prayers To Peace" },
-          { sn: "9", event: "Eucharistic Prayer and Consecration of Elements" },
-          { sn: "10", event: `Communion Proper - ${hymn.communion || "N/A"}` },
-          { sn: "11", event: "Post Communion Prayers" },
-          { sn: "12", event: "Return of Tithe" },
-          {
-            sn: "13",
-            event: "Church Offering (General, Welfare/Building Collection)",
-          },
-          {
-            sn: "14",
-            event: `Special Thanksgiving - ${
-              thankgivings.map((t) => t.text).join(" & ") || "N/A"
-            }`,
-          },
-          { sn: "15", event: "Prayer For" },
-          { sn: "16", event: "Notice" },
-          {
-            sn: "17",
-            event: `Recessional Hymn - ${hymn.Recessional || "N/A"}`,
-          },
-        ],
-      },
-      {
-        program: [
-          { time: `7:30AM` },
-          { text: "Order of Service" },
-          {
-            sn: "1",
-            event: `Processional Hymn - ${hymn.processional || "N/A"}`,
-          },
-          { sn: "2", event: "Call to Worship" },
-          { sn: "3", event: `Psalm - ${lesson.psalm}` },
-          { sn: "4", event: `First lesson - ${lesson.first_lesson || "N/A"}` },
-          { sn: "5", event: `Te-Deum - ${hymn.gradual || "N/A"}` },
-          {
-            sn: "6",
-            event: `Second Lesson - ${lesson.second_lesson || "N/A"}`,
-          },
-          { sn: "7", event: "Hymn for Sermon" },
-          { sn: "8", event: "SERMON" },
-          {
-            sn: "9",
-            event: "Apostle's Creed, Collects, Intercession to Grace",
-          },
-          { sn: "10", event: "Return of Tithe" },
-          {
-            sn: "11",
-            event: "Church Offering (General, Welfare/Building Collection)",
-          },
-          {
-            sn: "12",
-            event: `Special Thanksgiving - ${
-              thankgivings.map((t) => t.text).join(" & ") || "N/A"
-            }`,
-          },
-          { sn: "13", event: "Aob section" },
-          { sn: "14", event: "Prayer For" },
-          { sn: "15", event: "Notice" },
-          {
-            sn: "16",
-            event: `Recessional Hymn - ${hymn.Recessional || "N/A"}`,
-          },
-        ],
-      },
-      {
-        program: [
-          { subheading: `${notice.title}` },
+          { subheading: `COLLECT FOR ${notice.title}` },
           { text: `${notice.content}` },
           { subheading: "Notice" },
-          {
-            text: "We welcome all worshipers to this divine service, especially those worshiping with us for the first time",
-          },
+          { text: "We welcome all worshipers to this divine service, especially those worshiping with us for the first time" },
           ...schedules,
           ...resources,
           {
-            text: "<b><u>PLEASE NOTE:</u></b> For tithe use <b>Access Bank</b>  {Account Name: <b>St. Philip's Anglican Church Asaba</b>. Account Number: <b>0057259382</b>}. For Harvest & Building Support use <b>Polaris Bank</b>  {Account Name: <b>St. Philip's Anglican Church Asaba</b>. Account Number: <b>1040502076</b>}. For all your sacrifice use <b>Eco Bank</b>  {Account Name: <b>St. Philip's Anglican Church Asaba</b>. Account Number: <b>4312025686</b>.} For <b>MISSION PARTNERSHIP</b> use <b>Polaris Bank</b>  {Account Name: <b>St. Philip's Anglican Church Asaba</b>. Account Number: <b>4091373646</b>.}",
+            text: "<b><u>PLEASE NOTE:</u></b> For tithe use <b>Access Bank</b> {Account Name: <b>St. Philip's Anglican Church Asaba</b>. Account Number: <b>0057259382</b>}. For Harvest & Building Support use <b>Polaris Bank</b> {Account Name: <b>St. Philip's Anglican Church Asaba</b>. Account Number: <b>1040502076</b>}. For all your sacrifice use <b>Eco Bank</b> {Account Name: <b>St. Philip's Anglican Church Asaba</b>. Account Number: <b>4312025686</b>}. For <b>MISSION PARTNERSHIP</b> use <b>Polaris Bank</b> {Account Name: <b>St. Philip's Anglican Church Asaba</b>. Account Number: <b>4091373646</b>}.",
           },
-          {
-            text: "<b><u>Bans of Marriage:</u></b>",
-          },
+          { text: "<b><u>Bans of Marriage:</u></b>" },
           ...marriageEntries,
-          {
-            text: "Weekly Prayers: The Church should please pray for the following families",
-          },
+          { text: "Weekly Prayers: The Church should please pray for the following families" },
           ...prayers,
         ],
       },
+      {
+        program: [
+          { text: "<b><u>Weekly Meditation:</u></b>" },
+          { subheading: `TOPIC: ${meditation.topic}` },
+          { text: `<b>TEXT: ${meditation.text}</b>` },
+          { text: `<b><u>INTRODUCTION:</u></b> ${meditation.note}` },
+        ],
+      },
     ];
+
+    if (service.liturgical_color == "green" || service.liturgical_color == "Green"){
+      churchProgramData[0].image = "../static/images/sermon-1.png";
+    } else if (service.liturgical_color == "red" || service.liturgical_color == "Red") {
+      churchProgramData[0].image = "../static/images/red_Church_Program.png"
+    } else if (service.liturgical_color == "Purple" || service.liturgical_color == "purple" || service.liturgical_color == "violet" || service.liturgical_color == "Violet") {
+      churchProgramData[0].image = "../static/images/Purpule_Church_Program.png"
+    } else if (service.liturgical_color == "gold" || service.liturgical_color == "Gold" || service.liturgical_color == "white" || service.liturgical_color == "White") {
+      churchProgramData[0].image = "../static/images/Gold_Church_Program.png"}
 
     // Cache the data for future reference
     serviceDataCache[serviceId] = churchProgramData;
@@ -626,6 +751,8 @@ async function DoubleService(serviceId) {
     console.error("Error fetching service data:", error);
   }
 }
+
+
 
 async function displayProgramPage(serviceId) {
   const churchProgramPage = document.getElementById(

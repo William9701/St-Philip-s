@@ -1,0 +1,1346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/smart_wizard.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/smart_wizard_theme_arrows.min.css" rel="stylesheet" type="text/css" />
+
+    <style>
+        body {
+            background-color: #eee;
+        }
+        .form-control:focus {
+            color: #495057;
+            background-color: #fff;
+            border-color: #80bdff;
+            outline: 0;
+            box-shadow: 0 0 0 0rem rgba(0,123,255,.25);
+        }
+        .btn-secondary:focus {
+            box-shadow: 0 0 0 0rem rgba(108,117,125,.5);
+        }
+        .close:focus {
+            box-shadow: 0 0 0 0rem rgba(108,117,125,.5);
+        }
+        .mt-200 {
+            margin-top: 200px;
+        }
+    </style>
+    <style>
+        .toggle-switch {
+          position: relative;
+        }
+  
+        .l {
+          display: block;
+          margin-bottom: 1.5em;
+          font-size: 1em;
+        }
+        .l {
+          background-color: rgba(0, 0, 0, 0.7);
+          border-radius: 0.75em;
+          box-shadow: 0.125em 0.125em 0 0.125em rgba(0, 0, 0, 0.3) inset;
+          color: #fdea7b;
+          display: inline-flex;
+          align-items: center;
+          margin: auto;
+          padding: 0.15em;
+          width: 3em;
+          height: 1.5em;
+          transition: background-color 0.1s 0.3s ease-out,
+            box-shadow 0.1s 0.3s ease-out;
+          -webkit-appearance: none;
+          -moz-appearance: none;
+          appearance: none;
+          cursor: pointer;
+        }
+  
+        .l::before,
+        .l::after {
+          content: "";
+          display: block;
+        }
+        .l:before {
+          background-color: #d7d7d7;
+          border-radius: 50%;
+          width: 1.2em;
+          height: 1.2em;
+          transition: background-color 0.1s 0.3s ease-out, transform 0.3s ease-out;
+          z-index: 1;
+        }
+  
+        .l::after {
+          background: linear-gradient(transparent 50%, rgba(0, 0, 0, 0.15) 0) 0
+              50% / 50% 100%,
+            repeating-linear-gradient(
+                90deg,
+                #bbb 0,
+                #bbb,
+                #bbb 20%,
+                #999 20%,
+                #999 40%
+              )
+              0 50% / 50% 100%,
+            radial-gradient(circle at 50% 50%, #888 25%, transparent 26%);
+          background-repeat: no-repeat;
+          height: 1em;
+        }
+  
+        /* checked */
+        .l:checked {
+          background-color: rgba(215 202 202 / 45%);
+          box-shadow: 0.125em 0.125em rgba(0, 0, 0, 0.1) inset;
+          border: 1px solid #9999;
+        }
+  
+        .l:checked::before {
+          background-color: currentColor;
+          transform: translateX(125%);
+        }
+  
+        .l:checked:after {
+          border-left-color: currentColor;
+          transform: translateX(-2.5%) rotateY(180deg);
+        }
+  
+        .l:focus {
+          outline: 0;
+        }
+      </style>
+</head>
+<body>
+    
+    
+    <div class="container mt-5">
+        <h3 class="text-center">Update Bulletin</h3>
+        {% if service.service_name == "combined_service" %}
+        <div id="smartwizard">
+            <ul>
+              <li>
+                <a href="#step-4">Step 1<br /><small>Service Info</small></a>
+              </li>
+              <li>
+                <a href="#step-5">Step 2<br /><small>Notices</small></a>
+              </li>
+              <li>
+                <a href="#step-6">Step 3<br /><small>Meditation</small></a>
+              </li>
+            </ul>
+            <div class="mt-4">
+              <!-- Steps Content Here -->
+              <div id="step-4">
+                <div style="display: flex" class="toggle-switch">
+                  <p>Eucaristic service</p>
+                  <input
+                    type="checkbox"
+                    class="l toggle-checkbox"
+                    id="dark-mode-toggle3"
+                  />
+                  <p>Martin</p>
+                  <label for="dark-mode-toggle3" class="toggle-label"></label>
+                </div>
+                <form style="display: block;" id="SnEucaristicForm">
+                  <div class="form-group">
+                    <label for="sundayNameEucaristic">Sunday Name</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="sundayNameEucaristic"
+                      value = "{{service.sunday_name}}"
+                      required
+                    />
+                  </div>
+                
+                  <div class="form-group">
+                    <label for="litColorEucaristic">Liturgical Color</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="litColorEucaristic"
+                      value="{{service.liturgical_color}}"
+                      required
+                    />
+                  </div>
+                
+                  <div class="form-group">
+                    <label for="sundayDateEucaristic">Select Date</label>
+                    <input
+                      type="date"
+                      class="form-control"
+                      id="sundayDateEucaristic"
+                      value="{{ service.service_date}}"
+                      required
+                      onchange="highlightSundays(this)"
+                    />
+                  </div>
+                
+                  <div class="form-group">
+                    <label for="sundayTimeEucaristic">Select Time</label>
+                    <input
+                      type="time"
+                      class="form-control"
+                      id="sundayTimeEucaristic"
+                      value="{{service.Csunday_time}}"
+                      required
+                    />
+                  </div>
+                
+                  <div class="form-group">
+                    <label for="specialEventEucaristic">Sunday Special Event</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="specialEventEucaristic"
+                      value="{{service.special_celebration}}"
+                      required
+                    />
+                  </div>
+                
+                  <div class="form-group">
+                    <label for="processionalHymnEucaristic">Processional Hymn</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="processionalHymnEucaristic"
+                      value="{{Hymn.processional}}"
+                      required
+                    />
+                  </div>
+
+                  <div class="form-group">
+                    <label for="OldTestReadingEucaristic">Old Testament Reading</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="OldTestReadingEucaristic"
+                      value="{{Reading.OldTestament}}"
+                      required
+                    />
+                  </div>
+
+                  <div class="form-group">
+                    <label for="psalmEucaristic">Psalm</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="psalmEucaristic"
+                      value="{{Reading.psalm}}"
+                      required
+                    />
+                  </div>
+                
+                  <div class="form-group">
+                    <label for="epistleEucaristic">Epistle</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="epistleEucaristic"
+                      value="{{Reading.espistle}}"
+                      required
+                    />
+                  </div>
+                
+                  <div class="form-group">
+                    <label for="gradualHymnEucaristic">Gradual Hymn</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="gradualHymnEucaristic"
+                      value="{{Hymn.gradual}}"
+                      required
+                    />
+                  </div>
+                
+                  <div class="form-group">
+                    <label for="gospelEucaristic">Gospel</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="gospelEucaristic"
+                      value="{{Reading.gospel}}"
+                      required
+                    />
+                  </div>
+                
+                  <div class="form-group">
+                    <label for="communionHymnEucaristic">Communion Hymn</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="communionHymnEucaristic"
+                      value="{{Hymn.communion}}"
+                      required
+                    />
+                  </div>
+                
+                  <div class="form-group">
+                    <label for="specialThanksgivingEucaristic">Special Thanksgiving</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="specialThanksgivingEucaristic"
+                      value="{{thanks.text}}"
+                    />
+                  </div>
+                
+                  <div class="form-group">
+                    <label for="aobEucaristic">Any Other Business (AOB)</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="aobEucaristic"
+                      value="{{aob1.aob1}}"
+                    />
+                  </div>
+                
+                  <div class="form-group">
+                    <label for="recessionalHymnEucaristic">Recessional Hymn</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="recessionalHymnEucaristic"
+                      value="{{Hymn.Recessional}}"
+                      required
+                    />
+                  </div>
+                </form>
+                
+                <form style="display: none;" id="SnMartinForm">
+                  <div class="form-group">
+                    <label for="sundayNameMartin">Sunday Name</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="sundayNameMartin"
+                      value = "{{service.sunday_name}}"
+                      required
+                    />
+                  </div>
+                
+                  <div class="form-group">
+                    <label for="litColorMartin">Liturgical Color</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="litColorMartin"
+                      value = "{{service.liturgical_color}}"
+                      required
+                    />
+                  </div>
+                
+                  <div class="form-group">
+                    <label for="sundayDateMartin">Select Date</label>
+                    <input
+                      type="date"
+                      class="form-control"
+                      id="sundayDateMartin"
+                      value="{{ service.service_date}}"
+                      required
+                      onchange="highlightSundays(this)"
+                    />
+                  </div>
+                
+                  <div class="form-group">
+                    <label for="sundayTimeMartin">Select Time</label>
+                    <input
+                      type="time"
+                      class="form-control"
+                      id="sundayTimeMartin"
+                      value="{{service.Csunday_time}}"
+                      required
+                    />
+                  </div>
+                
+                  <div class="form-group">
+                    <label for="specialEventMartin">Sunday Special Event</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="specialEventMartin"
+                      value="{{service.special_celebration}}"
+                      required
+                    />
+                  </div>
+                
+                  <div class="form-group">
+                    <label for="processionalHymnMartin">Processional Hymn</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="processionalHymnMartin"
+                      value="{{Hymn.processional}}"
+                      required
+                    />
+                  </div>
+
+                  <div class="form-group">
+                    <label for="snPsalmMartin">Psalm</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="snPsalmnMartin"
+                      value="{{Reading.psalm}}"
+                      required
+                    />
+                  </div>
+
+                
+                  <div class="form-group">
+                    <label for="snfirstlessonMartin">First Lesson</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="snfirstlessonMartin"
+                      value="{{Reading.first_lesson}}"
+                      required
+                    />
+                  </div>
+                
+                  <div class="form-group">
+                    <label for="sngradualHymnMartin">Gradual Hymn</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="sngradualHymnMartin"
+                      value="{{Hymn.gradual}}"
+                      required
+                    />
+                  </div>
+                
+                  <div class="form-group">
+                    <label for="snSecondlessonMartin">Second Lesson</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="snSecondlessonMartin"
+                      value="{{Reading.second_lesson}}"
+                      required
+                    />
+                  </div>
+                
+                  <div class="form-group">
+                    <label for="snSermonMartin">Hymn for Sermon</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="snSermonMartin"
+                      value="{{Hymn.sermon}}"
+                      required
+                    />
+                  </div>
+                
+                  <div class="form-group">
+                    <label for="snspecialThanksgivingMartin">Special Thanksgiving</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="snspecialThanksgivingMartin"
+                      value="{{thanks.text}}"
+                    />
+                  </div>
+                
+                  <div class="form-group">
+                    <label for="snaobMartin">Any Other Business (AOB)</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="snaobMartin"
+                      value="{{aob1.aob1}}"
+                    />
+                  </div>
+                
+                  <div class="form-group">
+                    <label for="snrecessionalHymnMartin">Recessional Hymn</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="snrecessionalHymnMartin"
+                      value="{{Hymn.Recessional}}"
+                      required
+                    />
+                  </div>
+                </form>
+                
+              </div>
+              <!-- Step 2 Content Here -->
+
+              <!-- Step 2 Content Here -->
+              <div id="step-5">
+                <form id="infoForm">
+                  <!-- Section for Collect for the Day -->
+                  <div class="form-group">
+                    <label for="collect">Collect for the Day</label>
+                    <textarea
+                      class="form-control"
+                      id="collect"
+                      required
+                    >{{ notice.content }}</textarea>
+                  </div>
+                  
+
+                  <!-- Section for Daily Info -->
+                   {% for dailySchedule in dailySchedules %}
+                  <div id="dailyInfoContainer">
+                    <label>Daily Info</label>
+                    <div class="form-group row mb-3">
+                      <div class="col-md-5">
+                        <label for="date1">Date</label>
+                        <input
+                          type="date"
+                          class="form-control"
+                          id="date1"
+                          value="{{ dailySchedule.event_day}}"
+                          required
+                        />
+                      </div>
+                      <div class="col-md-7">
+                        <label for="dailyInfo1">Daily Info</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="dailyInfo1"
+                          value="{{ dailySchedule.event_description }}"
+                          required
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  {% endfor %}
+
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    id="addDailyInfo"
+                  >
+                    Add More Daily Info
+                  </button>
+
+                  <!-- Section for Button Info -->
+                   {% for resource in resources %}
+                  <div id="buttonInfoContainer" class="mt-4">
+                    <label>Button Info</label>
+                    <div class="form-group mb-3">
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="buttonInfo1"
+                        value="{{ resource.description }}"
+                        required
+                      />
+                    </div>
+                  </div>
+                  {% endfor %}
+
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    id="addButtonInfo"
+                  >
+                    Add More Button Info
+                  </button>
+
+                  <!-- Section for Family Names -->
+                   {% for prayerList in prayerLists %}
+                  <div id="familyNamesContainer" class="mt-4">
+                    <label>Family Names</label>
+                    <div class="form-group mb-3">
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="familyName1"
+                        value="{{ prayerList.family_name }}"
+                        required
+                      />
+                    </div>
+                  </div>
+                  {% endfor %}
+
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    id="addFamilyName"
+                  >
+                    Add More Family Name
+                  </button>
+
+                  <!-- Section for Bride and Groom Info -->
+                   {% for marriagebann in marriagebanns %}
+                  <div id="brideGroomContainer" class="mt-4">
+                    <label>Bride and Groom Info</label>
+                    <div class="form-group row mb-3">
+                      <div class="col-md-4">
+                        <label for="brideName1">Bride's Name</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="brideName1"
+                          value="{{ marriagebann.bride_name }}"
+                          required
+                        />
+                      </div>
+                      <div class="col-md-4">
+                        <label for="groomName1">Groom's Name</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="groomName1"
+                          value="{{ marriagebann.groom_name }}"
+                          required
+                        />
+                      </div>
+                      <div class="col-md-4">
+                        <label for="timeOfAsking1">Time of Asking</label>
+                        <select
+                          class="form-control"
+                          id="timeOfAsking1"
+                          
+                          required
+                        >
+                          <option value="" disabled selected>
+                            {{ marriagebann.bann_announcement_count }}
+                          </option>
+                          <option value="First">First</option>
+                          <option value="Second">Second</option>
+                          <option value="Third">Third and Final</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  {% endfor %}
+
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    id="addBrideGroom"
+                  >
+                    Add More Bride/Groom Info
+                  </button>
+                </form>
+              </div>
+              <!-- Step 3 Content Here -->
+              <div id="step-6">
+                <form id="meditationForm">
+                  <!-- Meditation Topic -->
+                  <div class="form-group mb-3">
+                    <label for="meditationTopic">Meditation Topic</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="meditationTopic"
+                      value="{{ meditation.topic }}"
+                      required
+                    />
+                  </div>
+
+                  <!-- Meditation Text -->
+                  <div class="form-group mb-3">
+                    <label for="meditationText">Meditation Text</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="meditationText"
+                      rows="4"
+                      value="{{ meditation.text }}"
+                      required
+                    />
+                  </div>
+
+                  <!-- Message -->
+                  <div class="form-group mb-3">
+                    <label for="message">Message</label>
+                    <textarea
+                      class="form-control"
+                      id="message"
+                      rows="4"
+                      
+                      required
+                    >{{ meditation.note }}</textarea>
+                  </div>
+                  <!-- Create Bulletin Button -->
+                  <button type="submit" class="btn btn-primary mt-3">
+                    Update Bulletin
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        {% else %}
+        <div id="smartwizard">
+            <ul>
+              <li>
+                <a href="#step-1">Step 1<br /><small>1st Service</small></a>
+              </li>
+              <li>
+                <a href="#step-2">Step 2<br /><small>2nd Service</small></a>
+              </li>
+              <li>
+                <a href="#step-3">Step 3<br /><small>Notices</small></a>
+              </li>
+              <li>
+                <a href="#step-4">Step 4<br /><small>Meditation</small></a>
+              </li>
+            </ul>
+            <div class="mt-4">
+              <!-- Steps Content Here -->
+              <div id="step-1">
+                <div style="display: flex" class="toggle-switch">
+                  <p>Eucaristic service</p>
+                  <input
+                    type="checkbox"
+                    class="l toggle-checkbox"
+                    id="dark-mode-toggle"
+                  />
+                  <p>Martin</p>
+                  <label for="dark-mode-toggle" class="toggle-label"></label>
+                </div>
+                <form style="display: block" id="EucaristicForm">
+                  <div class="form-group1">
+                    <label for="sundayName">Sunday Name</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="sundayName1"
+                      value="{{ service.sunday_name }}"
+                      required
+                    />
+                  </div>
+
+                  <div class="form-group1">
+                    <label for="litColor1">Liturgical Color</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="litColor1"
+                      value="{{ service.liturgical_color }}"
+                      required
+                    />
+                  </div>
+
+                  <div class="form-group1">
+                    <label for="sundayDate1">Select Date</label>
+                    <input
+                      type="date"
+                      class="form-control"
+                      id="sundayDate1"
+                      value="{{ service.service_date }}"
+                      required
+                      onchange="highlightSundays(this)"
+                    />
+                  </div>
+
+                  <div class="form-group1">
+                    <label for="sundayTime1">Select Time</label>
+                    <input
+                      type="time"
+                      class="form-control"
+                      id="sundayTime1"
+                      value="{{ service.FirstServiceTime }}"
+                      required
+                    />
+                  </div>
+
+                  <div class="form-group1">
+                    <label for="specialEvent">Sunday Special Event</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="specialEvent1"
+                      value="{{ service.special_celebration}}"
+                      required
+                    />
+                  </div>
+
+                  <div class="form-group1">
+                    <label for="processionalHymn">Processional Hymn</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="processionalHymn1"
+                      value="{{ Hymn.processional }}"
+                      required
+                    />
+                  </div>
+
+                  <div class="form-group1">
+                    <label for="OldReading">Old Testament Reading</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="OldReading"
+                      value="{{ Reading.OldTestament}}"
+                      required
+                    />
+                  </div>
+
+                  <div class="form-group1">
+                    <label for="Psalm">Psalm</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="psalm1"
+                      value="{{ Reading.psalm}}"
+                      required
+                    />
+                  </div>
+
+                  <div class="form-group1">
+                    <label for="Epistle">Epistle</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="epistle1"
+                      value="{{ Reading.espistle}}"
+                      required
+                    />
+                  </div>
+
+                  <div class="form-group1">
+                    <label for="gradualHymn">Gradual Hymn</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="gradualHymn1"
+                      value="{{Hymn.gradual}}"
+                      required
+                    />
+                  </div>
+
+                  <div class="form-group1">
+                    <label for="gospel">Gospel</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="gospel1"
+                      value="{{Reading.gospel}}"
+                      required
+                    />
+                  </div>
+
+                  <div class="form-group1">
+                    <label for="communionHymn">Communion Hymn</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="communionHymn1"
+                      value="{{Hymn.communion}}"
+                      required
+                    />
+                  </div>
+
+                  <div class="form-group1">
+                    <label for="specialThanksgiving"
+                      >Special Thanksgiving</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="specialThanksgiving1"
+                      value="{{ thanks.text}}"
+                    />
+                  </div>
+
+                  <div class="form-group1">
+                    <label for="aob">Any Other Business (AOB)</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="aob1"
+                      value="{{aob1.aob1}}"
+                    />
+                  </div>
+
+                  <div class="form-group1">
+                    <label for="recessionalHymn1">Recessional Hymn</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="recessionalHymn1"
+                      value="{{ Hymn.Recessional}}"
+                      required
+                    />
+                  </div>
+                </form>
+                <form style="display: none" id="MartinForm">
+                  <div class="form-group1">
+                    <label for="sundayName2">Sunday Name</label>
+                    <input type="text" class="form-control" id="sundayName2" value="{{ service.sunday_name }}" required />
+                  </div>
+                  <div class="form-group1">
+                    <label for="litColor2">Liturgical Color</label>
+                    <input type="text" class="form-control" id="litColor2" value="{{ service.liturgical_color }}" required />
+                  </div>
+                  <div class="form-group1">
+                    <label for="sundayDate2">Select Date</label>
+                    <input type="date" class="form-control" id="sundayDate2" value="{{ service.service_date }}" required onchange="highlightSundays(this)" />
+                  </div>
+                  <div class="form-group1">
+                    <label for="sundayTime2">Select Time</label>
+                    <input type="time" class="form-control" id="sundayTime2" value="{{ service.FirstServiceTime }}" required />
+                  </div>
+                  <div class="form-group1">
+                    <label for="specialEvent2">Sunday Special Event</label>
+                    <input type="text" class="form-control" id="specialEvent2" value="{{ service.special_celebration }}" required />
+                  </div>
+                  <div class="form-group1">
+                    <label for="processionalHymn2">Processional Hymn</label>
+                    <input type="text" class="form-control" id="processionalHymn2" value="{{ Hymn.processional }}" required />
+                  </div>
+                  <div class="form-group1">
+                    <label for="fsPsalm">Psalm</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="fspsalm"
+                      value="{{ Reading.psalm }}"
+                      required
+                    />
+                  </div>
+                  <div class="form-group1">
+                    <label for="fSfirstlesson">First Lesson</label>
+                    <input type="text" class="form-control" id="fSfirstlesson" value="{{ Reading.first_lesson }}" required />
+                  </div>
+                  <div class="form-group1">
+                    <label for="gradualHymn2">Gradual Hymn</label>
+                    <input type="text" class="form-control" id="gradualHymn2" value="{{ Hymn.gradual }}" required />
+                  </div>
+                  <div class="form-group1">
+                    <label for="fsSecondlesson">Second Lesson</label>
+                    <input type="text" class="form-control" id="fsSecondlesson" value="{{ Reading.second_lesson }}" required />
+                  </div>
+                  <div class="form-group1">
+                    <label for="fsSermonhymn">Hymn for Sermon</label>
+                    <input type="text" class="form-control" id="fsSermonhymn" value="{{ Hymn.sermon }}" required />
+                  </div>
+                  <div class="form-group1">
+                    <label for="specialThanksgiving2">Special Thanksgiving</label>
+                    <input type="text" class="form-control" id="specialThanksgiving2" value="{{ thanks.text}}" />
+                  </div>
+                  <div class="form-group1">
+                    <label for="aob2">Any Other Business (AOB)</label>
+                    <input type="text" class="form-control" id="aob2" value="{{aob1.aob1}}" />
+                  </div>
+                  <div class="form-group1">
+                    <label for="recessionalHymn2">Recessional Hymn</label>
+                    <input type="text" class="form-control" id="recessionalHymn2" value="{{ Hymn.Recessional}}" required />
+                  </div>
+                </form>
+              </div>
+              <!-- Step 2 Content Here -->
+              <div id="step-2">
+                <div style="display: flex" class="toggle-switch">
+                  <p>Martin</p>
+                  <input
+                    type="checkbox"
+                    class="l toggle-checkbox"
+                    id="dark-mode-toggle2"
+                  />
+                  <p>Eucaristic service</p>
+                  <label for="dark-mode-toggle" class="toggle-label"></label>
+                </div>
+              <form style="display: block" id="ssMartinForm">
+                  <div class="form-group1">
+                      <label for="SecondsundayTimeMartin">Select Time</label>
+                      <input
+                          type="time"
+                          class="form-control"
+                          id="SecondsundayTimeMartin"
+                          value="{{service.SecondServiceTime}}"
+                          required
+                      />
+                  </div>
+              
+                  <div class="form-group1">
+                      <label for="Psalm1Martin">Psalm</label>
+                      <input
+                          type="text"
+                          class="form-control"
+                          id="psalm1Martin"
+                          value="{{ Reading.psalm }}"
+                          required
+                      />
+                  </div>
+              
+                  <div class="form-group1">
+                      <label for="firstLesson1Martin">First Lesson</label>
+                      <input
+                          type="text"
+                          class="form-control"
+                          id="firstLesson1Martin"
+                          value="{{ Reading.first_lesson}}"
+                          required
+                      />
+                  </div>
+
+                  <div class="form-group1">
+                    <label for="gradualhymnMartin1">Gradual Hymn</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="gradualhymnMartin1"
+                        value="{{ Hymn.gradual }}"
+                        required
+                    />
+                </div>
+              
+                  <div class="form-group1">
+                      <label for="secondLessonMartin">Second Lesson</label>
+                      <input
+                          type="text"
+                          class="form-control"
+                          id="secondLesson1Martin"
+                          value="{{ Reading.second_lesson}}"
+                          required
+                      />
+                  </div>
+              
+                  <div class="form-group1">
+                      <label for="sermonHymnMartin">Hymn for Sermon</label>
+                      <input
+                          type="text"
+                          class="form-control"
+                          id="sermonHymn1Martin"
+                          value="{{ Hymn.sermon }}"
+                          required
+                      />
+                  </div>
+              
+                  <div class="form-group1">
+                      <label for="specialThanksgivingMartin">Special Thanksgiving</label>
+                      <input
+                          type="text"
+                          class="form-control"
+                          id="specialThanksgivingMartin"
+                          value="{{ thanks.second_service_text}}"
+                      />
+                  </div>
+              
+                  <div class="form-group1">
+                      <label for="aobMartin">Any Other Business (AOB)</label>
+                      <input
+                          type="text"
+                          class="form-control"
+                          id="aob1Martin"
+                          value="{{ aob1.aob2}}"
+                      />
+                  </div>
+              </form>
+              
+              <form style="display: none" id="ssEucaristicForm">
+                  <div class="form-group1">
+                      <label for="SecondsundayTimeEucaristic">Select Time</label>
+                      <input
+                          type="time"
+                          class="form-control"
+                          id="ssSecondsundayTimeEucaristic"
+                          value="{{service.SecondServiceTime}}"
+                          required
+                      />
+                  </div>
+              
+                  <div class="form-group1">
+                      <label for="ssOldReadingEucaristic">Old Testament Reading</label>
+                      <input
+                          type="text"
+                          class="form-control"
+                          id="ssOldReadingEucaristic"
+                          value="{{ Reading.OldTestament}}"
+                          required
+                      />
+                  </div>
+
+                  <div class="form-group1">
+                    <label for="sspsalmEucaristic">Psalm</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="sspsalmEucaristic"
+                        value="{{Reading.psalm}}"
+                        required
+                    />
+                  </div>
+              
+                  <div class="form-group1">
+                      <label for="ssepistleEucaristic">Epistle</label>
+                      <input
+                          type="text"
+                          class="form-control"
+                          id="ssepistle1Eucaristic"
+                          value="{{ Reading.espistle}}"
+                          required
+                      />
+                  </div>
+
+                  <div class="form-group1">
+                    <label for="ssgradualhymnEucaristic">Gradual Hymn</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="ssgradualhymnEucaristic"
+                        value="{{ Hymn.gradual}}"
+                        required
+                    />
+                  </div>
+              
+                  <div class="form-group1">
+                      <label for="ssGospelEucaristic">Gospel</label>
+                      <input
+                          type="text"
+                          class="form-control"
+                          id="ssGospel1Eucaristic"
+                          value="{{ Reading.gospel}}"
+                          required
+                      />
+                  </div>
+              
+                  <div class="form-group1">
+                      <label for="sscommunionHymnEucaristic">Communion Hymn</label>
+                      <input
+                          type="text"
+                          class="form-control"
+                          id="sscommunionHymn1Eucaristic"
+                          value="{{ Hymn.communion}}"
+                          required
+                      />
+                  </div>
+              
+                  <div class="form-group1">
+                      <label for="specialThanksgivingEucaristic">Special Thanksgiving</label>
+                      <input
+                          type="text"
+                          class="form-control"
+                          id="specialThanksgiving1Eucaristic"
+                          value="{{ thanks.second_service_text}}"
+                      />
+                  </div>
+              
+                  <div class="form-group1">
+                      <label for="aobEucaristic">Any Other Business (AOB)</label>
+                      <input
+                          type="text"
+                          class="form-control"
+                          id="aob1Eucaristic"
+                          value="{{ aob1.aob2}}"
+                      />
+                  </div>
+              </form>
+              
+              </div>
+              <!-- Step 3 Content Here -->
+              <div id="step-3">
+                <form id="infoForm1">
+                  <!-- Section for Collect for the Day -->
+                  <div class="form-group1">
+                    <label for="collect">Collect for the Day</label>
+                    <textarea
+                      type="text"
+                      class="form-control"
+                      id="collect1"
+                      required
+                    >{{ notice.content }}</textarea>
+                  </div>
+
+                  <!-- start here to add 1 from begingn -->
+                  <!-- Section for Daily Info -->
+                  <div id="dailyInfoContainer1">
+                    <label>Daily Info</label>
+                    <div class="form-group1 row mb-3">
+                      <div class="col-md-5">
+                        <label for="1date1">Date</label>
+                        <input
+                          type="date"
+                          class="form-control"
+                          id="1date1"
+                          required
+                        />
+                      </div>
+                      <div class="col-md-7">
+                        <label for="1dailyInfo1">Daily Info</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="1dailyInfo1"
+                          placeholder="Enter daily info"
+                          required
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    id="addDailyInfo1"
+                  >
+                    Add More Daily Info
+                  </button>
+
+                  <!-- Section for Button Info -->
+                  <div id="buttonInfoContainer1" class="mt-4">
+                    <label>Button Info</label>
+                    <div class="form-group1 mb-3">
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="1buttonInfo1"
+                        placeholder="Enter button info"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    id="addButtonInfo1"
+                  >
+                    Add More Button Info
+                  </button>
+
+                  <!-- Section for Family Names -->
+                  <div id="familyNamesContainer1" class="mt-4">
+                    <label>Family Names</label>
+                    <div class="form-group1 mb-3">
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="1familyName1"
+                        placeholder="Enter family name"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    id="addFamilyName1"
+                  >
+                    Add More Family Name
+                  </button>
+
+                  <!-- Section for Bride and Groom Info -->
+                  <div id="brideGroomContainer1" class="mt-4">
+                    <label>Bride and Groom Info</label>
+                    <div class="form-group1 row mb-3">
+                      <div class="col-md-4">
+                        <label for="1brideName1">Bride's Name</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="1brideName1"
+                          placeholder="Enter bride's name"
+                          required
+                        />
+                      </div>
+                      <div class="col-md-4">
+                        <label for="1groomName1">Groom's Name</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="1groomName1"
+                          placeholder="Enter groom's name"
+                          required
+                        />
+                      </div>
+                      <div class="col-md-4">
+                        <label for="timeOfAsking1">Time of Asking</label>
+                        <select
+                          class="form-control"
+                          id="1timeOfAsking1"
+                          required
+                        >
+                          <option value="" disabled selected>
+                            Select time of asking
+                          </option>
+                          <option value="First">First</option>
+                          <option value="Second">Second</option>
+                          <option value="Third">Third and Final</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    id="addBrideGroom1"
+                  >
+                    Add More Bride/Groom Info
+                  </button>
+                </form>
+              </div>
+              <!-- Step 4 Content Here -->
+              <div id="step-4">
+                <form id="meditationForm1">
+                  <!-- Meditation Topic -->
+                  <div class="form-group1 mb-3">
+                    <label for="meditationTopic">Meditation Topic</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="meditationTopic1"
+                      placeholder="Enter meditation topic"
+                      required
+                    />
+                  </div>
+
+                  <!-- Meditation Text -->
+                  <div class="form-group1 mb-3">
+                    <label for="meditationText">Meditation Text</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="meditationText1"
+                      rows="4"
+                      placeholder="Enter meditation text"
+                      required
+                    />
+                  </div>
+
+                  <!-- Message -->
+                  <div class="form-group1 mb-3">
+                    <label for="message">Message</label>
+                    <textarea
+                      class="form-control"
+                      id="message1"
+                      rows="4"
+                      placeholder="Enter message"
+                      required
+                    ></textarea>
+                  </div>
+                  <!-- Create Bulletin Button -->
+                  <button type="submit" class="btn btn-primary mt-3">
+                    Create Bulletin
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+    </div>
+   
+
+    <!-- jQuery and Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <!-- SmartWizard JS -->
+    <script src="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/jquery.smartWizard.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Initialize the Smart Wizard
+            $('#smartwizard').smartWizard({
+                selected: 0,
+                theme: 'arrows',
+                autoAdjustHeight: true,
+                transitionEffect: 'fade',
+                showStepURLhash: false
+            });
+        });
+    </script>
+    <script src="../static/script/js/update.js"></script>
+</body>
+</html>

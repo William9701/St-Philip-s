@@ -147,13 +147,6 @@
             0 50% / 50% 100%,
           radial-gradient(circle at 50% 50%, #888 25%, transparent 26%);
         background-repeat: no-repeat;
-        /* border: 0.25em solid transparent;
-  border-left: 0.4em solid #d8d8d8;
-  border-right: 0 solid transparent;
-  transition: border-left-color 0.1s 0.3s ease-out, transform 0.3s ease-out;
-  transform: translateX(-22.5%);
-  transform-origin: 25% 50%;
-  width: 1.2em; */
         height: 1em;
       }
 
@@ -1574,18 +1567,31 @@
                 <thead>
                   <tr>
                     <th>Item Name</th>
-                    <th>Date Created</th>
+                    <th>Service Date</th>
+                    <th>Lithorgical Color</th>
+                    <th>Service Type</th>
+                    <th>Action</th>
                     <th>Action</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody id="services-table-body">
+                  {% for service in services %}
                   <tr>
-                    <td>Sample Item 1</td>
-                    <td>2024-10-24</td>
+                    <td>{{ service.sunday_name }}</td>
+                    <td>{{ service.service_date }}</td>
+                    <td>{{ service.liturgical_color }}</td>
+                    <td>{{ service.service_name }}</td>
                     <td>
-                      <button class="btn btn-danger btn-sm">Delete</button>
+                      <button onclick="DeleteService(`{{ service.id }}`)" class="btn btn-danger btn-sm">Delete</button>
+                    </td>
+                    <td>
+                      <a href="/update/{{ service.id }}">
+                        <button onclick="UpdateService(`{{ service.id }}`)" class="btn btn-secondary mb-3 btn-sm">update</button>
+                      </a>
+                     
                     </td>
                   </tr>
+                  {% endfor %}
                   <!-- Additional rows as needed -->
                 </tbody>
               </table>

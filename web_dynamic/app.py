@@ -29,13 +29,11 @@ def index():
     
     # Parse the service_date into datetime objects for accurate sorting
     for service in all_services:
-        service['parsed_date'] = datetime.strptime(service['service_date'], '%a, %d %b %Y %H:%M:%S %Z')
+        service['parsed_date'] = ' '.join(service['service_date'].split()[:4])
 
     # Sort services by parsed_date
     all_sorted_services = sorted(all_services, key=lambda service: service['parsed_date'], reverse=True)
     
-    print("Sorted services:", all_sorted_services)
-    print("All services:", all_services)
     
     latst_service = latest_service().json
     meditations = get_prayers().json
@@ -53,7 +51,15 @@ def history():
 
 @app.route('/admin', strict_slashes=False)
 def admin():
-    return render_template('admin.html')
+    all_services = get_services().json
+    
+    # Parse the service_date into datetime objects for accurate sorting
+    for service in all_services:
+                service['service_date'] = ' '.join(service['service_date'].split()[:4])
+
+    # Sort services by parsed_date
+    all_sorted_services = sorted(all_services, key=lambda service: service['service_date'], reverse=True)
+    return render_template('admin.html', services=all_sorted_services)
 
 @app.route('/groups', strict_slashes=False)
 def groups():
@@ -62,6 +68,37 @@ def groups():
     Faith = groupFaith().json
     Love = groupLove().json
     return render_template('groups.html', Favour=Favour, Joy=Joy, Faith=Faith, Love=Love)
+
+@app.route('/update/<id>', strict_slashes=False)
+def update_Admin_service(id):
+    service = get_service(id).json
+    if not service:
+        abort(404)
+    def returnData(cls):
+        for cl in cls:
+            if cl['service_id'] == service['id']:
+                return cl
+    mHymn = returnData(get_hymns().json)
+    reading = returnData(get_lessons().json)
+    meditation = returnData(get_prayers().json)
+    notice = returnData(get_notices().json)
+    aob1 = returnData(get_aobs().json)
+    thanks = returnData(get_thanksgivings().json)
+
+    def noticeData(cls):
+        Conta = []
+        for cl in cls:
+            if cl['notice_id'] == notice['id']:
+                Conta.append(cl)
+        return Conta
+
+    dailySchedules = noticeData(get_notice_schedules().json)
+    resources = noticeData(get_church_resources_list().json)
+    prayerLists = noticeData(get_prayerlists().json)
+    marriagebanns = noticeData(get_marriagebanns().json)
+
+
+    return render_template('update.html', service=service, Hymn=mHymn, Reading=reading, meditation=meditation, notice=notice, aob1=aob1,thanks=thanks, dailySchedules=dailySchedules, resources=resources, prayerLists=prayerLists, marriagebanns=marriagebanns)
 
 def groupFavour():
     Allmembers = get_members().json
@@ -220,8 +257,6 @@ def get_services():
         # Format the time without seconds
         # service_dict["service_time"] = service_dict["service_time"].strftime(('%H:%M'))
         list_services.append(service_dict)
-
-    print(list_services)
     
     return jsonify(list_services)
 

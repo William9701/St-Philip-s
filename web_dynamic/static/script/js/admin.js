@@ -276,9 +276,9 @@ document
           specialEvent: getInputValue("specialEvent2"),
           processionalHymn: getInputValue("processionalHymn2"),
           firstLesson: getInputValue("fSfirstlesson"),
-          gradualHymn: getInputValue("gradualHymn1Martin"),
+          gradualHymn: getInputValue("gradualHymn2"),
           secondLesson: getInputValue("fsSecondlesson"),
-          sermonHymnHymn: getInputValue("fsSermonhymn"),
+          sermonHymn: getInputValue("fsSermonhymn"),
           specialThanksgiving: getInputValue("specialThanksgiving2"),
           aob: getInputValue("aob2"),
           recessionalHymn: getInputValue("recessionalHymn2"),
@@ -391,7 +391,7 @@ document.addEventListener("DOMContentLoaded", function () {
           processionalHymn: getInputValue("processionalHymnEucaristic"),
           oldTestReading: getInputValue("OldTestReadingEucaristic"),
           psalm: getInputValue("psalmEucaristic"),
-          epistle: getInputValue("epistleEucaristic"),
+          espistle: getInputValue("epistleEucaristic"),
           gradualHymn: getInputValue("gradualHymnEucaristic"),
           gospel: getInputValue("gospelEucaristic"),
           communionHymn: getInputValue("communionHymnEucaristic"),
@@ -500,24 +500,6 @@ document.addEventListener("DOMContentLoaded", function () {
     createBulletin(bulletinData, "combined_service");
   });
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -880,3 +862,113 @@ function toggleForms3() {
 
 // Listen for changes to the checkbox state
 toggleCheckbox3.addEventListener("change", toggleForms3);
+
+
+async function DeleteService(serviceId) {
+  try {
+      const response = await fetch(`/service/${serviceId}`, {
+          method: 'DELETE',
+          headers: {
+              'Content-Type': 'application/json'
+          }
+      });
+
+      if (!response.ok) {
+          throw new Error(`Error: ${response.status} ${response.statusText}`);
+      }
+
+      // Fetch the updated list of services after successful deletion
+      await fetchAndUpdateServices();
+      console.log('Service deleted successfully');
+  } catch (error) {
+      console.error('Failed to delete service:', error);
+  }
+}
+
+async function fetchAndUpdateServices() {
+  try {
+      const response = await fetch('/service');
+      if (!response.ok) {
+          throw new Error(`Error: ${response.status} ${response.statusText}`);
+      }
+
+      const services = await response.json(); // Assuming the API returns JSON data
+      updateServiceTable(services);
+  } catch (error) {
+      console.error('Failed to fetch services:', error);
+  }
+}
+
+function updateServiceTable(services) {
+  const tableBody = document.getElementById('services-table-body'); // Make sure to set this ID in your table body
+
+  // Clear existing table rows
+  tableBody.innerHTML = '';
+
+  // Create new rows based on the updated services data
+  services.forEach(service => {
+      // Format the service date to exclude the time and timezone
+      service.service_date = service.service_date.split(' ').slice(0, 4).join(' '); // This gets the first four parts of the date
+
+      const row = document.createElement('tr');
+      row.innerHTML = `
+          <td>${service.sunday_name}</td>
+          <td>${service.service_date}</td>
+          <td>${service.liturgical_color}</td>
+          <td>${service.service_name}</td>
+          <td>
+              <button onclick="DeleteService('${service.id}')" class="btn btn-danger btn-sm">Delete</button>
+          </td>
+          <td>
+              <button onclick="UpdateService('${service.id}')" class="btn btn-secondary mb-3 btn-sm">Update</button>
+          </td>
+      `;
+      tableBody.appendChild(row);
+  });
+}
+
+
+async function UpdateService(serviceId) {
+  try {
+      const response = await fetch(`/service/${serviceId}`, {
+          method: 'GET',
+          headers: {
+              'Content-Type': 'application/json'
+          }
+      });
+
+      if (!response.ok) {
+          throw new Error(`Error: ${response.status} ${response.statusText}`);
+      }
+
+      const service = await response.json(); // Assuming the API returns JSON data
+
+      async function fetchData(data) {
+        try {
+          const response = await fetch(`/${data}`);
+          const datas = await response.json();
+          const matchingItems = datas.filter(item => item.service_id === service.id);
+          if (matchingItems.length > 1) {
+            return matchingItems;
+          }
+          return matchingItems[0] || null;  // Returns null if no matches found
+        } catch (error) {
+          console.error("Error fetching data:", error);
+          return null;
+        }
+      }
+      
+      
+      let readings = await fetchData('reading_schedule');
+      let meditations = await fetchData('meditation');
+      let hymns = await fetchData('hymns');
+      let notice = await fetchData('notices');
+      let thanksgiving = await fetchData('thanksgiving');
+      let aob = await fetchData('aob');
+
+      console.log(readings, meditations, hymns, notice, thanksgiving)
+  } catch (error) {
+      console.error('Failed to fetch service:', error);
+  }
+}
+
