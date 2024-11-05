@@ -118,7 +118,7 @@
     <div class="container mt-5">
         <h3 class="text-center">Update Bulletin</h3>
         {% if service.service_name == "combined_service" %}
-        <div id="smartwizard">
+        <div id="smartwizard" data-id="combined">
             <ul>
               <li>
                 <a href="#step-4">Step 1<br /><small>Service Info</small></a>
@@ -477,16 +477,18 @@
                     <textarea
                       class="form-control"
                       id="collect"
+                      data-id="{{ service.id }}"
                       required
                     >{{ notice.content }}</textarea>
                   </div>
                   
 
                   <!-- Section for Daily Info -->
-                   {% for dailySchedule in dailySchedules %}
+                   
                   <div id="dailyInfoContainer">
                     <label>Daily Info</label>
-                    <div class="form-group row mb-3">
+                    {% for dailySchedule in dailySchedules %}
+                    <div class="form-group row mb-3" data-id="{{ dailySchedule.id }}">
                       <div class="col-md-5">
                         <label for="date1">Date</label>
                         <input
@@ -507,9 +509,13 @@
                           required
                         />
                       </div>
+                      <div class="col-md-4">
+                        <button onclick="DeleteData('notice_schedule', '{{ dailySchedule.id }}')" class="btn btn-danger btn-sm">Delete</button>
+                      </div>
                     </div>
+                    {% endfor %}
                   </div>
-                  {% endfor %}
+                  
 
                   <button
                     type="button"
@@ -520,20 +526,24 @@
                   </button>
 
                   <!-- Section for Button Info -->
-                   {% for resource in resources %}
+                   
                   <div id="buttonInfoContainer" class="mt-4">
                     <label>Button Info</label>
+                    {% for resource in resources %}
                     <div class="form-group mb-3">
                       <input
                         type="text"
                         class="form-control"
                         id="buttonInfo1"
                         value="{{ resource.description }}"
+                        data-id="{{ resource.id }}"
                         required
                       />
+                      <button onclick="DeleteData('church_resources', '{{ resource.id }}')" class="btn btn-danger btn-sm">Delete</button>
                     </div>
+                    {% endfor %}
                   </div>
-                  {% endfor %}
+                  
 
                   <button
                     type="button"
@@ -544,20 +554,24 @@
                   </button>
 
                   <!-- Section for Family Names -->
-                   {% for prayerList in prayerLists %}
+                   
                   <div id="familyNamesContainer" class="mt-4">
                     <label>Family Names</label>
+                    {% for prayerList in prayerLists %}
                     <div class="form-group mb-3">
                       <input
                         type="text"
                         class="form-control"
                         id="familyName1"
+                        data-id="{{ prayerList.id }}"
                         value="{{ prayerList.family_name }}"
                         required
                       />
+                      <button onclick="DeleteData('prayerlist', '{{ prayerList.id }}')" class="btn btn-danger btn-sm">Delete</button>
                     </div>
+                    {% endfor %}
                   </div>
-                  {% endfor %}
+                  
 
                   <button
                     type="button"
@@ -568,10 +582,11 @@
                   </button>
 
                   <!-- Section for Bride and Groom Info -->
-                   {% for marriagebann in marriagebanns %}
+                   
                   <div id="brideGroomContainer" class="mt-4">
                     <label>Bride and Groom Info</label>
-                    <div class="form-group row mb-3">
+                    {% for marriagebann in marriagebanns %}
+                    <div class="form-group row mb-3" data-id="{{ marriagebann.id }}">
                       <div class="col-md-4">
                         <label for="brideName1">Bride's Name</label>
                         <input
@@ -594,23 +609,23 @@
                       </div>
                       <div class="col-md-4">
                         <label for="timeOfAsking1">Time of Asking</label>
-                        <select
-                          class="form-control"
-                          id="timeOfAsking1"
-                          
-                          required
-                        >
-                          <option value="" disabled selected>
-                            {{ marriagebann.bann_announcement_count }}
-                          </option>
-                          <option value="First">First</option>
-                          <option value="Second">Second</option>
-                          <option value="Third">Third and Final</option>
+                        <select class="form-control" id="timeOfAsking1" required>
+                            <option value="" disabled>
+                                Select Time of Asking
+                            </option>
+                            <option value="First" {% if marriagebann.bann_announcement_count == 'First' %} selected {% endif %}>First</option>
+                            <option value="Second" {% if marriagebann.bann_announcement_count == 'Second' %} selected {% endif %}>Second</option>
+                            <option value="Third" {% if marriagebann.bann_announcement_count == 'Third and Final' %} selected {% endif %}>Third and Final</option>
                         </select>
                       </div>
+                    
+                      <div class="col-md-4">
+                        <button onclick="DeleteData('marriagebann', '{{ marriagebann.id }}')" class="btn btn-danger btn-sm">Delete</button>
+                      </div>
                     </div>
+                    {% endfor %}
                   </div>
-                  {% endfor %}
+                  
 
                   <button
                     type="button"
@@ -669,7 +684,7 @@
             </div>
           </div>
         {% else %}
-        <div id="smartwizard">
+        <div id="smartwizard" data-id="double">
             <ul>
               <li>
                 <a href="#step-1">Step 1<br /><small>1st Service</small></a>
@@ -727,6 +742,7 @@
                       class="form-control"
                       id="sundayDate1"
                       value="{{ service.service_date }}"
+
                       required
                       onchange="highlightSundays(this)"
                     />
@@ -1139,36 +1155,46 @@
                       type="text"
                       class="form-control"
                       id="collect1"
+                      data-id="{{ service.id }}"
                       required
                     >{{ notice.content }}</textarea>
                   </div>
 
                   <!-- start here to add 1 from begingn -->
                   <!-- Section for Daily Info -->
+                   
                   <div id="dailyInfoContainer1">
                     <label>Daily Info</label>
-                    <div class="form-group1 row mb-3">
-                      <div class="col-md-5">
-                        <label for="1date1">Date</label>
-                        <input
-                          type="date"
-                          class="form-control"
-                          id="1date1"
-                          required
-                        />
-                      </div>
-                      <div class="col-md-7">
-                        <label for="1dailyInfo1">Daily Info</label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          id="1dailyInfo1"
-                          placeholder="Enter daily info"
-                          required
-                        />
-                      </div>
+                    {% for dailySchedule in dailySchedules %}
+                    <div class="form-group1 row mb-3" data-id="{{ dailySchedule.id }}">
+                        <div class="col-md-5">
+                            <label for="1date{{ loop.index }}">Date</label>
+                            <input
+                                type="date"
+                                class="form-control"
+                                id="1date{{ loop.index }}"
+                                value="{{ dailySchedule.event_day }}"
+                                required
+                            />
+                        </div>
+                        <div class="col-md-7">
+                            <label for="1dailyInfo{{ loop.index }}">Daily Info</label>
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="1dailyInfo{{ loop.index }}"
+                                value="{{ dailySchedule.event_description }}"
+                                required
+                            />
+                        </div>
+                        <div class="col-md-4">
+                            <button onclick="DeleteData('notice_schedule', '{{ dailySchedule.id }}')" class="btn btn-danger btn-sm">Delete</button>
+                        </div>
                     </div>
+                    {% endfor %}
                   </div>
+                
+                  
 
                   <button
                     type="button"
@@ -1179,18 +1205,24 @@
                   </button>
 
                   <!-- Section for Button Info -->
+                   
                   <div id="buttonInfoContainer1" class="mt-4">
                     <label>Button Info</label>
+                    {% for resource in resources %}
                     <div class="form-group1 mb-3">
                       <input
                         type="text"
                         class="form-control"
                         id="1buttonInfo1"
-                        placeholder="Enter button info"
+                        value="{{resource.description}}"
+                        data-id="{{ resource.id }}"
                         required
                       />
+                      <button onclick="DeleteData('church_resources', '{{ resource.id }}')" class="btn btn-danger btn-sm">Delete</button>
                     </div>
+                    {% endfor %}
                   </div>
+                  
 
                   <button
                     type="button"
@@ -1201,18 +1233,25 @@
                   </button>
 
                   <!-- Section for Family Names -->
+                   
                   <div id="familyNamesContainer1" class="mt-4">
                     <label>Family Names</label>
+                    {% for prayerList in prayerLists %}
                     <div class="form-group1 mb-3">
                       <input
                         type="text"
                         class="form-control"
                         id="1familyName1"
-                        placeholder="Enter family name"
+                        value="{{prayerList.family_name}}"
+                        data-id="{{ prayerList.id }}"
                         required
                       />
+                      <button onclick="DeleteData('prayerlist', '{{ prayerList.id }}')" class="btn btn-danger btn-sm">Delete</button>
                     </div>
+                    
+                    {% endfor %}
                   </div>
+                  
 
                   <button
                     type="button"
@@ -1223,16 +1262,18 @@
                   </button>
 
                   <!-- Section for Bride and Groom Info -->
+                   
                   <div id="brideGroomContainer1" class="mt-4">
                     <label>Bride and Groom Info</label>
-                    <div class="form-group1 row mb-3">
+                    {% for marriagebann in marriagebanns%}
+                    <div class="form-group1 row mb-3" data-id="{{ marriagebann.id }}">
                       <div class="col-md-4">
                         <label for="1brideName1">Bride's Name</label>
                         <input
                           type="text"
                           class="form-control"
                           id="1brideName1"
-                          placeholder="Enter bride's name"
+                          value="{{marriagebann.bride_name}}"
                           required
                         />
                       </div>
@@ -1242,27 +1283,29 @@
                           type="text"
                           class="form-control"
                           id="1groomName1"
-                          placeholder="Enter groom's name"
+                          value="{{marriagebann.groom_name}}"
                           required
                         />
                       </div>
                       <div class="col-md-4">
                         <label for="timeOfAsking1">Time of Asking</label>
-                        <select
-                          class="form-control"
-                          id="1timeOfAsking1"
-                          required
-                        >
-                          <option value="" disabled selected>
-                            Select time of asking
-                          </option>
-                          <option value="First">First</option>
-                          <option value="Second">Second</option>
-                          <option value="Third">Third and Final</option>
+                        <select class="form-control" id="1timeOfAsking1" required>
+                            <option value="" disabled >
+                                Select Time of Asking
+                            </option>
+                            <option value="First" {% if marriagebann.bann_announcement_count == 'First' %} selected {% endif %}>First</option>
+                            <option value="Second" {% if marriagebann.bann_announcement_count == 'Second' %} selected {% endif %}>Second</option>
+                            <option value="Third" {% if marriagebann.bann_announcement_count == 'Third and Final' %} selected {% endif %}>Third and Final</option>
                         </select>
                       </div>
-                    </div>
+                    
+                      <div class="col-md-4">
+                        <button onclick="DeleteData('marriagebann', '{{ marriagebann.id }}')" class="btn btn-danger btn-sm">Delete</button>
+                      </div>
+                    </div> 
+                    {% endfor %}
                   </div>
+                  
 
                   <button
                     type="button"
@@ -1283,7 +1326,7 @@
                       type="text"
                       class="form-control"
                       id="meditationTopic1"
-                      placeholder="Enter meditation topic"
+                      value="{{meditation.topic}}"
                       required
                     />
                   </div>
@@ -1296,7 +1339,7 @@
                       class="form-control"
                       id="meditationText1"
                       rows="4"
-                      placeholder="Enter meditation text"
+                      value="{{meditation.text}}"
                       required
                     />
                   </div>
@@ -1310,11 +1353,11 @@
                       rows="4"
                       placeholder="Enter message"
                       required
-                    ></textarea>
+                    >{{ meditation.note }}</textarea>
                   </div>
                   <!-- Create Bulletin Button -->
                   <button type="submit" class="btn btn-primary mt-3">
-                    Create Bulletin
+                    Update Bulletin
                   </button>
                 </form>
               </div>

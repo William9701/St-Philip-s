@@ -928,47 +928,5 @@ function updateServiceTable(services) {
 }
 
 
-async function UpdateService(serviceId) {
-  try {
-      const response = await fetch(`/service/${serviceId}`, {
-          method: 'GET',
-          headers: {
-              'Content-Type': 'application/json'
-          }
-      });
 
-      if (!response.ok) {
-          throw new Error(`Error: ${response.status} ${response.statusText}`);
-      }
-
-      const service = await response.json(); // Assuming the API returns JSON data
-
-      async function fetchData(data) {
-        try {
-          const response = await fetch(`/${data}`);
-          const datas = await response.json();
-          const matchingItems = datas.filter(item => item.service_id === service.id);
-          if (matchingItems.length > 1) {
-            return matchingItems;
-          }
-          return matchingItems[0] || null;  // Returns null if no matches found
-        } catch (error) {
-          console.error("Error fetching data:", error);
-          return null;
-        }
-      }
-      
-      
-      let readings = await fetchData('reading_schedule');
-      let meditations = await fetchData('meditation');
-      let hymns = await fetchData('hymns');
-      let notice = await fetchData('notices');
-      let thanksgiving = await fetchData('thanksgiving');
-      let aob = await fetchData('aob');
-
-      console.log(readings, meditations, hymns, notice, thanksgiving)
-  } catch (error) {
-      console.error('Failed to fetch service:', error);
-  }
-}
 

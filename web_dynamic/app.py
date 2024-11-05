@@ -72,6 +72,14 @@ def groups():
 @app.route('/update/<id>', strict_slashes=False)
 def update_Admin_service(id):
     service = get_service(id).json
+    # Convert the string to a datetime object
+    service_date_str = service['service_date']
+
+    # Parse the string to a datetime object
+    service_date = datetime.strptime(service_date_str, '%a, %d %b %Y %H:%M:%S %Z')
+
+    # Format the date to 'yyyy-MM-dd'
+    service['service_date'] = service_date.strftime('%Y-%m-%d')
     if not service:
         abort(404)
     def returnData(cls):
@@ -96,6 +104,7 @@ def update_Admin_service(id):
     resources = noticeData(get_church_resources_list().json)
     prayerLists = noticeData(get_prayerlists().json)
     marriagebanns = noticeData(get_marriagebanns().json)
+    print(service)
 
 
     return render_template('update.html', service=service, Hymn=mHymn, Reading=reading, meditation=meditation, notice=notice, aob1=aob1,thanks=thanks, dailySchedules=dailySchedules, resources=resources, prayerLists=prayerLists, marriagebanns=marriagebanns)
@@ -154,6 +163,8 @@ def latest_service():
     
     # Return empty JSON object if no services found
     return jsonify({})
+
+
 
 
 
