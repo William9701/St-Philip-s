@@ -3,6 +3,7 @@ from flask import request, jsonify
 from flask import Flask, render_template, request
 from jinja2 import Environment, select_autoescape
 from datetime import datetime, time, timedelta
+from werkzeug.utils import secure_filename
 import os
 import uuid
 from models import storage
@@ -12,11 +13,41 @@ from models.service import *
 
 app = Flask(__name__)
 app.jinja_env.globals.update(datetime=datetime)
+# Configure upload folder and allowed extensions
+UPLOAD_FOLDER = os.path.join(os.pardir, 'St-Philip-s', 'web_dynamic',
+                             'static', 'images', 'upload')
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['MAX_CONTENT_LENGTH'] = 20 * 1024 * 1024  # Limit file size to 16 MB
+
+# Ensure the upload folder exists
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 @app.teardown_appcontext
 def close_db(error):
     """ Remove the current SQLAlchemy Session """
     storage.close()
+
+@app.route('/upload-event', methods=['POST'])
+def upload_event():
+    if 'eventImage' not in request.files:
+        return jsonify({'error': 'No file part'}), 400
+
+    file = request.files['eventImage']
+    if file.filename == '':
+        return jsonify({'error': 'No selected file'}), 400
+
+    if file:
+        filename = secure_filename(file.filename)
+        file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        file.save(file_path)  # Save the file to server
+
+        return jsonify({
+            'message': 'File uploaded successfully',
+            'filePath': filename  # Send back the filename for database reference
+        })
+
+    return jsonify({'error': 'Failed to save file'}), 500
+
 
 
 @app.errorhandler(404)
@@ -26,23 +57,29 @@ def not_found(error):
 @app.route('/')
 def index():
     all_services = get_services().json
+    events = get_upcoming_event_list().json
     
     # Parse the service_date into datetime objects for accurate sorting
     for service in all_services:
         service['parsed_date'] = ' '.join(service['service_date'].split()[:4])
 
+    for event in events:
+        event['parsed_date'] = ' '.join(event['event_date'].split()[:4])
+
     # Sort services by parsed_date
     all_sorted_services = sorted(all_services, key=lambda service: service['parsed_date'], reverse=True)
+
+    all_sorted_events = sorted(events, key=lambda event: event['parsed_date'], reverse=True)
     
     
     latst_service = latest_service().json
     meditations = get_prayers().json
-    events = get_upcoming_event_list().json
+    
 
     # Find the meditation associated with the latest service
     mediPrayer = next((m for m in meditations if m['service_id'] == latst_service['id']), None)
 
-    return render_template('index.html', services=all_sorted_services, mediPrayer=mediPrayer, events=events)
+    return render_template('index.html', services=all_sorted_services, mediPrayer=mediPrayer, events=all_sorted_events)
 
 
 @app.route('/history', strict_slashes=False)
@@ -52,6 +89,11 @@ def history():
 @app.route('/admin', strict_slashes=False)
 def admin():
     all_services = get_services().json
+    events = get_upcoming_event_list().json
+
+
+    for event in events:
+        event['parsed_date'] = ' '.join(event['event_date'].split()[:4])
     
     # Parse the service_date into datetime objects for accurate sorting
     for service in all_services:
@@ -59,7 +101,8 @@ def admin():
 
     # Sort services by parsed_date
     all_sorted_services = sorted(all_services, key=lambda service: service['service_date'], reverse=True)
-    return render_template('admin.html', services=all_sorted_services)
+    all_sorted_events = sorted(events, key=lambda event: event['parsed_date'], reverse=True)
+    return render_template('admin.html', services=all_sorted_services, events=all_sorted_events)
 
 @app.route('/groups', strict_slashes=False)
 def groups():
@@ -67,7 +110,25 @@ def groups():
     Joy = groupJoy().json
     Faith = groupFaith().json
     Love = groupLove().json
-    return render_template('groups.html', Favour=Favour, Joy=Joy, Faith=Faith, Love=Love)
+    return render_template('group.html', Favour=Favour, Joy=Joy, Faith=Faith, Love=Love)
+
+@app.route('/all_bulletins')
+def all_bulletins():
+    services = get_services().json  # Replace this with the correct call to fetch all services
+    
+    # Ensure each service has a formatted date
+    for service in services:
+        service['parsed_date'] = ' '.join(service['service_date'].split()[:4])
+
+    # Sort services by parsed_date
+    all_sorted_services = sorted(services, key=lambda service: service['parsed_date'], reverse=True)
+    
+    
+    if not services:
+        abort(404)
+
+    return render_template('bulletin.html', services=all_sorted_services)
+
 
 @app.route('/update/<id>', strict_slashes=False)
 def update_Admin_service(id):

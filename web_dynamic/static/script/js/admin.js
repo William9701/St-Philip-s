@@ -215,6 +215,7 @@ document
   
     createBulletinButton.addEventListener("click", function (event) {
       event.preventDefault(); // Prevent form submission
+      createBulletinButton.style.background = "green";
   
       const isFistServiceEucharisticFormVisible = document.getElementById("EucaristicForm").style.display === "block";
       const isFirstServiceMartinFormVisible = document.getElementById("MartinForm").style.display === "block";
@@ -364,7 +365,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   createBulletinButton.addEventListener("click", function (event) {
     event.preventDefault(); // Prevent form submission
-
+    createBulletinButton.style.background = "green";
     // Function to get form data by id
     function getInputValue(id) {
       const element = document.getElementById(id);
@@ -799,6 +800,13 @@ async function createBulletin(bulletinData, sundayType) {
       });
 
       await Promise.all(brideGrooms);
+
+      let flash = document.getElementById("flash");
+      flash.style.display = "block";
+      setTimeout(() => {
+        flash.style.display = "none";
+        location.reload()
+      }, 4000);
     }
   }
 }
@@ -885,6 +893,27 @@ async function DeleteService(serviceId) {
   }
 }
 
+async function DeleteEvent(eventId) {
+  try {
+      const response = await fetch(`/upcoming_event/${eventId}`, {
+          method: 'DELETE',
+          headers: {
+              'Content-Type': 'application/json'
+          }
+      });
+
+      if (!response.ok) {
+          throw new Error(`Error: ${response.status} ${response.statusText}`);
+      }
+
+      // Fetch the updated list of services after successful deletion
+      await fetchAndUpdateEvent();
+      console.log('Service deleted successfully');
+  } catch (error) {
+      console.error('Failed to delete service:', error);
+  }
+}
+
 async function fetchAndUpdateServices() {
   try {
       const response = await fetch('/service');
@@ -894,6 +923,19 @@ async function fetchAndUpdateServices() {
 
       const services = await response.json(); // Assuming the API returns JSON data
       updateServiceTable(services);
+  } catch (error) {
+      console.error('Failed to fetch services:', error);
+  }
+}
+async function fetchAndUpdateEvent() {
+  try {
+      const response = await fetch('/upcoming_event');
+      if (!response.ok) {
+          throw new Error(`Error: ${response.status} ${response.statusText}`);
+      }
+
+      const events = await response.json(); // Assuming the API returns JSON data
+      updateEventTable(events);
   } catch (error) {
       console.error('Failed to fetch services:', error);
   }
@@ -927,6 +969,146 @@ function updateServiceTable(services) {
   });
 }
 
+function updateEventTable(events) {
+  const tableBody = document.getElementById('event-table-body'); // Make sure to set this ID in your table body
 
+  // Clear existing table rows
+  tableBody.innerHTML = '';
+
+  // Create new rows based on the updated services data
+  events.forEach(event => {
+      // Format the service date to exclude the time and timezone
+      event.event_date = event.event_date.split(' ').slice(0, 4).join(' '); // This gets the first four parts of the date
+
+      const row = document.createElement('tr');
+      row.innerHTML = `
+          <td>${event.event_name}</td>
+          <td>${event.event_date}</td>
+          <td>
+              <button onclick="DeleteEvent('${event.id}')" class="btn btn-danger btn-sm">Delete</button>
+          </td>
+      `;
+      tableBody.appendChild(row);
+  });
+}
+
+// Add more members
+document.getElementById('addmember').addEventListener('click', function() {
+  // Clone the initial member form
+  const memberForm = document.querySelector('.addmemberContainer1');
+  const newMemberForm = memberForm.cloneNode(true);
+
+  // Reset input fields in the cloned form
+  const inputs = newMemberForm.querySelectorAll('input');
+  inputs.forEach(input => input.value = '');
+
+  // Append the cloned form to the container
+  document.getElementById('memberFormContainer').appendChild(newMemberForm);
+});
+
+// Function to handle submission of all forms
+async function submitFormData() {
+  const memberForms = document.querySelectorAll('#memberFormContainer .addmemberContainer1');
+  const allData = [];
+
+  memberForms.forEach(form => {
+    const title = form.querySelector('select').value;
+    const firstName = form.querySelector('input[placeholder="Enter First Name"]').value;
+    const lastName = form.querySelector('input[placeholder="Enter Last Name"]').value;
+    const group = form.querySelectorAll('select')[1].value;
+
+    const member = {
+      first_name: firstName,
+      last_name: lastName,
+      group_name: group,
+      title: title,
+    }
+    const memberResponse = fetch("/members", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(member),
+    });
+
+    allData.push(memberResponse);
+  });
+  try {
+    await Promise.all(allData);
+    alert("Data submitted successfully."); 
+    location.reload();  // Refresh the page to reflect the new data
+  } catch (error) {
+    console.error("Error submitting data:", error);
+  }
+}
+
+
+async function submitEvent() {
+  const form = document.getElementById('eventForm');
+  const fileInput = document.getElementById('eventImage');
+
+  if (fileInput.files.length === 0) {
+      alert("Please select an image.");
+      return;
+  }
+
+  const imageFile = fileInput.files[0];
+  const blob = await imageFile.arrayBuffer(); // Convert file to array buffer
+  const formData = new FormData();
+
+  // Append form data
+  formData.append("eventImage", new Blob([blob], { type: imageFile.type }), generateFilename(imageFile.name));
+  
+
+  try {
+      const response = await fetch('/upload-event', {
+          method: 'POST',
+          body: formData
+      });
+
+      if (!response.ok) {
+          throw new Error('File upload failed');
+      }
+
+      // Get the image path returned from the server
+      const result = await response.json();
+      const imagePath = `../static/images/upload/${result.filePath}`;
+
+      // Collect event data and add image path to it
+      const eventData = {
+          event_date: document.getElementById("eventDate").value,
+          time: document.getElementById("eventTime").value,
+          event_name: document.getElementById("eventName").value,
+          event_text: document.getElementById("eventText").value,
+          event_img: imagePath  // Include the filename for reference in the database
+      };
+
+      // Send event data to /upcoming_event
+      const eventResponse = await fetch('/upcoming_event', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(eventData)
+      });
+
+      if (!eventResponse.ok) {
+          throw new Error('Event creation failed');
+      }
+
+      alert('Event created successfully!');
+      location.reload();  // Refresh the page to reflect the new data
+  } catch (error) {
+      console.error('Error:', error);
+      alert('Error uploading file');
+  }
+}
+
+// Helper function to generate a unique filename
+function generateFilename(originalName) {
+  const timestamp = new Date().toISOString().replace(/[-:.]/g, "");
+  const fileExtension = originalName.split('.').pop();
+  return `image_${timestamp}.${fileExtension}`;
+}
 
 

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>St.Philip's Anglican Church</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Great+Vibes&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../static/styles/css/open-iconic-bootstrap.min.css">
+    <link rel="stylesheet" href="../static/styles/css/animate.css">
+
+    <link rel="stylesheet" href="../static/styles/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="../static/styles/css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="../static/styles/css/magnific-popup.css">
+
+    <link rel="stylesheet" href="../static/styles/css/aos.css">
+
+    <link rel="stylesheet" href="../static/styles/css/ionicons.min.css">
+
+    <link rel="stylesheet" href="../static/styles/css/flaticon.css">
+    <link rel="stylesheet" href="../static/styles/css/icomoon.css">
+    <link rel="stylesheet" href="../static/styles/css/style.css">
+  </head>
+  <body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
+
+
+    <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light site-navbar-target" id="ftco-navbar">
+	    <div class="container">
+	      <a class="navbar-brand" href="index.html"><span> <img style="width: 60px;" src="./../static/images/logo.png" alt=""> </span> SPAC</a>
+	      <button class="navbar-toggler js-fh5co-nav-toggle fh5co-nav-toggle" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+	        <span class="oi oi-menu"></span> Menu
+	      </button>
+
+	      <div class="collapse navbar-collapse" id="ftco-nav">
+	        <ul class="navbar-nav nav ml-auto">
+	          <li class="nav-item"><a href="/#home-section" class="nav-link"><span>Home</span></a></li>
+	          <li class="nav-item"><a href="/#about-section" class="nav-link"><span>About</span></a></li>
+            <li class="nav-item"><a href="/#services-section" class="nav-link"><span>Doctrine</span></a></li>
+	          <li class="nav-item"><a href="/#sermons-section" class="nav-link"><span>Bulletin</span></a></li>
+	          <li class="nav-item"><a href="/#events-section" class="nav-link"><span>Events</span></a></li>
+	          <!-- <li class="nav-item"><a href="#causes-section" class="nav-link"><span>Causes</span></a></li>
+	          <li class="nav-item"><a href="#blog-section" class="nav-link"><span>Blog</span></a></li> -->
+	          <li class="nav-item"><a href="/#pastor-section" class="nav-link"><span>Priests</span></a></li>
+	          <li class="nav-item"><a href="/#contact-section" class="nav-link"><span>Contact</span></a></li>
+            <li class="nav-item"><a href="/#photo-section" class="nav-link"><span>Photos</span></a></li>
+	        </ul>
+	      </div>
+	    </div>
+	  </nav>
+	  <section class="home-slider js-fullheight owl-carousel">
+      <!-- <div class="slider-item js-fullheight" style="background-image:url(../static/images/bg_1.jpg);">
+      	<div class="overlay"></div>
+	        <div class="container">
+	          <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center" data-scrollax-parent="true">
+	          <div class="col-md-8 text-center ftco-animate mt-5">
+	          	<div class="text">
+	          		<div class="subheading">
+	          			<span>Hill City Reformed Baptist Church</span>
+	          		</div>
+		            <h1 class="mb-4">Following <span>Jesus</span> wherever we are</h1>
+		            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
+		            <p><a href="#" class="btn btn-primary py-2 px-4">Be part of us</a> <a href="#" class="btn btn-primary btn-outline-primary py-2 px-4">About us</a></p>
+	            </div>
+	          </div>
+	        </div>
+        </div>
+      </div> -->
+
+      <div class="slider-item js-fullheight" style="background-image:url(../static/images/bg_2.jpg);">
+      	<div class="overlay"></div>
+	        <div class="container">
+	          <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center" data-scrollax-parent="true">
+	          <div class="col-md-8 text-center ftco-animate mt-5">
+	          	<div class="text">
+	          		<div class="subheading">
+	          			<span>Welcome To</span>
+	          		</div>
+		            <h1 class="mb-4">St.Philip's <span>Anglican Church</span></h1>
+					<span class="multi-text">Following Jesus wherever we are</span>
+              		<span class="blink"></span>
+		            <!-- <p>Following Jesus wherever we are.</p> -->
+		            <!-- <p><a href="#" class="btn btn-primary py-2 px-4">Be part of us</a> <a href="#about-section" class="btn btn-primary btn-outline-primary py-2 px-4 home-slider">About us</a></p> -->
+	            </div>
+	          </div>
+	        </div>
+        </div>
+      </div>
+    </section>
+
+    
+
+
+
+		<section class="ftco-section bg-light" id="sermons-section">
+			<div class="container">
+				<div class="row justify-content-center pb-5">
+					<div class="col-md-12 heading-section text-center ftco-animate">
+						<span class="subheading">Subtitle 2</span>
+						<h2 class="mb-4">Weekly Bulletin</h2>
+						<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia</p>
+					</div>
+				</div>
+				<div class="row">
+					{% for service in services %} 
+					<div class="col-md-4">
+						<div class="sermon-wrap ftco-animate">
+							{% if service.liturgical_color in ("green", "Green") %}
+								<div class="img d-flex align-items-center justify-content-center" style="background-image: url(../static/images/sermon-1.png);">
+							{% elif service.liturgical_color in ("Red", "red") %}
+								<div class="img d-flex align-items-center justify-content-center" style="background-image: url(../static/images/red_Church_Program.png);">
+							{% elif service.liturgical_color in ("Purple", "purple", "Violet", "violet") %}
+								<div class="img d-flex align-items-center justify-content-center" style="background-image: url(../static/images/Purpule_Church_Program.png);">
+							{% elif service.liturgical_color in ("Gold", "gold") %}
+								<div class="img d-flex align-items-center justify-content-center" style="background-image: url(../static/images/Gold_Church_Program.png);">
+							{% endif %}
+								<div class="text-content p-4 text-center">
+									<button type="button" class="btn btn-primary view-bulletin-btn" data-toggle="modal" data-target="#churchProgramModal-{{ service.id }}" data-service-id="{{ service.id }}">
+										View Bulletin
+									</button>
+								</div>
+							</div>
+							<div class="text pt-3 text-center">
+								<h2 class="mb-0"><a href="#">{{ service.special_celebration }}</a></h2>
+								<div class="meta">
+									<p class="mb-0">
+										<span>{{ service.parsed_date }}</span>
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+		
+					<!-- Modal -->
+					<div class="modal fade" id="churchProgramModal-{{ service.id }}" tabindex="-1" role="dialog" aria-labelledby="churchProgramModalLabel" aria-hidden="true">
+						<div class="modal-dialog" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<img style="width: 62px; display: block; margin-left: -64px; margin-bottom: -75px;" src="../static/images/logo.png" alt="">
+									<h5 class="modal-title" id="churchProgramModalLabel">{{ service.service_name }}</h5>
+									<h5 class="modal-title" id="churchProgramModalLabel1">Liturgical Color: {{ service.liturgical_color }}</h5>
+									<h5 class="modal-title" id="churchProgramModalLabel2">{{ service.special_celebration }}</h5>
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+								</div>
+								<div class="modal-body">
+									<div id="churchProgramPage-{{ service.id }}" class="church-program-page">
+										<!-- Program content will be inserted here -->
+									</div> 
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-secondary" id="prevButton-{{ service.id }}" data-service-id="{{ service.id }}" disabled>Previous</button>
+									<button type="button" class="btn btn-primary" data-service-id="{{ service.id }}" id="nextButton-{{ service.id }}">Next</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+				</div>
+			</div>
+		</section>
+		
+
+    <footer class="ftco-footer ftco-bg-dark ftco-section">
+      <div class="container">
+        <div class="row mb-5">
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4">
+              <h2 class="ftco-heading-2 logo"><span>St.Philip's </span>Anglican Church</h2>
+              <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
+              <ul class="ftco-footer-social list-unstyled float-md-left float-lft mt-5">
+                <li class="ftco-animate"><a href="#"><span class="icon-twitter"></span></a></li>
+                <li class="ftco-animate"><a href="#"><span class="icon-facebook"></span></a></li>
+                <li class="ftco-animate"><a href="#"><span class="icon-instagram"></span></a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md">
+            <!-- <div class="ftco-footer-widget mb-4 ml-md-5">
+              <h2 class="ftco-heading-2">About</h2>
+              <ul class="list-unstyled">
+                <li><a href="#" class="py-1 d-block"><span class="ion-ios-arrow-forward mr-3"></span>Staff</a></li>
+                <li><a href="#" class="py-1 d-block"><span class="ion-ios-arrow-forward mr-3"></span>Beliefs</a></li>
+                <li><a href="#" class="py-1 d-block"><span class="ion-ios-arrow-forward mr-3"></span>History</a></li>
+                <li><a href="#" class="py-1 d-block"><span class="ion-ios-arrow-forward mr-3"></span>Mission</a></li>
+                <li><a href="#" class="py-1 d-block"><span class="ion-ios-arrow-forward mr-3"></span>Wedding &amp; Funerals</a></li>
+                <li><a href="#" class="py-1 d-block"><span class="ion-ios-arrow-forward mr-3"></span>Jobs &amp; Internship</a></li>
+                <li><a href="#" class="py-1 d-block"><span class="ion-ios-arrow-forward mr-3"></span>Fellowships</a></li>
+
+              </ul>
+            </div> -->
+          </div>
+          <div class="col-md">
+            <!-- <div class="ftco-footer-widget mb-4 ml-md-5">
+              <h2 class="ftco-heading-2">Connect</h2>
+              <ul class="list-unstyled">
+                <li><a href="#" class="py-1 d-block"><span class="ion-ios-arrow-forward mr-3"></span>Home Groups</a></li>
+                <li><a href="#" class="py-1 d-block"><span class="ion-ios-arrow-forward mr-3"></span>Recovery Groups</a></li>
+                <li><a href="#" class="py-1 d-block"><span class="ion-ios-arrow-forward mr-3"></span>Memberships</a></li>
+                <li><a href="#" class="py-1 d-block"><span class="ion-ios-arrow-forward mr-3"></span>Children &amp; Students</a></li>
+                <li><a href="#" class="py-1 d-block"><span class="ion-ios-arrow-forward mr-3"></span>Volunteer</a></li>
+                <li><a href="#" class="py-1 d-block"><span class="ion-ios-arrow-forward mr-3"></span>Counseling</a></li>
+                <li><a href="#" class="py-1 d-block"><span class="ion-ios-arrow-forward mr-3"></span>Assistance</a></li>
+              </ul>
+            </div> -->
+          </div>
+          <div class="col-md">
+             <div class="ftco-footer-widget mb-4">
+              <h2 class="ftco-heading-2">Service Hours</h2>
+              <div class="opening-hours">
+              	<!-- <p>Saturday Prayer Meeting: <span class="mb-3">10:00 am to 11:30 am</span></p> -->
+              	<p>First Sunday Service: <span class="mb-3">6:00 am to 07:30 am</span></p>
+              	<p>Bible Study: <span class="mb-3">7:30 am to 08:00 am</span></p>
+              	<p>Second Sunday Service: <span class="mb-3">8:00 am to 10:30 am</span></p>
+              	<p>Combined Sunday Service: <span class="mb-3">7:30 am to 10:30 am</span></p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 text-center">
+
+            <p><!-- Link back to empireWorks can't be removed. Template is licensed under CC BY 3.0. -->
+			Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This Website was designed with <i class="icon-heart color-danger" aria-hidden="true"></i> by <a href="https://wa.me/+2347068994070" style="color: #ffd615;font-size: 20px;" target="_blank">empireWorks</a>
+			<!-- Link back to empireWorks can't be removed. Template is licensed under CC BY 3.0. --></p>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+
+
+  <!-- loader -->
+  <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+
+
+  <script src="../static/script/js/jquery.min.js"></script>
+  <script src="../static/script/js/jquery-migrate-3.0.1.min.js"></script>
+  <script src="../static/script/js/popper.min.js"></script>
+  <script src="../static/script/js/bootstrap.min.js"></script>
+  <script src="../static/script/js/jquery.easing.1.3.js"></script>
+  <script src="../static/script/js/jquery.waypoints.min.js"></script>
+  <script src="../static/script/js/jquery.stellar.min.js"></script>
+  <script src="../static/script/js/owl.carousel.min.js"></script>
+  <script src="../static/script/js/jquery.magnific-popup.min.js"></script>
+  <script src="../static/script/js/aos.js"></script>
+  <script src="../static/script/js/jquery.animateNumber.min.js"></script>
+  <script src="../static/script/js/scrollax.min.js"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
+  <script src="../static/script/js/google-map.js"></script>
+
+  <script src="../static/script/js/main.js"></script>
+
+  </body>
+</html>

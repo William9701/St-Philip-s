@@ -315,85 +315,79 @@
 		<section class="ftco-section bg-light" id="sermons-section">
 			<div class="container">
 				<div class="row justify-content-center pb-5">
-          <div class="col-md-12 heading-section text-center ftco-animate">
-          	<span class="subheading">Subtitle 2</span>
-            <h2 class="mb-4">Weekly Bulletin</h2>
-            <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia</p>
-          </div>
-        </div>
-				<div class="row" >
-					{% for service in services %}
-        	<div class="col-md-4">
-        		<div class="sermon-wrap ftco-animate">
-					{% if service.liturgical_color in ("green", "Green") %}
-    					<div class="img d-flex align-items-center justify-content-center"  style="background-image: url(../static/images/sermon-1.png);">
-							{% elif service.liturgical_color in ("Red", "red")%}
-							    <div class="img d-flex align-items-center justify-content-center"  style="background-image: url(../static/images/red_Church_Program.png);">
-                            {% elif service.liturgical_color in ("Purple", "purple", "Violet", "violet") %}
-                                <div class="img d-flex align-items-center justify-content-center"  style="background-image: url(../static/images/Purpule_Church_Program.png);">
-									{% elif service.liturgical_color in ("Gold", "gold") %}
-									<div class="img d-flex align-items-center justify-content-center"  style="background-image: url(../static/images/Gold_Church_Program.png);">
-									{% endif %}
-    						<div class="text-content p-4 text-center">
-    							<!-- <span>by pastor:</span>
-    							<h3>Jerry Simon</h3> -->
-    							<p class="">
-									<button type="button" class="btn btn-primary view-bulletin-btn" data-toggle="modal" data-target="#churchProgramModal-{{ service.id}}" data-service-id="{{ service.id }}">
+					<div class="col-md-12 heading-section text-center ftco-animate">
+						<span class="subheading">Subtitle 2</span>
+						<h2 class="mb-4">Weekly Bulletin</h2>
+						<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia</p>
+					</div>
+				</div>
+				<div class="row">
+					{% for service in services[:6] %} <!-- Limit the loop to the first 6 items -->
+					<div class="col-md-4">
+						<div class="sermon-wrap ftco-animate">
+							{% if service.liturgical_color in ("green", "Green") %}
+								<div class="img d-flex align-items-center justify-content-center" style="background-image: url(../static/images/sermon-1.png);">
+							{% elif service.liturgical_color in ("Red", "red") %}
+								<div class="img d-flex align-items-center justify-content-center" style="background-image: url(../static/images/red_Church_Program.png);">
+							{% elif service.liturgical_color in ("Purple", "purple", "Violet", "violet") %}
+								<div class="img d-flex align-items-center justify-content-center" style="background-image: url(../static/images/Purpule_Church_Program.png);">
+							{% elif service.liturgical_color in ("Gold", "gold") %}
+								<div class="img d-flex align-items-center justify-content-center" style="background-image: url(../static/images/Gold_Church_Program.png);">
+							{% endif %}
+								<div class="text-content p-4 text-center">
+									<button type="button" class="btn btn-primary view-bulletin-btn" data-toggle="modal" data-target="#churchProgramModal-{{ service.id }}" data-service-id="{{ service.id }}">
 										View Bulletin
-									  </button>
-										<!-- <a href="#" class="btn-custom p-2 text-center"><span class="icon-download"></span> Download</a> -->
+									</button>
+								</div>
+							</div>
+							<div class="text pt-3 text-center">
+								<h2 class="mb-0"><a href="#">{{ service.special_celebration }}</a></h2>
+								<div class="meta">
+									<p class="mb-0">
+										<span>{{ service.parsed_date }}</span>
 									</p>
-    						</div>
-    					</div>
-    					<div class="text pt-3 text-center">
-    						<h2 class="mb-0"><a href="#">{{ service.special_celebration }}</a></h2>
-    						<div class="meta">
-		  						<p class="mb-0">
-			  						<span>{{ service.parsed_date}}</span>
-		  						</p>
-		  					</div>
-    					</div>
-  					</div>
-        	</div>
-
-			<!-- Modal -->
-			<div class="modal fade" id="churchProgramModal-{{ service.id }}" tabindex="-1" role="dialog" aria-labelledby="churchProgramModalLabel" aria-hidden="true">
-				<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<img style="width: 62px;
-						display: block;
-						margin-left: -64px;
-						margin-bottom: -75px;" src="../static/images/logo.png" alt="">
-					<h5 class="modal-title" id="churchProgramModalLabel">{{ service.service_name }}</h5>
-					<h5 class="modal-title" id="churchProgramModalLabel1">Liturgical Color: {{ service.liturgical_color }}</h5>
-					<h5 class="modal-title" id="churchProgramModalLabel2">{{ service.special_celebration }}</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
+								</div>
+							</div>
+						</div>
 					</div>
-					<div class="modal-body">
-					<div id="churchProgramPage-{{ service.id }}" class="church-program-page">
-						<!-- Program content will be inserted here -->
-					</div> 
+		
+					<!-- Modal -->
+					<div class="modal fade" id="churchProgramModal-{{ service.id }}" tabindex="-1" role="dialog" aria-labelledby="churchProgramModalLabel" aria-hidden="true">
+						<div class="modal-dialog" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<img style="width: 62px; display: block; margin-left: -64px; margin-bottom: -75px;" src="../static/images/logo.png" alt="">
+									<h5 class="modal-title" id="churchProgramModalLabel">{{ service.service_name }}</h5>
+									<h5 class="modal-title" id="churchProgramModalLabel1">Liturgical Color: {{ service.liturgical_color }}</h5>
+									<h5 class="modal-title" id="churchProgramModalLabel2">{{ service.special_celebration }}</h5>
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+								</div>
+								<div class="modal-body">
+									<div id="churchProgramPage-{{ service.id }}" class="church-program-page">
+										<!-- Program content will be inserted here -->
+									</div> 
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-secondary" id="prevButton-{{ service.id }}" data-service-id="{{ service.id }}" disabled>Previous</button>
+									<button type="button" class="btn btn-primary" data-service-id="{{ service.id }}" id="nextButton-{{ service.id }}">Next</button>
+								</div>
+							</div>
+						</div>
 					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" id="prevButton-{{ service.id }}"  data-service-id="{{ service.id }}" disabled>Previous</button>
-						<button type="button" class="btn btn-primary"  data-service-id="{{ service.id }}" id="nextButton-{{ service.id }}">Next</button>
+					{% endfor %}
+				</div>
+		
+				<!-- Load More button -->
+				<div class="row justify-content-center">
+					<div class="col-md-4 text-center">
+						<a href="{{ url_for('all_bulletins') }}" class="btn btn-primary">Load More</a>
 					</div>
 				</div>
-				</div>
-			</div>
-
-			    {% endfor %}
-
-
-
-
-        	
-        </div>
 			</div>
 		</section>
+		
 
 		<section class="ftco-intro img" id="events-section" style="background-image: url(../static/images/bg_3.jpg);">
 			<div class="overlay"></div>
@@ -415,14 +409,14 @@
 					{% for event in events %}
 					<div class="col-md-12 col-lg-6 col-xl-4">
         		<div class="event-wrap d-flex ftco-animate">
-        			<div class="img" style="background-image: url(../static/images/event-1.jpg);"></div>
+        			<div class="img" style="background-image: url('{{ event.event_img }}');"></div>
         			<div class="text p-4 d-flex align-items-center">
         				<div>
 	        				<span class="time">{{ event.time }}am</span>
-	        				<h3><a href="#">{{ event.event_name}} &amp; Gospel</a></h3>
+	        				<h3><a href="#">{{ event.event_name}}</a></h3>
 	        				<div class="meta">
-		        				<p><span class="icon-user mr-1"></span> by pastor: <a href="#">Jerry Simon</a></p>
-		        				<p><span class="icon-location"></span> {{ event.event_text}}</p>
+		        				<p><span class="icon-description mr-1"></span> {{ event.event_text }}</p>
+		        				<p><span class="icon-location"></span> {{ event.parsed_date}}</p>
 		        				<p class="mb-0"><a href="#" class="btn btn-primary">Join Us</a></p>
 	        				</div>
 	        			</div>
@@ -973,14 +967,14 @@
             </div>
           </div>
         </div>
-        <div class="row">
-          <div class="col-md-12 text-center">
-
-            <p><!-- Link back to empireWorks can't be removed. Template is licensed under CC BY 3.0. -->
-			Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This Website was designed with <i class="icon-heart color-danger" aria-hidden="true"></i> by <a href="" target="_blank">empireWorks</a>
-			<!-- Link back to empireWorks can't be removed. Template is licensed under CC BY 3.0. --></p>
-          </div>
-        </div>
+		<div class="row">
+			<div class="col-md-12 text-center">
+  
+			  <p><!-- Link back to empireWorks can't be removed. Template is licensed under CC BY 3.0. -->
+			  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This Website was designed with <i class="icon-heart color-danger" aria-hidden="true"></i> by <a href="https://wa.me/+2347068994070" style="color: #ffd615;font-size: 20px;" target="_blank">empireWorks</a>
+			  <!-- Link back to empireWorks can't be removed. Template is licensed under CC BY 3.0. --></p>
+			</div>
+		  </div>
       </div>
     </footer>
 

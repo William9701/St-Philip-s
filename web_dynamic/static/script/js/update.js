@@ -281,7 +281,7 @@ if (service_check == "double") {
 
     createBulletinButton.addEventListener("click", function (event) {
       event.preventDefault(); // Prevent form submission
-
+      createBulletinButton.style.background = "green";
       const isFistServiceEucharisticFormVisible =
         document.getElementById("EucaristicForm").style.display === "block";
       const isFirstServiceMartinFormVisible =
@@ -444,6 +444,8 @@ if (service_check == "double") {
 
     createBulletinButton.addEventListener("click", function (event) {
       event.preventDefault(); // Prevent form submission
+
+      createBulletinButton.style.background = "green";
 
       // Function to get form data by id
       function getInputValue(id) {
@@ -989,5 +991,13 @@ async function updateBulletin(bulletinData, sundayType) {
 
       await Promise.all(brideGrooms);
     }
+    let flash = document.getElementById("flash");
+    flash.style.display = "block";
+    setTimeout(() => {
+      flash.style.display = "none";
+      location.reload()
+    }, 4000);
   }
 }
+
+
