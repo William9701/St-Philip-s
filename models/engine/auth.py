@@ -31,7 +31,7 @@ class Auth:
         self._db = DBStorage()
         
     
-    def register_admin(self, email: str, password: str, first_name: str, last_name: str) -> Admin:
+    def register_admin(self, email: str, password: str, username: str) -> Admin:
         """register a admin"""
         try:
             existing_admin = self._db.find_admin_by(email=email)
@@ -43,7 +43,7 @@ class Auth:
         if isinstance(password, str):
             password = _hash_password(password)
 
-        return self._db.add_admin(email=email, hashed_password=password, first_name=first_name, last_name=last_name)
+        return self._db.add_admin(email=email, hashed_password=password, username=username)
 
     def valid_login_a(self, email: str, password: str) -> bool:
         """Validates login details."""

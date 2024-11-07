@@ -13,9 +13,7 @@ class Admin(Basemodels, Base):
         hashed_password = Column(String(250), nullable=False)
         session_id = Column(String(250), nullable=True)
         reset_token = Column(String(250), nullable=True)
-        first_name = Column(String(100), nullable=False)
-        last_name = Column(String(100), nullable=False)
-        phone_number = Column(String(20))
+        username = Column(String(100), nullable=False)
         last_login_at = Column(DateTime(timezone=True),
                                server_default=func.now(), onupdate=func.now())
         account_status = Column(String(20))

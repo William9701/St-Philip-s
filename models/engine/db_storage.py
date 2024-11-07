@@ -134,11 +134,11 @@ class DBStorage:
     
 
     
-    def add_admin(self, email: str, hashed_password: str, first_name: str, last_name: str) -> Admin:
+    def add_admin(self, email: str, hashed_password: str, username: str) -> Admin:
         """This is the add admin method"""
 
         new_admin = Admin(email=email, hashed_password=hashed_password,
-                          first_name=first_name, last_name=last_name)
+                          username=username)
         print(new_admin.id)
         self._session.add(new_admin)
         self._session.flush()  # flush the changes to the database

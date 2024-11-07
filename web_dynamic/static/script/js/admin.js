@@ -1112,3 +1112,67 @@ function generateFilename(originalName) {
 }
 
 
+function performSearch() {
+  const searchInput = document.getElementById("search-input").value;
+
+  fetch(`/search_members?query=${encodeURIComponent(searchInput)}`)
+    .then((response) => response.json())
+    .then((data) => {
+      const tableBody = document.getElementById("member-table-body");
+      tableBody.innerHTML = "";
+
+      data.members.forEach((member) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${member.title} ${member.last_name} ${member.first_name}</td>
+          <td>${member.group_name}</td>
+          <td>
+            <button onclick="DeleteMember('${member.id}')" class="btn btn-danger btn-sm">Delete</button>
+          </td>
+        `;
+        tableBody.appendChild(row);
+      });
+    })
+    .catch((error) => console.error("Error:", error));
+}
+
+
+function DeleteMember(memberId) {
+  fetch(`/members/${memberId}`, {
+    method: 'DELETE',
+  })
+  .then(response => {
+    if (response.ok) {
+      // On successful delete, fetch and recreate the table
+      fetchMembers();
+    } else {
+      console.error('Failed to delete member');
+    }
+  })
+  .catch(error => console.error('Error:', error));
+}
+
+// Function to fetch all members and recreate the table
+function fetchMembers() {
+  fetch('/members')
+    .then(response => response.json())
+    .then(members => {
+      const tableBody = document.getElementById("member-table-body");
+      tableBody.innerHTML = "";  // Clear existing rows
+
+      // Loop through each member in the response and create a table row
+      members.forEach(member => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${member.title} ${member.last_name} ${member.first_name}</td>
+          <td>${member.group_name}</td>
+          <td>
+            <button onclick="DeleteMember('${member.id}')" class="btn btn-danger btn-sm">Delete</button>
+          </td>
+        `;
+        tableBody.appendChild(row);
+      });
+    })
+    .catch(error => console.error('Error fetching members:', error));
+}
+

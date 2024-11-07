@@ -10,6 +10,11 @@ from models import storage
 from flask import flash, abort, redirect, url_for, make_response
 import subprocess
 from models.service import *
+from models.engine.auth import Auth
+from sqlalchemy.orm.exc import NoResultFound
+from models.admin import Admin
+
+AUTH = Auth()
 
 app = Flask(__name__)
 app.jinja_env.globals.update(datetime=datetime)
@@ -69,8 +74,15 @@ def index():
     # Sort services by parsed_date
     all_sorted_services = sorted(all_services, key=lambda service: service['parsed_date'], reverse=True)
 
-    all_sorted_events = sorted(events, key=lambda event: event['parsed_date'], reverse=True)
+    today = datetime.today().date()
+
+    # Filter and sort events to include only those that are today or in the future
+    all_sorted_events = sorted(
+    (event for event in events if datetime.strptime(event['parsed_date'], "%a, %d %b %Y").date() >= today),
+    key=lambda event: event['parsed_date'],
+    reverse=True)
     
+    service_count = len(all_sorted_services)
     
     latst_service = latest_service().json
     meditations = get_prayers().json
@@ -79,30 +91,99 @@ def index():
     # Find the meditation associated with the latest service
     mediPrayer = next((m for m in meditations if m['service_id'] == latst_service['id']), None)
 
-    return render_template('index.html', services=all_sorted_services, mediPrayer=mediPrayer, events=all_sorted_events)
+    return render_template('index.html', services=all_sorted_services, mediPrayer=mediPrayer, events=all_sorted_events, service_count=service_count)
 
 
 @app.route('/history', strict_slashes=False)
 def history():
     return render_template('history.html')
 
+
 @app.route('/admin', strict_slashes=False)
-def admin():
-    all_services = get_services().json
-    events = get_upcoming_event_list().json
+def adminpage():
+    admin_count = len(storage.all(Admin).values())
+    return render_template('adminLogin.html', admin_count=admin_count)
 
 
-    for event in events:
-        event['parsed_date'] = ' '.join(event['event_date'].split()[:4])
-    
-    # Parse the service_date into datetime objects for accurate sorting
-    for service in all_services:
-                service['service_date'] = ' '.join(service['service_date'].split()[:4])
 
-    # Sort services by parsed_date
-    all_sorted_services = sorted(all_services, key=lambda service: service['service_date'], reverse=True)
-    all_sorted_events = sorted(events, key=lambda event: event['parsed_date'], reverse=True)
-    return render_template('admin.html', services=all_sorted_services, events=all_sorted_events)
+@app.route('/admins', methods=['POST'], strict_slashes=False)
+def RegAdmins():
+    """Register admin and then login automatically"""
+    try:
+        email = request.form.get('email')
+        password = request.form.get('password')
+        username = request.form.get('username')
+
+        if not email or not password or not username:
+            return jsonify({"message": "Missing email, password, or username"}), 400
+
+        # Register the admin
+        if AUTH.register_admin(email, password, username):
+            return jsonify({"message": "admin created"}) 
+    except ValueError:
+        return jsonify({"message": "Email already registered"}), 400
+
+
+@app.route('/sessions', methods=['POST'], strict_slashes=False)
+def login_a():
+    """Login admin route (can also be called directly for login)"""
+    try:
+        email = request.form.get('email')
+        password = request.form.get('password')
+
+        if not email or not password:
+            return jsonify({"message": "Missing email or password"}), 400
+
+        if AUTH.valid_login_a(email, password):
+            session_id = AUTH.create_session_a(email)
+
+            # Set the session ID as a cookie in the response
+            response = make_response(
+                jsonify({"email": email, "message": "Logged in successfully"}))
+            response.set_cookie("session_id", session_id)
+
+            # Redirect to the admin page after successful login
+            return jsonify({"session_id": session_id})  # Redirecting to admin page
+
+        # Incorrect login information
+        return jsonify({"message": "Wrong Login Details"}), 401
+
+    except NoResultFound:
+        # Admin not found
+        return jsonify({"message": "Admin not found"}), 401
+
+
+
+
+@app.route('/mainadmin/<sessionId>', strict_slashes=False)
+def mainadmin(sessionId):
+    if AUTH.get_admin_from_session_id(sessionId):
+        all_services = get_services().json
+        events = get_upcoming_event_list().json
+        members = get_members().json
+
+
+        for event in events:
+            event['parsed_date'] = ' '.join(event['event_date'].split()[:4])
+        
+        # Parse the service_date into datetime objects for accurate sorting
+        for service in all_services:
+                    service['service_date'] = ' '.join(service['service_date'].split()[:4])
+
+        # Sort services by parsed_date
+        all_sorted_services = sorted(all_services, key=lambda service: service['service_date'], reverse=True)
+        all_sorted_events = sorted(events, key=lambda event: event['parsed_date'], reverse=True)
+        return render_template('admin.html', services=all_sorted_services, events=all_sorted_events, members=members, sessionId=sessionId)
+    return render_template('adminLogin.html')
+
+@app.route('/logout/<session_id>', strict_slashes=False)
+def logout(session_id):
+    if session_id:
+        admin = AUTH.get_admin_from_session_id(session_id)
+        if admin:
+            AUTH.destroy_session_a(admin.id)
+            return redirect(url_for('adminpage'))
+    abort(403)
 
 @app.route('/groups', strict_slashes=False)
 def groups():
@@ -169,6 +250,35 @@ def update_Admin_service(id):
 
 
     return render_template('update.html', service=service, Hymn=mHymn, Reading=reading, meditation=meditation, notice=notice, aob1=aob1,thanks=thanks, dailySchedules=dailySchedules, resources=resources, prayerLists=prayerLists, marriagebanns=marriagebanns)
+
+def binary_search_members(query, members):
+    exact_matches = []
+    partial_matches = []
+    query = query.lower().split()  # Split query into words
+
+    for member in members:
+        first_name = member["first_name"].lower()
+        last_name = member["last_name"].lower()
+        full_name = f"{first_name} {last_name}"
+
+        # Check for exact match with full name
+        if len(query) == 2 and query[0] == first_name and query[1] == last_name:
+            exact_matches.append(member)
+        # Check for partial match with each word in the query
+        elif any(word in first_name or word in last_name for word in query):
+            partial_matches.append(member)
+
+    # Return exact matches first, followed by partial matches
+    return exact_matches + partial_matches
+
+
+@app.route('/search_members')
+def search_members():
+    query = request.args.get("query", "").strip()
+    members_data = get_members().json
+    results = binary_search_members(query, members_data)
+    
+    return jsonify({"members": results})
 
 def groupFavour():
     Allmembers = get_members().json

@@ -210,7 +210,7 @@
 
 
 
-          <div class="col-md d-flex align-self-stretch ftco-animate">
+          <div style="margin-left: 78px;" class="col-md d-flex align-self-stretch ftco-animate">
 			<a href="#"data-toggle="modal" data-target="#meditationModal" onclick="displayMeditation()">
             <div class="media block-6 services text-center d-block">
               <div class="icon"><span class="flaticon-bible"></span></div>
@@ -219,7 +219,7 @@
                 <p style="color: #999999;"><b>Topic:</b> {{ mediPrayer.topic }}
 				</p>
 				<p style="color: #999999;">
-					<b>Text:</b>{{ mediPrayer.text }}
+					<b>Text: </b>{{ mediPrayer.text }}
 				</p>
               </div>
             </div>
@@ -379,12 +379,14 @@
 					{% endfor %}
 				</div>
 		
+				{% if service_count > 6 %}
 				<!-- Load More button -->
 				<div class="row justify-content-center">
 					<div class="col-md-4 text-center">
 						<a href="{{ url_for('all_bulletins') }}" class="btn btn-primary">Load More</a>
 					</div>
 				</div>
+				{% endif %}
 			</div>
 		</section>
 		
@@ -831,35 +833,38 @@
 		          <div class="col-md-12 ftco-animate">
 		          	<div class="box p-2 px-3 bg-light d-flex">
 		          		<div class="icon mr-3">
-		          			<span class="icon-phone2"></span>
+		          			<span class="icon-bank"></span>
 		          		</div>
 		          		<div>
-			          		<h3 class="mb-3">Contact Number</h3>
-				            <p><a href="tel://1234567920">+ 1235 2355 98</a></p>
+			          		<h3 class="mb-3">For Tithe </h3>
+				            <p><u><b>Access Bank</b></u></p> 
+							<p><b>Account Name:</b> St. Philip's Anglican Church Asaba. <b>Account Number:</b> 0057259382</p>
 			            </div>
 			          </div>
 		          </div>
 		          <div class="col-md-12 ftco-animate">
-		          	<div class="box p-2 px-3 bg-light d-flex">
-		          		<div class="icon mr-3">
-		          			<span class="icon-paper-plane"></span>
-		          		</div>
-		          		<div>
-			          		<h3 class="mb-3">Email Address</h3>
-				            <p><a href="mailto:info@yoursite.com">info@yoursite.com</a></p>
-			            </div>
-			          </div>
+					<div class="box p-2 px-3 bg-light d-flex">
+						<div class="icon mr-3">
+							<span class="icon-bank"></span>
+						</div>
+						<div>
+							<h3 class="mb-3">For  Harvest & Building Support </h3>
+						  <p><u><b>Polaris Bank</b></u></p> 
+						  <p><b>Account Name:</b> St. Philip's Anglican Church Asaba. <b>Account Number:</b> 1040502076</p>
+					  </div>
+					</div>
 		          </div>
 		          <div class="col-md-12 ftco-animate">
-		          	<div class="box p-2 px-3 bg-light d-flex">
-		          		<div class="icon mr-3">
-		          			<span class="icon-globe"></span>
-		          		</div>
-		          		<div>
-			          		<h3 class="mb-3">Website</h3>
-				            <p><a href="#">yoursite.com</a></p>
-			            </div>
-			          </div>
+					<div class="box p-2 px-3 bg-light d-flex">
+						<div class="icon mr-3">
+							<span class="icon-bank"></span>
+						</div>
+						<div>
+							<h3 class="mb-3">For All Your Sacrifice </h3>
+						  <p><u><b>Eco Bank</b></u></p> 
+						  <p><b>Account Name:</b> St. Philip's Anglican Church Asaba. <b>Account Number:</b> 4312025686</p>
+					  </div>
+					</div>
 		          </div>
 		        </div>
           </div>

@@ -193,6 +193,10 @@
         <p>Select a section to continue:</p>
       </div>
 
+      <div>
+       <a href="/logout/{{ sessionId }}"><button style="margin-bottom: 40px;" class="btn btn-primary">Log Out</button></a> 
+      </div>
+
       <!-- Section Selection Cards -->
       <div class="row card-selection">
         <div class="col-md-4 mb-4">
@@ -397,7 +401,7 @@
             type="button"
             class="btn btn-secondary mb-3"
             data-toggle="modal"
-            data-target="#memberupdateModal"
+            data-target="#DeleteMemberModal"
             data-dismiss="modal"
           >
             Delete Member
@@ -491,6 +495,72 @@
           >
             Submit All Members
           </button>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <!-- Delete Member Modal -->
+    <div
+    class="modal fade"
+    id="DeleteMemberModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="updateModalLabel"
+    aria-hidden="true"
+    >
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Delete Entries</h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <!-- Search Bar -->
+          <div class="input-group mb-3">
+            <input
+              type="text"
+              class="form-control"
+              id="search-input"
+              placeholder="Search by name"
+              aria-label="Search by name"
+            />
+            <div class="input-group-append">
+              <button class="btn btn-outline-secondary" type="button" onclick="performSearch()">
+                Search
+              </button>
+            </div>
+          </div>
+          
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Group</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="member-table-body">
+                {% for member in members %}
+                <tr>
+                  <td>{{ member.title }} {{ member.last_name }} {{ member.first_name }}</td>
+                  <td>{{ member.group_name }}</td>
+                  <td>
+                    <button onclick="DeleteMember(`{{ member.id }}`)" class="btn btn-danger btn-sm">Delete</button>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
