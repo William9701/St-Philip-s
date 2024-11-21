@@ -180,8 +180,9 @@
 				<a href="#" data-toggle="modal" data-target="#prayerModal" onclick="displayPrayer()">
               <div class="icon"><span class="flaticon-praying"></span></div>
               <div class="media-body">
-                <h3 class="heading mb-3">Daily Prayers</h3>
-                <p style="color: #999999;">A small river named Duden flows by their place and supplies it with the necessary regelialia.</p>
+                <h3 class="heading mb-3">The Daily Fountain</h3>
+                <p style="color: #999999;"><b>TOPIC: </b>{{ dailyPrayer.Topic }}</p>
+                <p style="color: #999999;"><b>TEXT: </b>{{ dailyPrayer.Read }}</p>
               </div>
 			</a>
             </div>
@@ -279,6 +280,7 @@
 				<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
+						
 					<h5 style="color: aliceblue;" class="modal-title" id="weddingModalLabel">Bans of Marriage</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
@@ -419,7 +421,7 @@
 	        				<div class="meta">
 		        				<p><span class="icon-description mr-1"></span> {{ event.event_text }}</p>
 		        				<p><span class="icon-location"></span> {{ event.parsed_date}}</p>
-		        				<p class="mb-0"><a href="#" class="btn btn-primary">Join Us</a></p>
+		        				<p class="mb-0"><a  class="btn btn-primary">Join Us</a></p>
 	        				</div>
 	        			</div>
         			</div>

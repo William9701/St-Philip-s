@@ -154,17 +154,20 @@
                       required
                     />
                   </div>
-                
+
                   <div class="form-group">
                     <label for="litColorEucaristic">Liturgical Color</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="litColorEucaristic"
-                      value="{{service.liturgical_color}}"
-                      required
-                    />
+                    <select class="form-control" id="litColorEucaristic" required>
+                      <option value="Green" {{ 'selected' if service.liturgical_color == 'Green' else '' }}>Green</option>
+                      <option value="Gold" {{ 'selected' if service.liturgical_color == 'Gold' else '' }}>Gold</option>
+                      <option value="Purple" {{ 'selected' if service.liturgical_color == 'Purple' else '' }}>Purple</option>
+                      <option value="White" {{ 'selected' if service.liturgical_color == 'White' else '' }}>White</option>
+                      <option value="Red" {{ 'selected' if service.liturgical_color == 'Red' else '' }}>Red</option>
+                    </select>
                   </div>
+                  
+                
+                  
                 
                   <div class="form-group">
                     <label for="sundayDateEucaristic">Select Date</label>
@@ -323,14 +326,17 @@
                 
                   <div class="form-group">
                     <label for="litColorMartin">Liturgical Color</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="litColorMartin"
-                      value = "{{service.liturgical_color}}"
-                      required
-                    />
+                    <select class="form-control" id="litColorMartin" required>
+                      <option value="Green" {{ 'selected' if service.liturgical_color == 'Green' else '' }}>Green</option>
+                      <option value="Gold" {{ 'selected' if service.liturgical_color == 'Gold' else '' }}>Gold</option>
+                      <option value="Purple" {{ 'selected' if service.liturgical_color == 'Purple' else '' }}>Purple</option>
+                      <option value="White" {{ 'selected' if service.liturgical_color == 'White' else '' }}>White</option>
+                      <option value="Red" {{ 'selected' if service.liturgical_color == 'Red' else '' }}>Red</option>
+                    </select>
                   </div>
+                  
+
+                  
                 
                   <div class="form-group">
                     <label for="sundayDateMartin">Select Date</label>
@@ -744,14 +750,15 @@
 
                   <div class="form-group1">
                     <label for="litColor1">Liturgical Color</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="litColor1"
-                      value="{{ service.liturgical_color }}"
-                      required
-                    />
+                    <select class="form-control" id="litColor1" required>
+                      <option value="Green" {{ 'selected' if service.liturgical_color == 'Green' else '' }}>Green</option>
+                      <option value="Gold" {{ 'selected' if service.liturgical_color == 'Gold' else '' }}>Gold</option>
+                      <option value="Purple" {{ 'selected' if service.liturgical_color == 'Purple' else '' }}>Purple</option>
+                      <option value="White" {{ 'selected' if service.liturgical_color == 'White' else '' }}>White</option>
+                      <option value="Red" {{ 'selected' if service.liturgical_color == 'Red' else '' }}>Red</option>
+                    </select>
                   </div>
+                  
 
                   <div class="form-group1">
                     <label for="sundayDate1">Select Date</label>
@@ -903,10 +910,20 @@
                     <label for="sundayName2">Sunday Name</label>
                     <input type="text" class="form-control" id="sundayName2" value="{{ service.sunday_name }}" required />
                   </div>
+
                   <div class="form-group1">
                     <label for="litColor2">Liturgical Color</label>
-                    <input type="text" class="form-control" id="litColor2" value="{{ service.liturgical_color }}" required />
+                    <select class="form-control" id="litColor2" required>
+                      <option value="Green" {{ 'selected' if service.liturgical_color == 'Green' else '' }}>Green</option>
+                      <option value="Gold" {{ 'selected' if service.liturgical_color == 'Gold' else '' }}>Gold</option>
+                      <option value="Purple" {{ 'selected' if service.liturgical_color == 'Purple' else '' }}>Purple</option>
+                      <option value="White" {{ 'selected' if service.liturgical_color == 'White' else '' }}>White</option>
+                      <option value="Red" {{ 'selected' if service.liturgical_color == 'Red' else '' }}>Red</option>
+                    </select>
                   </div>
+
+                  
+                  
                   <div class="form-group1">
                     <label for="sundayDate2">Select Date</label>
                     <input type="date" class="form-control" id="sundayDate2" value="{{ service.service_date }}" required onchange="highlightSundays(this)" />

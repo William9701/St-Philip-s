@@ -801,7 +801,12 @@ async function createBulletin(bulletinData, sundayType) {
 
       await Promise.all(brideGrooms);
 
-      let flash = document.getElementById("flash");
+      let flash;
+      if (sundayType === "double_service"){
+        flash = document.getElementById("flashD");
+      } else {
+        flash = document.getElementById("flash");
+      }
       flash.style.display = "block";
       setTimeout(() => {
         flash.style.display = "none";
@@ -962,7 +967,8 @@ function updateServiceTable(services) {
               <button onclick="DeleteService('${service.id}')" class="btn btn-danger btn-sm">Delete</button>
           </td>
           <td>
-              <button onclick="UpdateService('${service.id}')" class="btn btn-secondary mb-3 btn-sm">Update</button>
+              <a href="/update/${service.id}"
+              <button class="btn btn-secondary mb-3 btn-sm">Update</button></a>
           </td>
       `;
       tableBody.appendChild(row);

@@ -167,286 +167,392 @@
         <div class="row">
           <!-- Women's Groups -->
           <div class="col-md-6">
-            <h2 class="mb-3">Women's Groups</h2>
-            <div class="row" id="womens-groups">
-              <!-- Group 1 -->
-              <div class="col-md-6 mb-3">
-                <div class="card">
-                  <img
-                    src="../static/images/sermon-3.jpg"
-                    class="card-img-top"
-                    alt="Group Image"
-                  />
-                  <div class="card-body">
-                    <h5 class="card-title">Favour Group</h5>
-                    <button
-                      class="btn btn-primary view-members"
-                      data-target="womens-group1-members"
-                    >
-                      View Members
-                    </button>
-                    <div
-                      class="members-list"
-                      id="womens-group1-members"
-                      style="display: none"
-                    >
-                      <table class="table table-striped">
-                        <thead>
-                          <tr>
-                            <th>S/N</th>
-                            <th>Name</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {% for member in Favour %}
-                          <tr>
-                            <td>{{ loop.index }}</td>
-                            <!-- Serial number (s/n) -->
-                            <td>
-                              {{ member.title }}.{{ member.first_name }} {{
-                              member.last_name }}
-                            </td>
-                          </tr>
-                          {% endfor %}
-                          <!-- Add more members here -->
-                        </tbody>
-                      </table>
-                    </div>
+              <h2 class="mb-3">Women's Groups</h2>
+              <div class="row" id="womens-groups">
+                  <!--Dorcas  Group -->
+                  <div class="col-md-6 mb-3">
+                      <div class="card">
+                          <img src="../static/images/image_4.jpg" class="card-img-top" alt="Group Image">
+                          <div class="card-body">
+                              <h5 class="card-title">DORCAS Group</h5>
+                              <button class="btn btn-primary view-members" data-target="womens-group1-members">View Members</button>
+                              <div class="members-list" id="womens-group1-members" style="display: none;">
+                                  <table class="table table-striped">
+                                      <thead>
+                                          <tr>
+                                              <th>S/N</th>
+                                              <th>Name</th>
+                                          </tr>
+                                      </thead>
+                                      <tbody>
+                                          {% for member in Dorcas %}
+                                          <tr>
+                                              <td>{{ loop.index }}</td> <!-- Serial number (s/n) -->
+                                              <td>{{ member.title }}. {{ member.first_name }} {{ member.last_name }}</td>
+                                          </tr>
+                                          {% endfor %}
+                                          <!-- Add more members here -->
+                                      </tbody>
+                                  </table>
+                              </div>
+                          </div>
+                      </div>
                   </div>
-                </div>
-              </div>
-              <!-- Group 2 -->
-              <div class="col-md-6 mb-3">
-                <div class="card">
-                  <img
-                    src="../static/images/sermon-3.jpg"
-                    class="card-img-top"
-                    alt="Group Image"
-                  />
-                  <div class="card-body">
-                    <h5 class="card-title">Joy Group</h5>
-                    <button
-                      class="btn btn-primary view-members"
-                      data-target="womens-group2-members"
-                    >
-                      View Members
-                    </button>
-                    <div
-                      class="members-list"
-                      id="womens-group2-members"
-                      style="display: none"
-                    >
-                      <table class="table table-striped">
-                        <thead>
-                          <tr>
-                            <th>S/N</th>
-                            <th>Name</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {% for member in Joy %}
-                          <tr>
-                            <td>{{ loop.index }}</td>
-                            <!-- Serial number (s/n) -->
-                            <td>
-                              {{ member.title }}.{{ member.first_name }} {{
-                              member.last_name }}
-                            </td>
-                          </tr>
-                          {% endfor %}
-                          <!-- Add more members here -->
-                        </tbody>
-                      </table>
-                    </div>
+                  <!-- Joy Group -->
+                  <div class="col-md-6 mb-3">
+                      <div class="card">
+                          <img src="../static/images/image_2.jpg" class="card-img-top" alt="Group Image">
+                          <div class="card-body">
+                              <h5 class="card-title">JOY Group</h5>
+                              <button class="btn btn-primary view-members" data-target="womens-group2-members">View Members</button>
+                              <div class="members-list" id="womens-group2-members" style="display: none;">
+                                  <table class="table table-striped">
+                                      <thead>
+                                          <tr>
+                                              <th>S/N</th>
+                                              <th>Name</th>
+                                          </tr>
+                                      </thead>
+                                      <tbody>
+                                          {% for member in Joy %}
+                                          <tr>
+                                              <td>{{ loop.index }}</td> <!-- Serial number (s/n) -->
+                                              <td>{{ member.title }}. {{ member.first_name }} {{ member.last_name }}</td>
+                                          </tr>
+                                          {% endfor %}
+                                          <!-- Add more members here -->
+                                      </tbody>
+                                  </table>
+                              </div>
+                          </div>
+                      </div>
                   </div>
-                </div>
-              </div>
-              <!-- Group 3 -->
-              <div class="col-md-6 mb-3">
-                <div class="card">
-                  <img
-                    src="../static/images/sermon-3.jpg"
-                    class="card-img-top"
-                    alt="Group Image"
-                  />
-                  <div class="card-body">
-                    <h5 class="card-title">Faith Group</h5>
-                    <button
-                      class="btn btn-primary view-members"
-                      data-target="womens-group3-members"
-                    >
-                      View Members
-                    </button>
-                    <div
-                      class="members-list"
-                      id="womens-group3-members"
-                      style="display: none"
-                    >
-                      <table class="table table-striped">
-                        <thead>
-                          <tr>
-                            <th>S/N</th>
-                            <th>Name</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {% for member in Faith %}
-                          <tr>
-                            <td>{{ loop.index }}</td>
-                            <!-- Serial number (s/n) -->
-                            <td>
-                              {{ member.title }}.{{ member.first_name }} {{
-                              member.last_name }}
-                            </td>
-                          </tr>
-                          {% endfor %}
-                          <!-- Add more members here -->
-                        </tbody>
-                      </table>
-                    </div>
+                  <!-- Esther Group -->
+                  <div class="col-md-6 mb-3">
+                      <div class="card">
+                          <img src="../static/images/image_2.jpg" class="card-img-top" alt="Group Image">
+                          <div class="card-body">
+                              <h5 class="card-title">ESTHER Group</h5>
+                              <button class="btn btn-primary view-members" data-target="womens-group3-members">View Members</button>
+                              <div class="members-list" id="womens-group3-members" style="display: none;">
+                                  <table class="table table-striped">
+                                      <thead>
+                                          <tr>
+                                              <th>S/N</th>
+                                              <th>Name</th>
+                                          </tr>
+                                      </thead>
+                                      <tbody>
+                                          {% for member in Esther %}
+                                          <tr>
+                                              <td>{{ loop.index }}</td> <!-- Serial number (s/n) -->
+                                              <td>{{ member.title }}. {{ member.first_name }} {{ member.last_name }}</td>
+                                          </tr>
+                                          {% endfor %}
+                                          <!-- Add more members here -->
+                                      </tbody>
+                                  </table>
+                              </div>
+                          </div>
+                      </div>
                   </div>
-                </div>
-              </div>
-              <!-- Group 4 -->
-              <div class="col-md-6 mb-3">
-                <div class="card">
-                  <img
-                    src="../static/images/sermon-3.jpg"
-                    class="card-img-top"
-                    alt="Group Image"
-                  />
-                  <div class="card-body">
-                    <h5 class="card-title">Love Group</h5>
-                    <button
-                      class="btn btn-primary view-members"
-                      data-target="womens-group4-members"
-                    >
-                      View Members
-                    </button>
-                    <div
-                      class="members-list"
-                      id="womens-group4-members"
-                      style="display: none"
-                    >
-                      <table class="table table-striped">
-                        <thead>
-                          <tr>
-                            <th>S/N</th>
-                            <th>Name</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {% for member in Love %}
-                          <tr>
-                            <td>{{ loop.index }}</td>
-                            <!-- Serial number (s/n) -->
-                            <td>
-                              {{ member.title }}.{{ member.first_name }} {{
-                              member.last_name }}
-                            </td>
-                          </tr>
-                          {% endfor %}
-                          <!-- Add more members here -->
-                        </tbody>
-                      </table>
-                    </div>
+                  <!-- Deborah Group -->
+                  <div class="col-md-6 mb-3">
+                      <div class="card">
+                          <img src="../static/images/image_2.jpg" class="card-img-top" alt="Group Image">
+                          <div class="card-body">
+                              <h5 class="card-title">DEBORAH Group</h5>
+                              <button class="btn btn-primary view-members" data-target="womens-group4-members">View Members</button>
+                              <div class="members-list" id="womens-group4-members" style="display: none;">
+                                  <table class="table table-striped">
+                                      <thead>
+                                          <tr>
+                                              <th>S/N</th>
+                                              <th>Name</th>
+                                          </tr>
+                                      </thead>
+                                      <tbody>
+                                          {% for member in Deborah %}
+                                          <tr>
+                                              <td>{{ loop.index }}</td> <!-- Serial number (s/n) -->
+                                              <td>{{ member.title }}. {{ member.first_name }} {{ member.last_name }}</td>
+                                          </tr>
+                                          {% endfor %}
+                                          <!-- Add more members here -->
+                                      </tbody>
+                                  </table>
+                              </div>
+                          </div>
+                      </div>
                   </div>
-                </div>
-              </div>
+                  <!-- Ruth Group -->
+                  <div class="col-md-6 mb-3">
+                      <div class="card">
+                          <img src="../static/images/image_2.jpg" class="card-img-top" alt="Group Image">
+                          <div class="card-body">
+                              <h5 class="card-title">RUTH Group</h5>
+                              <button class="btn btn-primary view-members" data-target="womens-group4-members">View Members</button>
+                              <div class="members-list" id="womens-group4-members" style="display: none;">
+                                  <table class="table table-striped">
+                                      <thead>
+                                          <tr>
+                                              <th>S/N</th>
+                                              <th>Name</th>
+                                          </tr>
+                                      </thead>
+                                      <tbody>
+                                          {% for member in Ruth %}
+                                          <tr>
+                                              <td>{{ loop.index }}</td> <!-- Serial number (s/n) -->
+                                              <td>{{ member.title }}. {{ member.first_name }} {{ member.last_name }}</td>
+                                          </tr>
+                                          {% endfor %}
+                                          <!-- Add more members here -->
+                                      </tbody>
+                                  </table>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <!-- Lydia Group -->
+                  <div class="col-md-6 mb-3">
+                      <div class="card">
+                          <img src="../static/images/image_2.jpg" class="card-img-top" alt="Group Image">
+                          <div class="card-body">
+                              <h5 class="card-title">LYDIA Group</h5>
+                              <button class="btn btn-primary view-members" data-target="womens-group4-members">View Members</button>
+                              <div class="members-list" id="womens-group4-members" style="display: none;">
+                                  <table class="table table-striped">
+                                      <thead>
+                                          <tr>
+                                              <th>S/N</th>
+                                              <th>Name</th>
+                                          </tr>
+                                      </thead>
+                                      <tbody>
+                                          {% for member in Lydia %}
+                                          <tr>
+                                              <td>{{ loop.index }}</td> <!-- Serial number (s/n) -->
+                                              <td>{{ member.title }}. {{ member.first_name }} {{ member.last_name }}</td>
+                                          </tr>
+                                          {% endfor %}
+                                          <!-- Add more members here -->
+                                      </tbody>
+                                  </table>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <!-- Love Group -->
+                  <div class="col-md-6 mb-3">
+                      <div class="card">
+                          <img src="../static/images/image_2.jpg" class="card-img-top" alt="Group Image">
+                          <div class="card-body">
+                              <h5 class="card-title">LOVE Group</h5>
+                              <button class="btn btn-primary view-members" data-target="womens-group4-members">View Members</button>
+                              <div class="members-list" id="womens-group4-members" style="display: none;">
+                                  <table class="table table-striped">
+                                      <thead>
+                                          <tr>
+                                              <th>S/N</th>
+                                              <th>Name</th>
+                                          </tr>
+                                      </thead>
+                                      <tbody>
+                                          {% for member in Love %}
+                                          <tr>
+                                              <td>{{ loop.index }}</td> <!-- Serial number (s/n) -->
+                                              <td>{{ member.title }}. {{ member.first_name }} {{ member.last_name }}</td>
+                                          </tr>
+                                          {% endfor %}
+                                          <!-- Add more members here -->
+                                      </tbody>
+                                  </table>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
 
-              <!-- Add more women's groups here -->
-            </div>
+                  <!-- Add more women's groups here -->
+              </div>
           </div>
           <!-- Men's Groups -->
           <div class="col-md-6">
-            <h2 class="mb-3">Men's Groups</h2>
-            <div class="row" id="mens-groups">
-              <!-- Group 1 -->
-              <div class="col-md-6 mb-3">
-                <div class="card">
-                  <img
-                    src="../static/images/sermon-3.jpg"
-                    class="card-img-top"
-                    alt="Group Image"
-                  />
-                  <div class="card-body">
-                    <h5 class="card-title">Group 1 Name</h5>
-                    <button
-                      class="btn btn-primary view-members"
-                      data-target="mens-group1-members"
-                    >
-                      View Members
-                    </button>
-                    <div
-                      class="members-list"
-                      id="mens-group1-members"
-                      style="display: none"
-                    >
-                      <table class="table table-striped">
-                        <thead>
-                          <tr>
-                            <th>Name</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td>Member 1</td>
-                          </tr>
-                          <tr>
-                            <td>Member 2</td>
-                          </tr>
-                          <!-- Add more members here -->
-                        </tbody>
-                      </table>
-                    </div>
+              <h2 class="mb-3">Men's Groups</h2>
+              <div class="row" id="mens-groups">
+                  <!-- Group 1 -->
+                  <div class="col-md-6 mb-3">
+                      <div class="card">
+                          <img src="../static/images/image_3.jpg" class="card-img-top" alt="Group Image">
+                          <div class="card-body">
+                              <h5 class="card-title">Group 1</h5>
+                              <button class="btn btn-primary view-members" data-target="mens-group1-members">View Members</button>
+                              <div class="members-list" id="mens-group1-members" style="display: none;">
+                                  <table class="table table-striped">
+                                      <thead>
+                                          <tr>
+                                              <th>S/N</th>
+                                              <th>Name</th>
+                                          </tr>
+                                      </thead>
+                                      <tbody>
+                                          {% for member in Group1 %}
+                                          <tr>
+                                              <td>{{ loop.index }}</td> <!-- Serial number (s/n) -->
+                                              <td>{{ member.title }}. {{ member.first_name }} {{ member.last_name }}</td>
+                                          </tr>
+                                          {% endfor %}
+                                      </tbody>
+                                  </table>
+                              </div>
+                          </div>
+                      </div>
                   </div>
-                </div>
-              </div>
-              <!-- Group 2 -->
-              <div class="col-md-6 mb-3">
-                <div class="card">
-                  <img
-                    src="../static/images/sermon-3.jpg"
-                    class="card-img-top"
-                    alt="Group Image"
-                  />
-                  <div class="card-body">
-                    <h5 class="card-title">Group 2 Name</h5>
-                    <button
-                      class="btn btn-primary view-members"
-                      data-target="mens-group2-members"
-                    >
-                      View Members
-                    </button>
-                    <div
-                      class="members-list"
-                      id="mens-group2-members"
-                      style="display: none"
-                    >
-                      <table class="table table-striped">
-                        <thead>
-                          <tr>
-                            <th>Name</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td>Member 1</td>
-                          </tr>
-                          <tr>
-                            <td>Member 2</td>
-                          </tr>
-                          <!-- Add more members here -->
-                        </tbody>
-                      </table>
-                    </div>
+                  <!-- Group 2 -->
+                  <div class="col-md-6 mb-3">
+                      <div class="card">
+                          <img src="../static/images/image_3.jpg" class="card-img-top" alt="Group Image">
+                          <div class="card-body">
+                              <h5 class="card-title">Group 2</h5>
+                              <button class="btn btn-primary view-members" data-target="mens-group1-members">View Members</button>
+                              <div class="members-list" id="mens-group1-members" style="display: none;">
+                                  <table class="table table-striped">
+                                      <thead>
+                                          <tr>
+                                              <th>S/N</th>
+                                              <th>Name</th>
+                                          </tr>
+                                      </thead>
+                                      <tbody>
+                                          {% for member in Group2 %}
+                                          <tr>
+                                              <td>{{ loop.index }}</td> <!-- Serial number (s/n) -->
+                                              <td>{{ member.title }}. {{ member.first_name }} {{ member.last_name }}</td>
+                                          </tr>
+                                          {% endfor %}
+                                      </tbody>
+                                  </table>
+                              </div>
+                          </div>
+                      </div>
                   </div>
-                </div>
+                  <!-- Group 3 -->
+                  <div class="col-md-6 mb-3">
+                      <div class="card">
+                          <img src="../static/images/image_3.jpg" class="card-img-top" alt="Group Image">
+                          <div class="card-body">
+                              <h5 class="card-title">Group 3</h5>
+                              <button class="btn btn-primary view-members" data-target="mens-group1-members">View Members</button>
+                              <div class="members-list" id="mens-group1-members" style="display: none;">
+                                  <table class="table table-striped">
+                                      <thead>
+                                          <tr>
+                                              <th>S/N</th>
+                                              <th>Name</th>
+                                          </tr>
+                                      </thead>
+                                      <tbody>
+                                          {% for member in Group3 %}
+                                          <tr>
+                                              <td>{{ loop.index }}</td> <!-- Serial number (s/n) -->
+                                              <td>{{ member.title }}. {{ member.first_name }} {{ member.last_name }}</td>
+                                          </tr>
+                                          {% endfor %}
+                                      </tbody>
+                                  </table>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <!-- Group 4 -->
+                  <div class="col-md-6 mb-3">
+                      <div class="card">
+                          <img src="../static/images/image_3.jpg" class="card-img-top" alt="Group Image">
+                          <div class="card-body">
+                              <h5 class="card-title">Group 4</h5>
+                              <button class="btn btn-primary view-members" data-target="mens-group1-members">View Members</button>
+                              <div class="members-list" id="mens-group1-members" style="display: none;">
+                                  <table class="table table-striped">
+                                      <thead>
+                                          <tr>
+                                              <th>S/N</th>
+                                              <th>Name</th>
+                                          </tr>
+                                      </thead>
+                                      <tbody>
+                                          {% for member in Group4 %}
+                                          <tr>
+                                              <td>{{ loop.index }}</td> <!-- Serial number (s/n) -->
+                                              <td>{{ member.title }}. {{ member.first_name }} {{ member.last_name }}</td>
+                                          </tr>
+                                          {% endfor %}
+                                      </tbody>
+                                  </table>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <!-- Group 5 -->
+                  <div class="col-md-6 mb-3">
+                      <div class="card">
+                          <img src="../static/images/image_3.jpg" class="card-img-top" alt="Group Image">
+                          <div class="card-body">
+                              <h5 class="card-title">Group 5</h5>
+                              <button class="btn btn-primary view-members" data-target="mens-group1-members">View Members</button>
+                              <div class="members-list" id="mens-group1-members" style="display: none;">
+                                  <table class="table table-striped">
+                                      <thead>
+                                          <tr>
+                                              <th>S/N</th>
+                                              <th>Name</th>
+                                          </tr>
+                                      </thead>
+                                      <tbody>
+                                          {% for member in Group5 %}
+                                          <tr>
+                                              <td>{{ loop.index }}</td> <!-- Serial number (s/n) -->
+                                              <td>{{ member.title }}. {{ member.first_name }} {{ member.last_name }}</td>
+                                          </tr>
+                                          {% endfor %}
+                                      </tbody>
+                                  </table>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <!-- Group 6 -->
+                  <div class="col-md-6 mb-3">
+                      <div class="card">
+                          <img src="../static/images/image_3.jpg" class="card-img-top" alt="Group Image">
+                          <div class="card-body">
+                              <h5 class="card-title">Group 6</h5>
+                              <button class="btn btn-primary view-members" data-target="mens-group1-members">View Members</button>
+                              <div class="members-list" id="mens-group1-members" style="display: none;">
+                                  <table class="table table-striped">
+                                      <thead>
+                                          <tr>
+                                              <th>S/N</th>
+                                              <th>Name</th>
+                                          </tr>
+                                      </thead>
+                                      <tbody>
+                                          {% for member in Group6 %}
+                                          <tr>
+                                              <td>{{ loop.index }}</td> <!-- Serial number (s/n) -->
+                                              <td>{{ member.title }}. {{ member.first_name }} {{ member.last_name }}</td>
+                                          </tr>
+                                          {% endfor %}
+                                      </tbody>
+                                  </table>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  
+                  <!-- Add more men's groups here -->
               </div>
-              <!-- Add more men's groups here -->
-            </div>
           </div>
-        </div>
+      </div>
       </div>
     </section>
 

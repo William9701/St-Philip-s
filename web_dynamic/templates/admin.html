@@ -467,10 +467,21 @@
                   <label for="Group">Group</label>
                   <select class="form-control" required>
                     <option value="" disabled selected>Select Group</option>
-                    <option value="Favour">Favour</option>
-                    <option value="Joy">Joy</option>
-                    <option value="Faith">Faith</option>
-                    <option value="Love">Love</option>
+                    <option value="" disabled >Women's Group</option>
+                    <option value="Dorcas">DORCAS</option>
+                    <option value="Esther">ESTHER</option>
+                    <option value="Deborah">DEBORAH</option>
+                    <option value="Love">LOVE</option>
+                    <option value="Ruth">RUTH</option>
+                    <option value="Joy">JOY</option>
+                    <option value="Lydia">LYDIA</option>
+                    <option value="" disabled >Men's Group</option>
+                    <option value="Group1">GROUP 1</option>
+                    <option value="Group2">GROUP 2</option>
+                    <option value="Group3">GROUP 3</option>
+                    <option value="Group4">GROUP 4</option>
+                    <option value="Group5">GROUP 5</option>
+                    <option value="Group6">GROUP 6</option>
                   </select>
                 </div>
               </div>
@@ -721,14 +732,16 @@
 
                     <div class="form-group1">
                       <label for="litColor1">Liturgical Color</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="litColor1"
-                        placeholder="Green"
-                        required
-                      />
+                      <select class="form-control" id="litColor1" required>
+                        <option value="">Select a color</option>
+                        <option value="Green">Green</option>
+                        <option value="Red">Red</option>
+                        <option value="Gold">Gold</option>
+                        <option value="Purple">Purple</option>
+                        <option value="White">White</option>
+                      </select>
                     </div>
+                    
 
                     <div class="form-group1">
                       <label for="sundayDate1">Select Date</label>
@@ -737,7 +750,7 @@
                         class="form-control"
                         id="sundayDate1"
                         required
-                        onchange="highlightSundays(this)"
+                        
                       />
                     </div>
 
@@ -879,11 +892,20 @@
                     </div>
                     <div class="form-group1">
                       <label for="litColor2">Liturgical Color</label>
-                      <input type="text" class="form-control" id="litColor2" placeholder="Green" required />
+                      <select class="form-control" id="litColor2" required>
+                        <option value="">Select a color</option>
+                        <option value="Green">Green</option>
+                        <option value="Red">Red</option>
+                        <option value="Gold">Gold</option>
+                        <option value="Purple">Purple</option>
+                        <option value="White">White</option>
+                      </select>
                     </div>
+                    
+            
                     <div class="form-group1">
                       <label for="sundayDate2">Select Date</label>
-                      <input type="date" class="form-control" id="sundayDate2" required onchange="highlightSundays(this)" />
+                      <input type="date" class="form-control" id="sundayDate2" required  />
                     </div>
                     <div class="form-group1">
                       <label for="sundayTime2">Select Time</label>
@@ -1330,12 +1352,12 @@
           </div>
         </div>
       </div>
-      <form id="flash" style="    width: 50%;
-        display: none;
-        position: absolute;
-        top: 174px;
-        left: 28%;" action="">
-        <div id="wizard">          
+      <form id="flashD" style="    width: 41%;
+      display: none;
+      position: absolute;
+      top: 174px;
+      left: 31%;" action="">
+        <div style="background: transparent;" id="wizard">          
           <h4></h4>
           <section>
               <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130.2 130.2">
@@ -1407,17 +1429,21 @@
                         required
                       />
                     </div>
-                  
+
                     <div class="form-group">
                       <label for="litColorEucaristic">Liturgical Color</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="litColorEucaristic"
-                        placeholder="Green"
-                        required
-                      />
+                      <select class="form-control" id="litColorEucaristic" required>
+                        <option value="">Select a color</option>
+                        <option value="Green">Green</option>
+                        <option value="Red">Red</option>
+                        <option value="Gold">Gold</option>
+                        <option value="Purple">Purple</option>
+                        <option value="White">White</option>
+                      </select>
                     </div>
+                    
+                  
+                    
                   
                     <div class="form-group">
                       <label for="sundayDateEucaristic">Select Date</label>
@@ -1426,7 +1452,7 @@
                         class="form-control"
                         id="sundayDateEucaristic"
                         required
-                        onchange="highlightSundays(this)"
+                        
                       />
                     </div>
                   
@@ -1572,16 +1598,20 @@
                       />
                     </div>
                   
+
                     <div class="form-group">
                       <label for="litColorMartin">Liturgical Color</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="litColorMartin"
-                        placeholder="Green"
-                        required
-                      />
+                      <select class="form-control" id="litColorMartin" required>
+                        <option value="">Select a color</option>
+                        <option value="Green">Green</option>
+                        <option value="Red">Red</option>
+                        <option value="Gold">Gold</option>
+                        <option value="Purple">Purple</option>
+                        <option value="White">White</option>
+                      </select>
                     </div>
+                    
+                    
                   
                     <div class="form-group">
                       <label for="sundayDateMartin">Select Date</label>
@@ -1590,7 +1620,7 @@
                         class="form-control"
                         id="sundayDateMartin"
                         required
-                        onchange="highlightSundays(this)"
+                        
                       />
                     </div>
                   
@@ -1911,21 +1941,21 @@
           </div>
         </div>
       </div>
-      <form id="flash" style="    width: 50%;
-    display: none;
-    position: absolute;
-    top: 174px;
-    left: 28%;" action="">
-      <div id="wizard">          
+      <form id="flash" style="    width: 41%;
+      display: none;
+      position: absolute;
+      top: 174px;
+      left: 31%;" action="">
+        <div style="background: transparent;" id="wizard">          
           <h4></h4>
           <section>
               <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130.2 130.2">
                   <circle class="path circle" fill="none" stroke="#73AF55" stroke-width="6" stroke-miterlimit="10" cx="65.1" cy="65.1" r="62.1" />
                   <polyline class="path check" fill="none" stroke="#73AF55" stroke-width="6" stroke-linecap="round" stroke-miterlimit="10" points="100.2,40.2 51.5,88.8 29.8,67.5 " />
               </svg>
-              <p class="success">Single service Bulletin created sucessfully.</p>
+              <p class="success">Single Service Bulletin Created Sucessfully.</p>
           </section>
-      </div>
+        </div>
       </form>
     </div>
 

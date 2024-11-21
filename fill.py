@@ -1,75 +1,100 @@
 import requests
-import random
-import json
+from bs4 import BeautifulSoup
+import re
 
-# Define the new service ID to be used
-service_id = "a7259b76-728c-41e9-a2ff-a17b868cdf1c"
+# URL of the target page
+url = "https://flatimes.com/anglican-communion/"
 
-# Endpoints for each entity
-endpoints = {
-    "reading_schedule": "http://127.0.0.1:4000/reading_schedule",
-    "special_prayers": "http://127.0.0.1:4000/special_prayers",
-    "hymns": "http://127.0.0.1:4000/hymns",
-    "weddings": "http://127.0.0.1:4000/wedding",
-    "members": "http://127.0.0.1:4000/members"
-}
+try:
+    # Send an HTTP GET request to the URL
+    response = requests.get(url)
+    response.raise_for_status()  # Raise an exception if the request fails
 
-# Headers for the POST request
-headers = {
-    'Content-Type': 'application/json'
-}
+    # Parse the HTML content
+    soup = BeautifulSoup(response.content, "html.parser")
 
-# Data for ReadingSchedule
-reading_schedule_data = {
-    "service_id": service_id,
-    "lesson": random.randint(1, 5),
-    "book_name": random.choice(["Isaiah", "Luke", "John"]),
-    "chapter_and_verse": random.choice(["7:14-25", "2:1-20", "3:16"]),
-    "reading_type": random.choice(["First Reading", "Second Reading", "Gospel"])
-}
+    # Find the first article
+    first_article = soup.find("article", class_="post")
 
-# Data for SpecialPrayers
-special_prayers_data = {
-    "service_id": service_id,
-    "prayer_name": "weekly_meditation",
-    "prayer_note": "Praise be to the God and Father of our Lord Jesus Christ, the Father of compassion and the God of all comfort, who comforts us in all our troubles, so that we can comfort those in any trouble with the comfort we ourselves receive from God. For just as we share abundantly in the sufferings of Christ, so also our comfort abounds through Christ. 2 Corinthians 1:3–5, NIV. Praise be to the God and Father of our Lord our God, Father of compassion and the God of all comfort, who encourages and strengthens us in all distress, we thank you for turning our suffering into a pathway to life, so that we may be thankful and trusting through everything. You can change what we find hardest into what is best for us. Praise to your name that a way through sin and death is given to us. Praise to your name that you have shown us a way through all evil, a way that is blest. Amen.",
-    "prayer_topic": "Working for the masters will",
-    "prayer_text": "Luke 19: 11-26; 1Corinthians 1: 3-5"
+    # Extract relevant information
+    article_title = first_article.find("h2", class_="post-title").text.strip()
+    article_date = first_article.find("span", class_="updated").text.strip()
+    article_link = first_article.find("a", class_="read-more-button")["href"]
+
+    # Follow the "Read More" link to fetch the article details
+    res = requests.get(article_link)
+    res.raise_for_status()
+    soup_article = BeautifulSoup(res.content, "html.parser")
+
+    # Extract topic and reading
+    topic = soup_article.find("strong", string="TOPIC:").next_sibling.strip()
+    read = soup_article.find("strong", string="READ: ").next_sibling.strip()
+    prayer = soup_article.find("strong", string="PRAYER: ").next_sibling.strip()
+
+    # Extract the starting number dynamically from the "Read" string
+    start_number_match = re.search(r":\s*(\d+)", read)
+    start_number = int(start_number_match.group(1)) if start_number_match else 1
+
+    # Extract the readings in the <ol> list
+    readings_list = soup_article.find("ol", class_="wp-block-list")
+    readings = [li.get_text(strip=True) for li in readings_list.find_all("li")]
+
+    devotional_heading = soup_article.find("h2", class_="wp-block-heading has-text-align-center")
+    devotional_heading_text = devotional_heading.get_text(strip=True) if devotional_heading else "No devotional heading found."
 
 
-}
+    # Extract the message
+    message_tag = soup_article.find("p", text=lambda t: t and "THE MESSAGE:" in t)
+    if message_tag:
+        # Extract paragraphs of the message
+        message_siblings = message_tag.find_next_siblings("p", limit=2)
+        message_content = " ".join(p.get_text(strip=True) for p in message_siblings)
 
-# Data for Hymns
-hymns_data = {
-    "service_id": service_id,
-    "hymn_number": random.choice(["110", "220", "330"]),
-    "hymn_title": random.choice(["Hark! The Herald Angels Sing", "O Come All Ye Faithful"]),
-    "category": random.choice(["Processional", "Communion", "Closing"])
-}
+        # Find the next <ol> tag after the message
+        next_ol_tag = message_tag.find_next("ol")
+        if next_ol_tag:
+            prayers = [li.get_text(strip=True) for li in next_ol_tag.find_all("li")]
+        else:
+            prayers = []
+    else:
+        message_content = "No message found."
+        prayers = []
 
-# Data for Notices
-wedding_data = {
-    "service_id": service_id,
-    "text": "<b> THIS IS THE 2ND AND LAST TIME OF ASKING</b>",
-    "message": "I here by publish the Bans of marriage between <b>Akunne Obi William</b> and <b>Abadom Kosisochukwu</b>. if any know any just cause why they will not marry each other delcare it now or forever remain silent. ",
-}
+    # Extract the next <p> tag after "PRAYER:"
+    prayer_tag = soup_article.find("strong", text=lambda t: t and "PRAYER:" in t)
+    next_prayer_paragraph = (
+        prayer_tag.find_next("strong").get_text(strip=True) if prayer_tag else "No additional prayer paragraph found."
+    )
 
-# Data for Members
-members_data = {
-    "first_name": random.choice(["Alice", "Benjamin", "Catherine"]),
-    "title": random.choice(["Dr", "Rev", "Elder"]),
-    "last_name": random.choice(["Johnson", "Williams", "Anderson"]),
-    "group_name": random.choice(["Children's Ministry", "Ushering Team", "Media Team"])
-}
+    # Print the extracted information
+    print(f"Article Title: {article_title}")
+    print(f"Publication Date: {article_date}")
+    print(f"Read More Link: {article_link}")
+    print(f"Topic: {topic}")
+    print(f"Read: {read}")
+    print(f"Devotional Heading: {devotional_heading_text}")
 
-# Function to post the data
-def post_data(data, endpoint):
-    response = requests.post(endpoint, headers=headers, data=json.dumps(data))
-    print(f"Response from {endpoint}: {response.status_code}, {response.text}")
+    print("\nReadings:")
+    for i, reading in enumerate(readings, start=start_number):
+        print(f"{i}. {reading}")
 
-# Posting the data to each respective endpoint
-post_data(reading_schedule_data, endpoints['reading_schedule'])
-post_data(special_prayers_data, endpoints['special_prayers'])
-post_data(hymns_data, endpoints['hymns'])
-post_data(wedding_data, endpoints['weddings'])
-post_data(members_data, endpoints['members'])
+    print("\nMessage:")
+    print(message_content)
+
+    print("\nPrayer:")
+    print(prayer)
+
+    print("\nAdditional Prayer Paragraph:")
+    print(next_prayer_paragraph)
+
+    if prayers:
+        print("\nPrayers:")
+        for i, pray in enumerate(prayers, start=1):
+            print(f"{i}. {pray}")
+    else:
+        print("\nNo prayers found.")
+
+except requests.RequestException as e:
+    print(f"Error fetching the page: {e}")
+except AttributeError as e:
+    print(f"Error parsing the content: {e}")

@@ -13,6 +13,9 @@ from models.service import *
 from models.engine.auth import Auth
 from sqlalchemy.orm.exc import NoResultFound
 from models.admin import Admin
+import requests
+from bs4 import BeautifulSoup
+import re
 
 AUTH = Auth()
 
@@ -72,7 +75,12 @@ def index():
         event['parsed_date'] = ' '.join(event['event_date'].split()[:4])
 
     # Sort services by parsed_date
-    all_sorted_services = sorted(all_services, key=lambda service: service['parsed_date'], reverse=True)
+    all_sorted_services = sorted(
+    all_services,
+    key=lambda service: datetime.strptime(service['parsed_date'], '%a, %d %b %Y'),
+    reverse=True)
+
+
 
     today = datetime.today().date()
 
@@ -91,7 +99,9 @@ def index():
     # Find the meditation associated with the latest service
     mediPrayer = next((m for m in meditations if m['service_id'] == latst_service['id']), None)
 
-    return render_template('index.html', services=all_sorted_services, mediPrayer=mediPrayer, events=all_sorted_events, service_count=service_count)
+    dailyprayer = dailyPrayer().json
+
+    return render_template('index.html', services=all_sorted_services, mediPrayer=mediPrayer, events=all_sorted_events, service_count=service_count, dailyPrayer=dailyprayer)
 
 
 @app.route('/history', strict_slashes=False)
@@ -184,14 +194,95 @@ def logout(session_id):
             AUTH.destroy_session_a(admin.id)
             return redirect(url_for('adminpage'))
     abort(403)
+@app.route('/dailyprayer', strict_slashes=False)
+def dailyPrayer():
+    url = "https://flatimes.com/anglican-communion/"
+
+    try:
+        # Send an HTTP GET request to the URL
+        response = requests.get(url)
+        response.raise_for_status()  # Raise an exception if the request fails
+
+        # Parse the HTML content
+        soup = BeautifulSoup(response.content, "html.parser")
+
+        # Find the first article
+        first_article = soup.find("article", class_="post")
+
+        # Extract relevant information
+        article_title = first_article.find("h2", class_="post-title").text.strip()
+        article_date = first_article.find("span", class_="updated").text.strip()
+        article_link = first_article.find("a", class_="read-more-button")["href"]
+
+        # Follow the "Read More" link to fetch the article details
+        res = requests.get(article_link)
+        res.raise_for_status()
+        soup_article = BeautifulSoup(res.content, "html.parser")
+
+        # Extract topic and reading
+        topic = soup_article.find("strong", string="TOPIC:").next_sibling.strip()
+        read = soup_article.find("strong", string="READ: ").next_sibling.strip()
+        prayer = soup_article.find("strong", string="PRAYER: ").next_sibling.strip()
+
+        # Extract the starting number dynamically from the "Read" string
+        start_number_match = re.search(r":\s*(\d+)", read)
+        start_number = int(start_number_match.group(1)) if start_number_match else 1
+
+        # Extract the readings in the <ol> list
+        readings_list = soup_article.find("ol", class_="wp-block-list")
+        readings = [li.get_text(strip=True) for li in readings_list.find_all("li")]
+
+        devotional_heading = soup_article.find("h2", class_="wp-block-heading has-text-align-center")
+        devotional_heading_text = devotional_heading.get_text(strip=True) if devotional_heading else "No devotional heading found."
+
+        # Extract the message
+        message_tag = soup_article.find("p", text=lambda t: t and "THE MESSAGE:" in t)
+        if message_tag:
+            # Extract paragraphs of the message
+            message_siblings = message_tag.find_next_siblings("p", limit=2)
+            message_content = " ".join(p.get_text(strip=True) for p in message_siblings)
+
+            # Find the next <ol> tag after the message
+            next_ol_tag = message_tag.find_next("ol")
+            if next_ol_tag:
+                prayers = [li.get_text(strip=True) for li in next_ol_tag.find_all("li")]
+            else:
+                prayers = []
+        else:
+            message_content = "No message found."
+            prayers = []
+
+        # Extract the next <p> tag after "PRAYER:"
+        prayer_tag = soup_article.find("strong", text=lambda t: t and "PRAYER:" in t)
+        next_prayer_paragraph = (
+            prayer_tag.find_next("strong").get_text(strip=True) if prayer_tag else "No additional prayer paragraph found."
+        )
+
+
+        return jsonify({'Article_Title': article_title, 'Publication_Date': article_date, 'Read_More_Link': article_link, 'Topic': topic, 'Read': read, 'Message': message_content, 'Prayer': prayer, 'Additional_Prayer_Paragraph': next_prayer_paragraph, 'Prayers': prayers, 'Readings': readings, 'Start_number': start_number, 'Devotional_Heading': devotional_heading_text})
+
+    except requests.RequestException as e:
+        print(f"Error fetching the page: {e}")
+    except AttributeError as e:
+        print(f"Error parsing the content: {e}")
+
 
 @app.route('/groups', strict_slashes=False)
 def groups():
-    Favour = groupFavour().json
-    Joy = groupJoy().json
-    Faith = groupFaith().json
-    Love = groupLove().json
-    return render_template('group.html', Favour=Favour, Joy=Joy, Faith=Faith, Love=Love)
+    Dorcas = group('Dorcas').json
+    Joy = group('Joy').json
+    Esther = group('Esther').json
+    Deborah = group('Deborah').json
+    Love = group('Love').json
+    Ruth = group('Ruth').json
+    Lydia = group('Lydia').json
+    Group1 = group('Group1').json
+    Group2 = group('Group2').json
+    Group3 = group('Group3').json
+    Group4 = group('Group4').json
+    Group5 = group('Group5').json
+    Group6 = group('Group6').json
+    return render_template('group.html', Dorcas=Dorcas, Joy=Joy, Esther=Esther, Deborah=Deborah, Ruth=Ruth, Lydia=Lydia, Love=Love, Group1=Group1, Group2=Group2, Group3=Group3, Group4=Group4, Group5=Group5, Group6=Group6)
 
 @app.route('/all_bulletins')
 def all_bulletins():
@@ -280,40 +371,18 @@ def search_members():
     
     return jsonify({"members": results})
 
-def groupFavour():
+
+
+
+def group(Name):
     Allmembers = get_members().json
     groupList = []
     for member in Allmembers:
-        if member['group_name'] == 'Favour':
+        if member['group_name'] == Name:
             groupList.append(member)
     return jsonify(groupList)
 
 
-def groupJoy():
-    Allmembers = get_members().json
-    groupList = []
-    for member in Allmembers:
-        if member['group_name'] == 'Joy':
-            groupList.append(member)
-    return jsonify(groupList)
-
-
-def groupFaith():
-    Allmembers = get_members().json
-    groupList = []
-    for member in Allmembers:
-        if member['group_name'] == 'Faith':
-            groupList.append(member)
-    return jsonify(groupList)
-
-
-def groupLove():
-    Allmembers = get_members().json
-    groupList = []
-    for member in Allmembers:
-        if member['group_name'] == 'Love':
-            groupList.append(member)
-    return jsonify(groupList)
 
 
 

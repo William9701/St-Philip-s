@@ -345,27 +345,28 @@ async function fetchAndUseService(serviceId) {
     );
     const notice = notices.find((n) => n.service_id === serviceId) || {};
     const schedules = noticeSchedule
-      .filter((ns) => ns.notice_id === notice.id)
-      .map((s, i) => {
-        const eventDate = new Date(s.event_day);
-        const formattedDate = new Intl.DateTimeFormat('en-US', {
-          weekday: 'long', 
-          month: 'short', 
-          day: 'numeric', 
-          year: 'numeric'
-        }).format(eventDate);
+    .filter((ns) => ns.notice_id === notice.id)
+    .sort((a, b) => new Date(a.event_day) - new Date(b.event_day)) // Sort by event_day
+    .map((s, i) => {
+      const eventDate = new Date(s.event_day);
+      const formattedDate = new Intl.DateTimeFormat('en-US', {
+        weekday: 'long', 
+        month: 'short', 
+        day: 'numeric', 
+        year: 'numeric'
+      }).format(eventDate);
 
-        // Format the day with the appropriate suffix (st, nd, rd, th)
-        const day = eventDate.getDate();
-        const daySuffix = day % 10 === 1 && day !== 11 ? 'st' :
-                          day % 10 === 2 && day !== 12 ? 'nd' :
-                          day % 10 === 3 && day !== 13 ? 'rd' : 'th';
+      // Format the day with the appropriate suffix (st, nd, rd, th)
+      const day = eventDate.getDate();
+      const daySuffix = day % 10 === 1 && day !== 11 ? 'st' :
+                        day % 10 === 2 && day !== 12 ? 'nd' :
+                        day % 10 === 3 && day !== 13 ? 'rd' : 'th';
 
-        return {
-          sn: `${i + 1}`,
-          event: `${formattedDate.replace(/\d+/, day + daySuffix)}: ${s.event_description}`,
-        };
-      });
+      return {
+        sn: `${i + 1}`,
+        event: `${formattedDate.replace(/\d+/, day + daySuffix)}: ${s.event_description}`,
+      };
+    });
 
     const resources = churchResources
       .filter((cr) => cr.notice_id === notice.id)
@@ -676,27 +677,28 @@ async function DoubleService(serviceId) {
     const meditation = meditations.find(m => m.service_id === serviceId) || {};
     const notice = notices.find(n => n.service_id === serviceId) || {};
     const schedules = noticeSchedule
-      .filter((ns) => ns.notice_id === notice.id)
-      .map((s, i) => {
-        const eventDate = new Date(s.event_day);
-        const formattedDate = new Intl.DateTimeFormat('en-US', {
-          weekday: 'long', 
-          month: 'short', 
-          day: 'numeric', 
-          year: 'numeric'
-        }).format(eventDate);
+    .filter((ns) => ns.notice_id === notice.id)
+    .sort((a, b) => new Date(a.event_day) - new Date(b.event_day)) // Sort by event_day
+    .map((s, i) => {
+      const eventDate = new Date(s.event_day);
+      const formattedDate = new Intl.DateTimeFormat('en-US', {
+        weekday: 'long', 
+        month: 'short', 
+        day: 'numeric', 
+        year: 'numeric'
+      }).format(eventDate);
 
-        // Format the day with the appropriate suffix (st, nd, rd, th)
-        const day = eventDate.getDate();
-        const daySuffix = day % 10 === 1 && day !== 11 ? 'st' :
-                          day % 10 === 2 && day !== 12 ? 'nd' :
-                          day % 10 === 3 && day !== 13 ? 'rd' : 'th';
+      // Format the day with the appropriate suffix (st, nd, rd, th)
+      const day = eventDate.getDate();
+      const daySuffix = day % 10 === 1 && day !== 11 ? 'st' :
+                        day % 10 === 2 && day !== 12 ? 'nd' :
+                        day % 10 === 3 && day !== 13 ? 'rd' : 'th';
 
-        return {
-          sn: `${i + 1}`,
-          event: `${formattedDate.replace(/\d+/, day + daySuffix)}: ${s.event_description}`,
-        };
-      });
+      return {
+        sn: `${i + 1}`,
+        event: `${formattedDate.replace(/\d+/, day + daySuffix)}: ${s.event_description}`,
+      };
+    });
     const resources = churchResources.filter(cr => cr.notice_id === notice.id).map((r, i) => ({ sn: `${i + 1}`, event: r.description }));
     const prayers = prayerList.filter(pl => pl.notice_id === notice.id).map((p, i) => ({ sn: `${i + 1}`, event: p.family_name }));
     const marriageEntries = marriagebann.filter(l => l.service_id === serviceId).map((marriage) => ({
@@ -890,18 +892,85 @@ document.querySelectorAll(".modal").forEach((modal) => {
   observer.observe(modal, { attributes: true, attributeFilter: ["class"] });
 });
 
-const prayerData = [
-  {
-    prayer: "God Guide and protect us from harm today",
-  },
-];
-function displayPrayer() {
-  const prayerPage = document.getElementById("prayerPage");
-  prayerPage.innerHTML = "";
-  prayerPage.innerHTML += `
-	<p>${prayerData[0].prayer}</p>
-	`;
+let prayerDataCache = null; // Initialize as null to avoid false positives
+
+async function dailyprayerData() {
+  if (prayerDataCache) {
+    return prayerDataCache; // Return cached data if it exists
+  } else {
+    const prayerD = await fetch('/dailyprayer');
+    const prayerData = await prayerD.json();
+    prayerDataCache = prayerData; // Cache the fetched data
+    return prayerData;
+  }
 }
+
+// Call the function on page load
+document.addEventListener("DOMContentLoaded", async () => {
+  await displayPrayer();
+});
+
+async function displayPrayer() {
+  const prayerPage = document.getElementById("prayerPage");
+  const prayerData = await dailyprayerData();
+
+  prayerPage.innerHTML = ""; // Clear any existing content
+
+  // Ensure prayerData has the expected structure before using it
+  if (prayerData && prayerData.Topic) {
+    // Add the main prayer details
+    prayerPage.innerHTML += `
+      <h4 style="color: aliceblue;">${prayerData.Devotional_Heading}</h4>
+      <h5 style="color: aliceblue;"><b>Topic:</b> ${prayerData.Topic}</h5>
+      <h5 style="color: aliceblue;"><b>Text:</b> ${prayerData.Read}</h5>
+    `;
+
+    // Add the readings if they exist
+    if (prayerData.Readings && prayerData.Readings.length > 0) {
+      const readingsList = document.createElement("ol"); // Create an ordered list
+      readingsList.style.listStyleType = "none"; // Remove default numbering
+      let startIndex = prayerData.Start_number || 1; // Set start index from Start_number or default to 1
+      console.log(startIndex);
+
+      prayerData.Readings.forEach((reading) => {
+        const listItem = document.createElement("li"); // Create a list item
+        listItem.innerHTML = `<b>${startIndex}.</b> ${reading}`; // Use startIndex to prefix the reading
+        readingsList.appendChild(listItem); // Add the list item to the list
+        startIndex++; // Increment the index for the next item
+      });
+
+      // Append the readings list to the prayerPage
+      prayerPage.appendChild(readingsList);
+    } else {
+      prayerPage.innerHTML += `<p><i>No readings available.</i></p>`;
+    }
+    prayerPage.innerHTML += `
+      <h5 style="color: aliceblue;">THE MESSAGE</h5>
+      <p>${prayerData.Message}</p>
+      <h5 style="color: aliceblue;">THE PRAYER</h5>
+      <p>${prayerData.Prayer}</p>
+      <h5 style="color: aliceblue;">PRAYER POINTS ON TODAY’S DAILY FOUNTAIN DEVOTIONAL</h5>`;
+
+    if (prayerData.Prayers && prayerData.Prayers.length > 0) {
+        const prayersList = document.createElement("ol");
+        prayerData.Prayers.forEach((prayer) => {
+          const listItem = document.createElement("li"); // Create a list item
+          listItem.innerHTML = `${prayer}`;
+          prayersList.appendChild(listItem); // Add the list item to the list
+        });
+        prayerPage.appendChild(prayersList);
+      }
+      else {
+        prayerPage.innerHTML += `<p><i>No prayer points available.</i></p>`;
+      }
+
+  } else {
+    prayerPage.innerHTML += `<p>No prayer topic available.</p>`;
+  }
+}
+
+
+
 
 async function mediPrayer() {
   try {
