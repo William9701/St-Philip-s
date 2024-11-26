@@ -87,7 +87,7 @@ Feel free to fork this repository and submit pull requests. Feedback and suggest
 
 ## Contact  
 For inquiries or support, please reach out to:  
-- **Email**: [your-email@example.com]  
+- **Email**: williamobi818@gmail.com  
 
 ---  
 
