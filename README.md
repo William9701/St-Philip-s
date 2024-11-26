@@ -22,8 +22,8 @@ A dynamic church website built with Flask, HTML, CSS, JavaScript, and MySQL. Thi
 
 ### 1. Clone the Repository  
 ```bash  
-git clone <repository-url>  
-cd <repository-folder>  
+git clone git@github.com:William9701/St-Philip-s.git 
+cd St-Philip-s 
 ```  
 
 ### 2. Install Dependencies  
@@ -35,21 +35,8 @@ bash setup.sh
 ### 3. Configure MySQL Database  
 - Update the `config.py` file with your MySQL credentials:  
 ```python  
-DATABASE_URI = 'mysql+pymysql://<username>:<password>@<host>/<database>'
-```  
-- Run the script to initialize the database:  
-```bash  
-bash init_db.sh  
-```  
-
-### 4. Start the Application  
-Run the app using the provided Bash script:  
-```bash  
-bash run.sh  
-```  
-The application will be available at `http://127.0.0.1:5000`.  
-
-## Bash Scripts  
+cat setup.sql|mysql 
+```    
 
 ### **setup.sh**  
 A script to install required Python dependencies.  
@@ -62,16 +49,7 @@ pip install -r requirements.txt
 echo "Setup complete."  
 ```  
 
-### **init_db.sh**  
-A script to initialize the MySQL database.  
-```bash  
-#!/bin/bash  
-
-echo "Initializing database..."  
-python -m web_dynamic.init_db  
-
-echo "Database initialization complete."  
-```  
+ 
 
 ### **run.sh**  
 A script to start the Flask application.  
